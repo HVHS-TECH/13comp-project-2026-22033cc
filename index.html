@@ -3,14 +3,19 @@
 <head>
     <title>Welcome page </title>
     <!--style sheets-->
-
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <link rel="stylesheet" href="stylesheets/landingstyle.css">
 
 </head>
+
+<body>
 <div id="top">
     <h1> Welcome to my 13 Comp project!</h1>
     <p id="playertalk">welcome to my website!</p>
 </div>
-
+<div id="login"> 
+    <button class="Button" onclick="fb_authenticate()">Sign in!</button>
+</div>
 <div id="form" style="display:none">
         
     <p>please fill in your name!!</p>
@@ -20,9 +25,9 @@
         <input type="text" id="UserName" name="name" /><br>
     <label for="userage"> your Age, Please </label>
         <input type="number" id="userage" name="userage" /><br>
-    <button class="enteringButton" onclick="fb_createAccount()">Create Account!</button>
+    <button class="Button" onclick="fb_createAccount()">Create Account!</button>
 </div>
-<img src="/assets/images/choysum.jpg" alt="placeholder logo">
+<img id="logo" src="/assets/images/choysum.jpg" alt="placeholder logo">
 
 
 

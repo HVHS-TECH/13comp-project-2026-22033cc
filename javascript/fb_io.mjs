@@ -14,6 +14,8 @@ console.log('%c fb_io.mjs running ',
 
 var fb_Db;
 var userUid;
+userUid = sessionStorage.getItem("UID");
+console.log(userUid);
 var userEmail;
 var userPhoto;
 
@@ -92,22 +94,29 @@ function fb_authenticate() {
         const REF = ref(fb_Db, "uid")
 
         //see if they have logged in before:
-         const dbReference = ref(fb_Db, "user_Data/" + userUid +"/display_Name");
+         const dbReference = ref(fb_Db, "playerStatsGTN/" + userUid +"/display_Name");
         get(dbReference).then((snapshot) => {
-             var firstName = snapshot.val(); 
+            var firstName = snapshot.val(); 
             document.getElementById("login").style = "display: none"
-             //if they haven't, make them choose username
-             if (firstName == null){              
+            //if they haven't, make them choose username
+            if (firstName == null){              
                 document.getElementById("playertalk").innerHTML = "Seems like you haven't made an account yet, "
                 document.getElementById("form").style = "display: inline-block"
-             } else{
-                
+            } else{    
             //display game links and such no that they are logged in 
+            // the website redirects to menu page.
+            console.log('fully logged in! ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+            /*
             document.getElementById("playertalk").innerHTML = "welcome back!"
             document.getElementById("form").style = "display:none"
             document.getElementById("signIn").innerHTML = "<p>User Name:"+firstName+"</p>"
             document.getElementById("profilePic").innerHTML =" <img src= "+ userPhoto +" alt='Your Profile Picture!'>"
-             }
+            */
+           // Save data to sessionStorage
+            sessionStorage.setItem("UID","hello");
+            window.location.assign("/menu.html")
+            }
         })
     })
         .catch((error) => {
@@ -234,22 +243,24 @@ function fb_updateRecord() {
     }else{
         
 
-        console.log("why isn't it working? why? why?")
             //creates nodes for display name, email, age, high scores for both games and photo url
-                    const REF = ref(fb_Db, "user_Data/"+ userUid)
+                    const REF = ref(fb_Db, "playerStatsGTN/"+ userUid)
 
                     set(REF, {
                         display_Name:firstName,
                         email:userEmail,
                         photo_URL:userPhoto,
                         age:firstAge,
-                        messages:null
+                        wins:0,
+                        losses:0,
+                        winrate:null
                     }).then(() => {
-                        console.log("PLEASE WORK")
-                        //displays all buttons to play games now that they are signed in 
-                        document.getElementById("signIn").innerHTML = "<p>User Name:"+firstName+"</p>"
-                        document.getElementById("profile_picture").innerHTML =" <img src= "+ userPhoto +" alt='Your Profile Picture!'>"
-
+                        console.log('%c account creation successful ',
+                        'color: ' + COL_C +
+                        '; background-color: ' + COL_B + ';');
+                       //switch redirect to menu page
+                       sessionStorage.setItem("UID", "yoyoyo");
+                       window.location.assign("/menu.html")
 
                     })
                     .catch((error) => {

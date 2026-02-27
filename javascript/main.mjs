@@ -65,3 +65,6 @@ function writingValue(){
 }
 
 window.writingValue = writingValue;
+
+let userUid = sessionStorage.getItem("UID");
+console.log(userUid);
