@@ -107,6 +107,7 @@ function fb_authenticate() {
             // the website redirects to menu page.
             console.log('fully logged in! ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+            
             /*
             document.getElementById("playertalk").innerHTML = "welcome back!"
             document.getElementById("form").style = "display:none"
@@ -114,7 +115,7 @@ function fb_authenticate() {
             document.getElementById("profilePic").innerHTML =" <img src= "+ userPhoto +" alt='Your Profile Picture!'>"
             */
            // Save data to sessionStorage
-            sessionStorage.setItem("UID","hello");
+            sessionStorage.setItem("UID",userUid);
             window.location.assign("/menu.html")
             }
         })
@@ -153,7 +154,7 @@ console.log('fb_authenticate ',
 //
 //
  ****************************************************************/
-    function fb_writeRecord(write_1,path){
+    function fb_writeRecord(write_1,path,){
         console.log('%c fb_writeRecord ',
         'color: ' + COL_C +
         '; background-color: ' + COL_B + ';');
@@ -176,9 +177,24 @@ console.log('fb_authenticate ',
 //
 //
  ****************************************************************/
-function fb_readRecord() {
-console.log('fb_authenticate ',
-                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+function fb_readRecord(path,key,) {
+    console.log("fb_readRecord");
+    console.log(path+key);
+    const dbReference= ref(fb_Db, path+key);
+
+    get(dbReference).then((snapshot) => {
+
+        var fb_data = snapshot.val();
+        console.log(fb_data);
+        if (fb_data != null) {
+            console.log("successful read");
+            console.log(fb_data);
+        } else {
+            console.log('nothing here');
+        }
+    }).catch((error) => {
+        console.log("error");
+    });
 }
 
 /***************************************************************
@@ -243,8 +259,14 @@ function fb_updateRecord() {
     }else{
         
 
-            //creates nodes for display name, email, age, high scores for both games and photo url
-                    const REF = ref(fb_Db, "playerStatsGTN/"+ userUid)
+            //creates nodes for display name, email, age, and photo URL (universal stats)
+                    
+            fb_writeRecord("playerStatsUNI/"+userUid, 
+                "display_name:"+firstName+
+                "email:"+userEmail+
+                "photo_URL"
+            )
+            const REF = ref(fb_Db, "playerStatsUNI/"+ userUid)
 
                     set(REF, {
                         display_Name:firstName,
@@ -259,7 +281,7 @@ function fb_updateRecord() {
                         'color: ' + COL_C +
                         '; background-color: ' + COL_B + ';');
                        //switch redirect to menu page
-                       sessionStorage.setItem("UID", "yoyoyo");
+                       sessionStorage.setItem("UID", userUid);
                        window.location.assign("/menu.html")
 
                     })

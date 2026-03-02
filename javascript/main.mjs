@@ -68,3 +68,12 @@ window.writingValue = writingValue;
 
 let userUid = sessionStorage.getItem("UID");
 console.log(userUid);
+
+fb_readRecord("/playerStatsGTN/"+userUid+"/","losses");
+
+function checkProfile(){
+    console.log("checkProfile")
+    //check 
+    fb_readRecord("/playerStatsUNI/"+userUid+"/",)
+}
+window.checkProfile = checkProfile;
