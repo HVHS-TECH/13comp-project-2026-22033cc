@@ -94,10 +94,11 @@ function fb_authenticate() {
         const REF = ref(fb_Db, "uid")
 
         //see if they have logged in before:
-         const dbReference = ref(fb_Db, "playerStatsGTN/" + userUid +"/display_Name");
-        get(dbReference).then((snapshot) => {
-            var firstName = snapshot.val(); 
-            document.getElementById("login").style = "display: none"
+        var firstName = fb_readRecord("playerStatsUNI/"+userUid+"/","display_Name") 
+        console.log(firstName);
+
+        
+
             //if they haven't, make them choose username
             if (firstName == null){              
                 document.getElementById("playertalk").innerHTML = "Seems like you haven't made an account yet, "
@@ -119,11 +120,6 @@ function fb_authenticate() {
             window.location.assign("/menu.html")
             }
         })
-    })
-        .catch((error) => {
-            alert("Uh Oh, Something went wrong!")
-            console.log(error)
-        });
 
 }
 
@@ -154,13 +150,15 @@ console.log('fb_authenticate ',
 //
 //
  ****************************************************************/
-    function fb_writeRecord(write_1,path,){
+    function fb_writeRecord(_path,_data){
         console.log('%c fb_writeRecord ',
         'color: ' + COL_C +
         '; background-color: ' + COL_B + ';');
-
-        const REF = ref(fb_Db, path);
-        set(REF, {write_1}).then(() => {
+        console.log(_path);
+        console.log(_data);
+        
+        const REF = ref(fb_Db,_path);
+        set(REF,_data).then(() => {
             console.log('%c writing successful',
                 'color: ' + COL_C +
                 '; background-color: ' + COL_B + ';');
@@ -170,7 +168,7 @@ console.log('fb_authenticate ',
                 console.log('%c something went wrong! ',
                     'color: ' + COL_C +
                     '; background-color: ' + COL_B + ';');
-            })
+        })
     }
 /***************************************************************
 // function fb_readRecord()
@@ -189,6 +187,7 @@ function fb_readRecord(path,key,) {
         if (fb_data != null) {
             console.log("successful read");
             console.log(fb_data);
+            return fb_data;
         } else {
             console.log('nothing here');
         }
@@ -243,12 +242,8 @@ function fb_updateRecord() {
     }
 
     if(firstName == null || firstName == undefined || firstName.trim() == ""||firstName == ""){
-
         document.getElementById("playertalk").innerHTML =firstName +" is an invalid user Name"
-
     }else{
-        
-
         console.log(firstName)
         var firstAge;
         console.log(document.getElementById("userage").value)
@@ -257,42 +252,19 @@ function fb_updateRecord() {
         if(firstAge == null&& firstAge == undefined&&firstAge.trim() == ""&&firstAge =="e"&&firstAge == 120 && firstAge <= 5){
         document.getElementById("playertalk").innerHTML ="please express your age as an interger rounded down & you must be between the ages 5-120"    
     }else{
-        
-
-            //creates nodes for display name, email, age, and photo URL (universal stats)
-                    
-            fb_writeRecord("playerStatsUNI/"+userUid, 
-                "display_name:"+firstName+
-                "email:"+userEmail+
-                "photo_URL"
-            )
-            const REF = ref(fb_Db, "playerStatsUNI/"+ userUid)
-
-                    set(REF, {
-                        display_Name:firstName,
-                        email:userEmail,
-                        photo_URL:userPhoto,
-                        age:firstAge,
-                        wins:0,
-                        losses:0,
-                        winrate:null
-                    }).then(() => {
-                        console.log('%c account creation successful ',
-                        'color: ' + COL_C +
-                        '; background-color: ' + COL_B + ';');
-                       //switch redirect to menu page
-                       sessionStorage.setItem("UID", userUid);
-                       window.location.assign("/menu.html")
-
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        console.log('%c something went wrong! ',
-                        'color: ' + COL_C +
-                        '; background-color: ' + COL_B + ';');
-                    })
-    
-
+        //creates nodes for display name, email, age, and photo URL (universal stats)        
+        fb_writeRecord("/playerStatsUNI/"+userUid, {
+            display_name: firstName,
+            email: userEmail,
+            photo_URL: userPhoto,
+            age: firstAge
+        })
+        //create nodes for playerstatsGTN
+        fb_writeRecord("/playerStatsGTN/"+userUid,{
+            wins:0,
+            losses:0,
+            winRate:0
+        })
     }
 
     }
