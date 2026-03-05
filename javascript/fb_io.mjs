@@ -234,8 +234,8 @@ function fb_updateRecord() {
     console.log('Fb_createAccount ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
 
-    var firstName = document.getElementById('UserName').value
-    console.log(firstName)
+    var firstName = document.getElementById('userName').value
+    console.log(firstName+"is the chosen username")
     if (firstName == null){
         console.log("balls")
         console.log(firstName)
@@ -246,8 +246,8 @@ function fb_updateRecord() {
     }else{
         console.log(firstName)
         var firstAge;
-        console.log(document.getElementById("userage").value)
-        firstAge = document.getElementById("userage").value
+        console.log(document.getElementById("userAge").value + "is the chosen age")
+        firstAge = document.getElementById("userAge").value
         
         if(firstAge == null&& firstAge == undefined&&firstAge.trim() == ""&&firstAge =="e"&&firstAge == 120 && firstAge <= 5){
         document.getElementById("playertalk").innerHTML ="please express your age as an interger rounded down & you must be between the ages 5-120"    
@@ -268,8 +268,12 @@ function fb_updateRecord() {
     }
 
     }
+    
     document.getElementById("form").style = "display:none"
-    document.getElementById("playertalk").innerHTML = "account successfully created!"
+    document.getElementById("playertalk").innerHTML = "account successfully created! redirecting to menu..."
+    //redirecting to menu....
+    sessionStorage.setItem("UID",userUid);
+    window.location.assign("/menu.html")
             
 
 }

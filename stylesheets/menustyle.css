@@ -1,0 +1,22 @@
+#menuGrid{
+display: grid;
+    
+    grid-template-columns: 20% 20% 20%;
+}
+#logoGTN{
+    width: 350px;
+    height: auto;
+}
+#logoOXY{
+    width: 350px;
+    height:auto;
+}
+.menuThumbnail{
+    
+    padding: 10px 15px;
+    border-style:solid;
+
+}
+#navBar{
+    display:float;
+}

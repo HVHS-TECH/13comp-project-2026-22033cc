@@ -3,32 +3,61 @@
 <head>
     <title>Welcome page </title>
     <!--style sheets-->
-    <link rel="stylesheet" href="Style.css">
-    <link rel="stylesheet" href="stylesheets/menustyle.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="/stylesheets/menustyle.css">
 
 </head>
 
 <body>
 <h1> this is the menu, this is the menu...</h1>
-<script type="module" src="/javascript/main.mjs"></script>=
+<script type="module" src="/javascript/main.mjs"></script>
 
-<div id="menu1GTN">
-<img id="logo" src="/assets/images/thumbnail_GTN.png" alt="placeholder logo">
-<ol>
-    <li id="leaderboard_GTN_1" class="leaderboard_number">loading...</li>
-    <li id="leaderboard_GTN_2" class="leaderboard_number">loading...</li>
-    <li id="leaderboard_GTN_3" class="leaderboard_number">loading...</li>
-    <li id="leaderboard_GTN_4" class="leaderboard_number">loading...</li>
-    <li id="leaderboard_GTN_5" class="leaderboard_number">loading...</li>
-    <li id="leaderboard_GTN_6" class="leaderboard_number">loading...</li>
-    <li id="leaderboard_GTN_7" class="leaderboard_number">loading...</li>
-    <li id="leaderboard_GTN_8" class="leaderboard_number">loading...</li>
-    <li id="leaderboard_GTN_9" class="leaderboard_number">loading...</li>
-    <li id="leaderboard_GTN_10" class="leaderboard_number">loading...</li>
-    
-</ol>
-<button class="Button" >Play!</button>
+<div id="navBar"> 
+     <a href="/profile.html">Your profile</a> 
+     <a href="leaderboard.html">Leaderboards</a>
+     <a href="menu.html">game menu</a>
+     
 </div>
+<div id="menuGrid">
+    <!-- Menu for guess the number game-->
+    <div id="menu1GTN" class ="menuThumbnail" >
+        <h2 id="nameHeader">Guess The Number Game</h2>
+        <img id="logoGTN" src="/assets/images/thumbnail_GTN.png" alt="placeholder logo">
+        <ol>
+            <li id="leaderboard_GTN_1" class="leaderboard_number">loading...</li>
+            <li id="leaderboard_GTN_2" class="leaderboard_number">loading...</li>
+            <li id="leaderboard_GTN_3" class="leaderboard_number">loading...</li>
+            <li id="leaderboard_GTN_4" class="leaderboard_number">loading...</li>
+            <li id="leaderboard_GTN_5" class="leaderboard_number">loading...</li>
+            <li id="leaderboard_GTN_6" class="leaderboard_number">loading...</li>
+            <li id="leaderboard_GTN_7" class="leaderboard_number">loading...</li>
+            <li id="leaderboard_GTN_8" class="leaderboard_number">loading...</li>
+            <li id="leaderboard_GTN_9" class="leaderboard_number">loading...</li>
+            <li id="leaderboard_GTN_10" class="leaderboard_number">loading...</li>
+            
+        </ol>
+        <button class="Button" >Play!</button>
+    </div>
 
+    <!-- Menu for other game-->
+    <div id="menu1OXY" class ="menuThumbnail">
+        <h2 id="nameHeader">OXY</h2>
+    <img id="logoOXY" src="/assets/images/thumbnail_GTN.png" alt="placeholder logo">
+    <ol>
+        <li id="leaderboard_OXY_1" class="leaderboard_number">loading...</li>
+        <li id="leaderboard_OXY_2" class="leaderboard_number">loading...</li>
+        <li id="leaderboard_OXY_3" class="leaderboard_number">loading...</li>
+        <li id="leaderboard_OXY_4" class="leaderboard_number">loading...</li>
+        <li id="leaderboard_OXY_5" class="leaderboard_number">loading...</li>
+        <li id="leaderboard_OXY_6" class="leaderboard_number">loading...</li>
+        <li id="leaderboard_OXY_7" class="leaderboard_number">loading...</li>
+        <li id="leaderboard_OXY_8" class="leaderboard_number">loading...</li>
+        <li id="leaderboard_OXY_9" class="leaderboard_number">loading...</li>
+        <li id="leaderboard_OXY_10" class="leaderboard_number">loading...</li>
+        
+    </ol>
+    <button class="Button" >Play!</button>
+    </div>
+</div>
 </body> 
 </html>
