@@ -18,6 +18,7 @@ userUid = sessionStorage.getItem("UID");
 console.log(userUid);
 var userEmail;
 var userPhoto;
+var firstName;
 
 /**************************************************************/
 // Import all external constants & functions required
@@ -72,7 +73,7 @@ function fb_initialise() {
 //
 //
  ****************************************************************/
-function fb_authenticate() {
+async function fb_authenticate() {
     console.log('%c authenticate():',
         'color:' + COL_C +
         'background-color:' + COL_B + ';');
@@ -94,8 +95,12 @@ function fb_authenticate() {
         const REF = ref(fb_Db, "uid")
 
         //see if they have logged in before:
-        var firstName = fb_readRecord("playerStatsUNI/"+userUid+"/","display_Name") 
-        console.log(firstName);
+        
+        fb_readRecord("playerStatsUNI/"+userUid+"/","display_name").then((result) => {
+        console.log("their first name is "+result);
+        firstName = result;
+        }) 
+        
 
         
 
@@ -175,7 +180,7 @@ console.log('%c fb_authenticate ',
 //
 //
  ****************************************************************/
-function fb_readRecord(path,key,) {
+async function fb_readRecord(path,key,) {
     console.log('%c fb_readRecord running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     console.log(path+key);
@@ -195,6 +200,7 @@ function fb_readRecord(path,key,) {
     }).catch((error) => {
         console.log("error");
     });
+    return fb_data;
 }
 
 /***************************************************************
@@ -202,7 +208,7 @@ function fb_readRecord(path,key,) {
 //
 //
  ****************************************************************/
-function fb_readAll() {
+async function fb_readAll() {
 console.log('%c fb_readAll ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
 }
@@ -212,7 +218,7 @@ console.log('%c fb_readAll ',
 //
 //
  ****************************************************************/
-function fb_updateRecord() {
+async function fb_updateRecord() {
     
 }
 /****************************************************************
@@ -221,7 +227,7 @@ function fb_updateRecord() {
  //
  ****************************************************************/
 
- function fb_read_sorted(){
+async function fb_read_sorted(){
     console.log('%c read sorted ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
  }
@@ -231,7 +237,7 @@ function fb_updateRecord() {
  //
  //
  ****************************************************************/
- function fb_createAccount(){
+ async function fb_createAccount(){
     console.log('%c Fb_createAccount ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
 
@@ -283,6 +289,6 @@ function fb_updateRecord() {
 //
 //
  ****************************************************************/
-function returnUserUid(){
+async function returnUserUid(){
     return userUid;
 }

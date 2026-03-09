@@ -38,5 +38,7 @@ import { op_writingValue,op_checkProfile
 
 console.log("hello");
 fb_initialise();
+let userUid = sessionStorage.getItem("UID");
+console.log(userUid);
 
 op_checkProfile(userUid)

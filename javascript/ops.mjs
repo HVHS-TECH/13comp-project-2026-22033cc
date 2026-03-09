@@ -4,8 +4,8 @@
 // functions that preform operations to help with database manipulation 
 // All variables & function begin with fb_  all const with FB_
 /**************************************************************/
-const COL_B = '#353536'; //console log colours
-const COL_C = '#f542c8';
+const COL_C = '#353536'; //console log colours
+const COL_B = '#f542c8';
 
     console.log('%c other.mjs running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
@@ -50,10 +50,11 @@ export {
     fb_writeRecord(write1,path);
 }
 
-function op_checkProfile(){
-    console.log("checkProfile")
+function op_checkProfile(UID){
+    console.log('%c op_check Profile running ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     //check 
-    var profileRead = fb_readRecord("/playerStatsUNI/"+userUid+"/");
+    var profileRead = fb_readRecord("/playerStatsUNI/"+UID+"/");
     console.log(profileRead);
 }
 
