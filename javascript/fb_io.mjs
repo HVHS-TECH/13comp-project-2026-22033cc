@@ -130,7 +130,7 @@ function fb_authenticate() {
 //
  ****************************************************************/
 function fb_detectLoginChange() {
-console.log('fb_detectLoginChange ',
+console.log('%c fb_detectLoginChange ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
 
 }
@@ -141,7 +141,7 @@ console.log('fb_detectLoginChange ',
 //
  ****************************************************************/
 function fb_logOut() {
-console.log('fb_authenticate ',
+console.log('%c fb_authenticate ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
 }
 
@@ -176,7 +176,8 @@ console.log('fb_authenticate ',
 //
  ****************************************************************/
 function fb_readRecord(path,key,) {
-    console.log("fb_readRecord");
+    console.log('%c fb_readRecord running ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     console.log(path+key);
     const dbReference= ref(fb_Db, path+key);
 
@@ -202,7 +203,7 @@ function fb_readRecord(path,key,) {
 //
  ****************************************************************/
 function fb_readAll() {
-console.log('fb_readAll ',
+console.log('%c fb_readAll ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
 }
 
@@ -221,7 +222,7 @@ function fb_updateRecord() {
  ****************************************************************/
 
  function fb_read_sorted(){
-    console.log('fb_read_sorted ',
+    console.log('%c read sorted ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
  }
 
@@ -231,7 +232,7 @@ function fb_updateRecord() {
  //
  ****************************************************************/
  function fb_createAccount(){
-    console.log('Fb_createAccount ',
+    console.log('%c Fb_createAccount ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
 
     var firstName = document.getElementById('userName').value

@@ -1,19 +1,20 @@
 /***************************************************************/
-// main.mjs
+// ops.mjs
 // Written by Conor, Term 1 2026
-// Main entry for index.html
+// functions that preform operations to help with database manipulation 
+// All variables & function begin with fb_  all const with FB_
 /**************************************************************/
 const COL_B = '#353536'; //console log colours
 const COL_C = '#f542c8';
 
-    console.log('%c main.mjs running ',
+    console.log('%c other.mjs running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-console.log("hello world");
 
 /***************************************************************/
 // Import all external constants & functions required
 /***************************************************************/
 // Import all the constants & functions required from fb_io module
+
 import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeRecord,
     fb_readRecord,fb_readAll, fb_updateRecord, fb_read_sorted,fb_createAccount,returnUserUid
  }
@@ -29,14 +30,32 @@ import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeR
     window.fb_read_sorted = fb_read_sorted;
     window.fb_createAccount = fb_createAccount;
     window.returnUserUid = returnUserUid;
-//Import all functions required from ops.mjs
-import { op_writingValue,op_checkProfile
- }
-    from './ops.mjs';
-    window.op_writingValue = op_writingValue;
-    window.op_writingValue = op_checkProfile;
 
-console.log("hello");
-fb_initialise();
+    /**************************************************************/
+// EXPORT FUNCTIONS
+// List all the functions called by code or html outside of this module
+/**************************************************************/
+export {
+    op_writingValue, op_checkProfile
+};
 
-op_checkProfile(userUid)
+    function op_writingValue(){
+    console.log("start converting");
+    var write1 = document.getElementById("inputDatabase").value;
+    var userUid = returnUserUid();
+    console.log(userUid);
+    var path = "user_Data/"+userUid+"/messages"
+    console.log(path);
+    console.log(write1);
+    fb_writeRecord(write1,path);
+}
+
+function op_checkProfile(){
+    console.log("checkProfile")
+    //check 
+    var profileRead = fb_readRecord("/playerStatsUNI/"+userUid+"/");
+    console.log(profileRead);
+}
+
+
+
