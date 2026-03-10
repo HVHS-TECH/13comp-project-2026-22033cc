@@ -33,12 +33,16 @@ import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeR
 import { op_writingValue,op_checkProfile
  }
     from './ops.mjs';
-    window.op_writingValue = op_writingValue;
-    window.op_writingValue = op_checkProfile;
+    
 
 console.log("hello");
 fb_initialise();
+let fb_Db = sessionStorage.getItem("FBDB");
+console.log(fb_Db);
 let userUid = sessionStorage.getItem("UID");
 console.log(userUid);
 
-op_checkProfile(userUid)
+op_checkProfile(userUid);
+
+window.op_writingValue = op_writingValue;
+window.op_writingValue = op_checkProfile;

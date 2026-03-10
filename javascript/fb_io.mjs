@@ -64,7 +64,8 @@ function fb_initialise() {
     };
     const FB_GAMEAPP = initializeApp(FB_GAMECONFIG);
     fb_Db= getDatabase(FB_GAMEAPP);
-    console.info(fb_Db);         	
+    console.info(fb_Db); 
+    sessionStorage.setItem("fBDB",fb_Db);        	
 
 }
 
@@ -83,7 +84,9 @@ async function fb_authenticate() {
         prompt:'select_account'
     });
     //login to users email
-    signInWithPopup(AUTH, PROVIDER).then((result) => {
+    let result = await signInWithPopup(AUTH,PROVIDER);
+    
+    //signInWithPopup(AUTH, PROVIDER).then((result) => {
         document.getElementById("playertalk").style = "display:inline-block"
         document.getElementById("playertalk").innerHTML = "thank you for signing in correctly!"
         //take users uid, email, and photo url
@@ -96,10 +99,10 @@ async function fb_authenticate() {
 
         //see if they have logged in before:
         
-        fb_readRecord("playerStatsUNI/"+userUid+"/","display_name").then((result) => {
-        console.log("their first name is "+result);
+        let resultName = await fb_readRecord("playerStatsUNI/"+userUid+"/","display_name");
+        console.log("their first name is"+resultName);
         firstName = result;
-        }) 
+        
         
 
         
@@ -111,7 +114,7 @@ async function fb_authenticate() {
             } else{    
             //display game links and such no that they are logged in 
             // the website redirects to menu page.
-            console.log('fully logged in! ',
+            console.log('%c fully logged in! ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
             
             /*
@@ -124,7 +127,7 @@ async function fb_authenticate() {
             sessionStorage.setItem("UID",userUid);
             window.location.assign("/menu.html")
             }
-        })
+        //})
 
 }
 
@@ -180,11 +183,11 @@ console.log('%c fb_authenticate ',
 //
 //
  ****************************************************************/
-async function fb_readRecord(path,key,) {
+async function fb_readRecord(_path,_key,) {
     console.log('%c fb_readRecord running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     console.log(path+key);
-    const dbReference= ref(fb_Db, path+key);
+    const dbReference= ref(fb_Db, _path+_key);
 
     get(dbReference).then((snapshot) => {
 
@@ -198,9 +201,8 @@ async function fb_readRecord(path,key,) {
             console.log('nothing here');
         }
     }).catch((error) => {
-        console.log("error");
+        console.log(error);
     });
-    return fb_data;
 }
 
 /***************************************************************
@@ -208,9 +210,23 @@ async function fb_readRecord(path,key,) {
 //
 //
  ****************************************************************/
-async function fb_readAll() {
-console.log('%c fb_readAll ',
-                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+async function fb_readAll(_path) {
+    console.log('%c fb_readAll ',
+                    'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    console.log(_path);
+    const dbReference= ref(fb_Db, _path );
+    get(dbReference).then((snapshot) => {
+        var fb_data = snapshot.val();
+        if (fb_data != null) {
+            console.log(fb_data)
+        } else {
+            console.log(fb_data+"is empty");
+        }
+    }).catch((error) => {
+        console.log(error)
+    });
+    
+
 }
 
 /***************************************************************

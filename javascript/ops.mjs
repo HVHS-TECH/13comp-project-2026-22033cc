@@ -50,12 +50,13 @@ export {
     fb_writeRecord(write1,path);
 }
 
-function op_checkProfile(UID){
-    console.log('%c op_check Profile running ',
+async function op_checkProfile(_UID){
+    console.log('%c op_checkProfile running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-    //check 
-    var profileRead = fb_readRecord("/playerStatsUNI/"+UID+"/");
-    console.log(profileRead);
+    //check
+    let profile = await fb_readAll("playerStatsUNI/"+_UID+"/","display_name")
+    console.log(profile);
+    console.log(profile.display_name);;
 }
 
 
