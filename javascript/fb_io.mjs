@@ -100,13 +100,10 @@ async function fb_authenticate() {
         //see if they have logged in before:
         
         let resultName = await fb_readRecord("playerStatsUNI/"+userUid+"/","display_name");
-        console.log("their first name is"+resultName);
-        firstName = result;
-        
-        
-
-        
-
+        console.log
+        console.log("their first name is "+resultName);
+        firstName = resultName;
+        console.log(firstName);
             //if they haven't, make them choose username
             if (firstName == null){              
                 document.getElementById("playertalk").innerHTML = "Seems like you haven't made an account yet, "
@@ -186,11 +183,11 @@ console.log('%c fb_authenticate ',
 async function fb_readRecord(_path,_key,) {
     console.log('%c fb_readRecord running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-    console.log(path+key);
+    console.log(_path+_key);
+    //define the path and key and read the record
     const dbReference= ref(fb_Db, _path+_key);
-
-    get(dbReference).then((snapshot) => {
-
+    let snapshot = await get(dbReference)
+        // return data back.
         var fb_data = snapshot.val();
         console.log(fb_data);
         if (fb_data != null) {
@@ -200,9 +197,6 @@ async function fb_readRecord(_path,_key,) {
         } else {
             console.log('nothing here');
         }
-    }).catch((error) => {
-        console.log(error);
-    });
 }
 
 /***************************************************************
@@ -214,17 +208,20 @@ async function fb_readAll(_path) {
     console.log('%c fb_readAll ',
                     'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     console.log(_path);
-    const dbReference= ref(fb_Db, _path );
-    get(dbReference).then((snapshot) => {
+    //define path and read record 
+    const dbReference= ref(fb_Db, _path);
+    let snapshot = await get(dbReference)
+    //get(dbReference).then((snapshot) => {
         var fb_data = snapshot.val();
         if (fb_data != null) {
             console.log(fb_data)
+            return fb_data
         } else {
-            console.log(fb_data+"is empty");
+            console.log("node is empty");
         }
-    }).catch((error) => {
+    /*}).catch((error) => {
         console.log(error)
-    });
+    });*/
     
 
 }

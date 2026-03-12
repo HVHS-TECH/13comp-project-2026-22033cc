@@ -57,6 +57,7 @@ async function op_checkProfile(_UID){
     let profile = await fb_readAll("playerStatsUNI/"+_UID+"/","display_name")
     console.log(profile);
     console.log(profile.display_name);;
+    return profile;
 }
 
 

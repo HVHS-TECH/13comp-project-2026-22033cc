@@ -2,6 +2,7 @@
 // main.mjs
 // Written by Conor, Term 1 2026
 // Main entry for index.html
+//
 /**************************************************************/
 const COL_B = '#353536'; //console log colours
 const COL_C = '#f542c8';
@@ -18,6 +19,7 @@ import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeR
     fb_readRecord,fb_readAll, fb_updateRecord, fb_read_sorted,fb_createAccount,returnUserUid
  }
     from './fb_io.mjs';
+
     window.fb_initialise = fb_initialise;
     window.fb_authenticate = fb_authenticate;
     window.fb_detectLoginChange = fb_detectLoginChange;
@@ -46,3 +48,4 @@ op_checkProfile(userUid);
 
 window.op_writingValue = op_writingValue;
 window.op_writingValue = op_checkProfile;
+
