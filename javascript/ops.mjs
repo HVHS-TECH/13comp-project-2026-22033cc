@@ -59,6 +59,15 @@ async function op_checkProfile(_UID){
     console.log(profile.display_name);;
     return profile;
 }
+async function op_checkStats(_UID,_GAME){
+    console.log('%c op_checkStats running ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    //check
+    let profile = await fb_readAll("playerStats"+_GAME+"/"+_UID+"/","display_name")
+    console.log(profile);
+    console.log(profile.display_name);;
+    return profile;
+}
 
 
 
