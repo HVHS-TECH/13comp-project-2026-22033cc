@@ -45,7 +45,6 @@ let userUid = sessionStorage.getItem("UID");
 console.log(userUid);
 
 op_checkProfile(userUid);
-
 window.op_writingValue = op_writingValue;
 window.op_writingValue = op_checkProfile;
 
