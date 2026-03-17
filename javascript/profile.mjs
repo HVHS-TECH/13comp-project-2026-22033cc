@@ -1,16 +1,14 @@
 /***************************************************************/
-// GTN.mjs
+// profile.mjs
 // Written by Conor, Term 1 2026
-// Guess the number game logic
-// all functions prefixed by GTN_
+// logic for the profile page. 
 /**************************************************************/
 const COL_B = '#353536'; //console log colours
 const COL_C = '#f542c8';
 
     console.log('%c GTN.mjs running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-console.log("hello world");
-const game = "GTN";
+const game = ["OXY","GTN"];
 /***************************************************************/
 // Import all external constants & functions required
 /***************************************************************/
@@ -43,7 +41,7 @@ let fb_Db = sessionStorage.getItem("FBDB");
 let userUid = sessionStorage.getItem("UID");
 
 let userProfile = await op_checkProfile(userUid);
-let userStats = await op_checkStats(userUid,game);
+let userStats = await op_checkStats(userUid,game[0]);
 console.log(userStats.wins);
 
 //create profile page 
@@ -60,8 +58,6 @@ document.getElementById("userProfileWins").innerHTML = "Wins: "+userStats.wins
 document.getElementById("userProfileLosses").innerHTML = "Losses: "+userStats.losses
 document.getElementById("userProfileStreak1").innerHTML = "Current win streak: "+userStats.winStreakCurrent
 document.getElementById("userProfileStreak2").innerHTML = "Longest win streak: "+userStats.winStreakLong
-
-
 
 
 

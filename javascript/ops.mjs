@@ -36,7 +36,7 @@ import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeR
 // List all the functions called by code or html outside of this module
 /**************************************************************/
 export {
-    op_writingValue, op_checkProfile
+    op_writingValue, op_checkProfile, op_checkStats
 };
 
     function op_writingValue(){
@@ -59,6 +59,7 @@ async function op_checkProfile(_UID){
     console.log(profile.display_name);;
     return profile;
 }
+
 async function op_checkStats(_UID,_GAME){
     console.log('%c op_checkStats running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
