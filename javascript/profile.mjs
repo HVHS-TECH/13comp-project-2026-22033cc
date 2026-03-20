@@ -8,7 +8,7 @@ const COL_C = '#f542c8';
 
     console.log('%c GTN.mjs running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-const game = ["OXY","GTN"];
+const game = ["GTN","OXY"];
 /***************************************************************/
 // Import all external constants & functions required
 /***************************************************************/
@@ -42,8 +42,8 @@ let userUid = sessionStorage.getItem("UID");
 
 let userProfile = await op_checkProfile(userUid);
 let userStats = await op_checkStats(userUid,game[0]);
-console.log(userStats.wins);
-
+console.log(userStats);
+console.log(userProfile);
 //create profile page 
 let profileImage = document.createElement('img');
 profileImage.src = userProfile.photo_URL;
@@ -51,7 +51,7 @@ profileImage.alt = "profile picture";
 profileImage.style = "width: 50px; height: 50px"
 document.getElementById("userProfileImage").appendChild(profileImage);
 
-
+// load stats into the website
 document.getElementById("userProfileName").innerHTML = "user name: "+userProfile.display_name
 document.getElementById("userProfileAge").innerHTML = "age: "+userProfile.age
 document.getElementById("userProfileWins").innerHTML = "Wins: "+userStats.wins
