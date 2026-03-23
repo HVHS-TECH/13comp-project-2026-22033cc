@@ -9,6 +9,8 @@ const COL_C = '#f542c8';
     console.log('%c GTN.mjs running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
 const game = ["GTN","OXY"];
+
+const PROFILEPIC = "150px";
 /***************************************************************/
 // Import all external constants & functions required
 /***************************************************************/
@@ -48,10 +50,9 @@ console.log(userProfile);
 let profileImage = document.createElement('img');
 profileImage.src = userProfile.photo_URL;
 profileImage.alt = "profile picture";
-profileImage.style = "width: 50px; height: 50px"
-document.getElementById("userProfileImage").appendChild(profileImage);
+profileImage.style = "width:"+PROFILEPIC+"; height:"+PROFILEPIC;
 
-// load stats into the website
+document.getElementById("userProfileImage").appendChild(profileImage);
 document.getElementById("userProfileName").innerHTML = "user name: "+userProfile.display_name
 document.getElementById("userProfileAge").innerHTML = "age: "+userProfile.age
 document.getElementById("userProfileWins").innerHTML = "Wins: "+userStats.wins
