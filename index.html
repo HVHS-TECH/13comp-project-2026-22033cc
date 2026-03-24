@@ -26,9 +26,19 @@
     <label for="userage"> your Age, Please </label>
         <input type="number" id="userAge" name="userage" /><br>
      <label for="usercol"> your favourite colour?: </label>
-        <input type="color" id="usercol" name="usercol" value="#00000" /><br>
+        <input type="color" id="userCol" name="userCol" value="#00000" /><br>
     <label for="userMovie"> your favourite movie?:</label>
         <input type="text" id="userMovie" name="userMovie" /><br>
+
+    <form>
+        <p>What handedness are you? (there is only one correct answer)</p>
+        <input type="radio" id="userLeftHand" name="handedness" value="Left">
+            <label for="userLeftHand">Left handed</label><br>
+        <input type="radio" id="userRightHand" name="handedness" value="Right">
+            <label for="userRightHand">Right</label><br>
+        <input type="radio" id="userambidextrous" name="handedness" value="Ambidextrous">
+        <label for="javascript">ambidextrous</label>
+    </form>
     <button class="Button" onclick="fb_createAccount()">Create Account!</button>
   
 

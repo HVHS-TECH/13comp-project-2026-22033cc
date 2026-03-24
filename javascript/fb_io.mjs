@@ -18,7 +18,7 @@ userUid = sessionStorage.getItem("UID");
 console.log(userUid);
 var userEmail;
 var userPhoto;
-var firstName;
+var userName;
 
 /**************************************************************/
 // Import all external constants & functions required
@@ -102,10 +102,10 @@ async function fb_authenticate() {
         let resultName = await fb_readRecord("playerStatsUNI/"+userUid+"/","display_name");
         console.log
         console.log("their first name is "+resultName);
-        firstName = resultName;
-        console.log(firstName);
+        userName = resultName;
+        console.log(userName);
             //if they haven't, make them choose username
-            if (firstName == null){              
+            if (userName == null){              
                 document.getElementById("playertalk").innerHTML = "Seems like you haven't made an account yet, "
                 document.getElementById("form").style = "display: inline-block"
             } else{    
@@ -113,18 +113,12 @@ async function fb_authenticate() {
             // the website redirects to menu page.
             console.log('%c fully logged in! ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-            
-            /*
-            document.getElementById("playertalk").innerHTML = "welcome back!"
-            document.getElementById("form").style = "display:none"
-            document.getElementById("signIn").innerHTML = "<p>User Name:"+firstName+"</p>"
-            document.getElementById("profilePic").innerHTML =" <img src= "+ userPhoto +" alt='Your Profile Picture!'>"
-            */
+
            // Save data to sessionStorage
             sessionStorage.setItem("UID",userUid);
             window.location.assign("/menu.html")
             }
-        //})
+        
 
 }
 
@@ -254,30 +248,44 @@ async function fb_read_sorted(){
     console.log('%c Fb_createAccount ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
 
-    var firstName = document.getElementById('userName').value
-    console.log(firstName+"is the chosen username")
-    if (firstName == null){
+    var userName = document.getElementById('userName').value
+    console.log(userName+"is the chosen username")
+    if (userName == null){
         console.log("balls")
-        console.log(firstName)
+        console.log(userName)
     }
 
-    if(firstName == null || firstName == undefined || firstName.trim() == ""||firstName == ""){
-        document.getElementById("playertalk").innerHTML =firstName +" is an invalid user Name"
+    if(userName == null || userName == undefined || userName.trim() == ""||userName == ""){
+        document.getElementById("playertalk").innerHTML =userName +" is an invalid user Name"
     }else{
-        console.log(firstName)
-        var firstAge;
+        console.log(userName)
+        var userAge;
         console.log(document.getElementById("userAge").value + "is the chosen age")
-        firstAge = document.getElementById("userAge").value
+        userAge = document.getElementById("userAge").value
         
-        if(firstAge == null&& firstAge == undefined&&firstAge.trim() == ""&&firstAge =="e"&&firstAge == 120 && firstAge <= 5){
+        console.log("grabbing colour");
+        console.log(document.getElementById("userCol").value);
+        console.log("grabbing movies");
+        console.log(document.getElementById("userMovie").value);
+        let userCol = document.getElementById("userCol").value;
+        let userMovie = document.getElementById("userMovie").value;
+        let userHand = document.getElementById("userRightHand").value;
+        console.log(document.getElementById("userRightHand").value);
+        if (userHand == !null){
+            console.log("righthanded")
+        }else{
+            console.log("lefthanded")
+        }
+        
+        if(userAge == null&& userAge == undefined&&userAge.trim() == ""&&userAge =="e"&&userAge == 120 && userAge <= 5){
         document.getElementById("playertalk").innerHTML ="please express your age as an interger rounded down & you must be between the ages 5-120"    
     }else{
         //creates nodes for display name, email, age, and photo URL (universal stats)        
         fb_writeRecord("/playerStatsUNI/"+userUid, {
-            display_name: firstName,
+            display_name: userName,
             email: userEmail,
             photo_URL: userPhoto,
-            age: firstAge
+            age: userAge
         })
         //create nodes for playerstatsGTN
         fb_writeRecord("/playerStatsGTN/"+userUid,{
@@ -293,10 +301,30 @@ async function fb_read_sorted(){
     document.getElementById("playertalk").innerHTML = "account successfully created! redirecting to menu..."
     //redirecting to menu....
     sessionStorage.setItem("UID",userUid);
-    window.location.assign("/menu.html")
+   // window.location.assign("/menu.html")
             
 
 }
+
+//  <label for="num">Your Name,Please:</label>
+//         <input type="text" id="userName" name="name" /><br>
+//     <label for="userage"> your Age, Please </label>
+//         <input type="number" id="userAge" name="userage" /><br>
+//      <label for="usercol"> your favourite colour?: </label>
+//         <input type="color" id="usercol" name="usercol" value="#00000" /><br>
+//     <label for="userMovie"> your favourite movie?:</label>
+//         <input type="text" id="userMovie" name="userMovie" /><br>
+//     <button class="Button" onclick="fb_createAccount()">Create Account!</button>
+
+/*<form>
+        <p>What handedness are you? (there is only one correct answer)</p>
+        <input type="radio" id="userLeftHand" name="handedness" value="Left">
+            <label for="userLeftHand">Left handed</label><br>
+        <input type="radio" id="userRightHand" name="handedness" value="Right">
+            <label for="userRightHand">Right</label><br>
+        <input type="radio" id="userambidextrous" name="handedness" value="Ambidextrous">
+        <label for="javascript">ambidextrous</label>
+    </form>*/
 /***************************************************************
 // function fb_readRecord()
 //
