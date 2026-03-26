@@ -21,6 +21,7 @@
     <p>please fill in your name!!</p>
     
     <!--yoinking information-->
+
     <label for="num">Your Name,Please:</label>
         <input type="text" id="userName" name="name" /><br>
     <label for="userage"> your Age, Please </label>
@@ -29,16 +30,17 @@
         <input type="color" id="userCol" name="userCol" value="#00000" /><br>
     <label for="userMovie"> your favourite movie?:</label>
         <input type="text" id="userMovie" name="userMovie" /><br>
-
-    <form>
-        <p>What handedness are you? (there is only one correct answer)</p>
-        <input type="radio" id="userLeftHand" name="handedness" value="Left">
-            <label for="userLeftHand">Left handed</label><br>
-        <input type="radio" id="userRightHand" name="handedness" value="Right">
-            <label for="userRightHand">Right</label><br>
-        <input type="radio" id="userambidextrous" name="handedness" value="Ambidextrous">
-        <label for="javascript">ambidextrous</label>
-    </form>
+    <label for="userHandedness"> your favourite movie?:</label>
+        <select name="userHand" id="userHand">
+            <option value="left">Left handed</option>
+            <option value="right">Right handed</option>
+            <option value="ambidextrous">Ambidextrous</option>
+        </select>
+    <label for="userShape">Trianges or squares?:</label>
+        <select name="userShape" id="userShape">
+            <option value="triangles">Triangles</option>
+            <option value="squares">Squares</option>
+        </select>
     <button class="Button" onclick="fb_createAccount()">Create Account!</button>
   
 

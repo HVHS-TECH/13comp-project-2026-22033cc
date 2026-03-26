@@ -247,8 +247,20 @@ async function fb_read_sorted(){
  async function fb_createAccount(){
     console.log('%c Fb_createAccount ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    //console log all values (remove later)
 
-    var userName = document.getElementById('userName').value
+    let userForm = ["userName","userAge","userCol","userMovie","userHand","userShape"];
+    for (let i=0;i<6;i++){
+        console.log(document.getElementById(userForm[i]).value);
+    }
+    //get all values from the site into variables
+    let userName = document.getElementById('userName').value;
+    let userAge = document.getElementById("userAge").value;
+    let userCol = document.getElementById("userCol").value;
+    let userMovie = document.getElementById("userMovie").value;
+    let userHand = document.getElementById("userhandedness").value;
+    let userShape = document.getElementById("userShape").value;
+    
     console.log(userName+"is the chosen username")
     if (userName == null){
         console.log("balls")
@@ -257,46 +269,30 @@ async function fb_read_sorted(){
 
     if(userName == null || userName == undefined || userName.trim() == ""||userName == ""){
         document.getElementById("playertalk").innerHTML =userName +" is an invalid user Name"
-    }else{
-        console.log(userName)
-        var userAge;
-        console.log(document.getElementById("userAge").value + "is the chosen age")
-        userAge = document.getElementById("userAge").value
-        
-        console.log("grabbing colour");
-        console.log(document.getElementById("userCol").value);
-        console.log("grabbing movies");
-        console.log(document.getElementById("userMovie").value);
-        let userCol = document.getElementById("userCol").value;
-        let userMovie = document.getElementById("userMovie").value;
-        let userHand = document.getElementById("userRightHand").value;
-        console.log(document.getElementById("userRightHand").value);
-        if (userHand == !null){
-            console.log("righthanded")
-        }else{
-            console.log("lefthanded")
-        }
-        
+    }else{   
         if(userAge == null&& userAge == undefined&&userAge.trim() == ""&&userAge =="e"&&userAge == 120 && userAge <= 5){
-        document.getElementById("playertalk").innerHTML ="please express your age as an interger rounded down & you must be between the ages 5-120"    
-    }else{
-        //creates nodes for display name, email, age, and photo URL (universal stats)        
-        fb_writeRecord("/playerStatsUNI/"+userUid, {
-            display_name: userName,
-            email: userEmail,
-            photo_URL: userPhoto,
-            age: userAge
-        })
-        //create nodes for playerstatsGTN
-        fb_writeRecord("/playerStatsGTN/"+userUid,{
-            wins:0,
-            losses:0,
-            winRate:0
-        })
-    }
+            document.getElementById("playertalk").innerHTML ="please express your age as an interger rounded down & you must be between the ages 5-120"    
+        }else{
+            //creates nodes for display name, email, age, and photo URL (universal stats)        
+            fb_writeRecord("/playerStatsUNI/"+userUid, {
+                display_name: userName,
+                email: userEmail,
+                photo_URL: userPhoto,
+                age: userAge,
+                fav_colour:userCol,
+                fav_movie:userMovie,
+                handedness:userHand,
+                shape:userShape,
+            })
+            //create nodes for playerstatsGTN
+            fb_writeRecord("/playerStatsGTN/"+userUid,{
+                wins:0,
+                losses:0,
+                winRate:0
+            })
+        }
 
     }
-    
     document.getElementById("form").style = "display:none"
     document.getElementById("playertalk").innerHTML = "account successfully created! redirecting to menu..."
     //redirecting to menu....
