@@ -113,7 +113,7 @@ async function fb_authenticate() {
             // the website redirects to menu page.
             console.log('%c fully logged in! ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-
+                
            // Save data to sessionStorage
             sessionStorage.setItem("UID",userUid);
             window.location.assign("/menu.html")
@@ -249,9 +249,17 @@ async function fb_read_sorted(){
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     //console log all values (remove later)
 
-    let userForm = ["userName","userAge","userCol","userMovie","userHand","userShape"];
-    for (let i=0;i<6;i++){
+    let userForm = ["userName","userAge",,"userMovie"];
+    let userFormReply =["Name","Age","Movie"];
+    for (let i=0; i<6; i++){
+        console.log(i);
+        console.log((document.getElementById(userForm[i]).value));
         console.log(document.getElementById(userForm[i]).value);
+        if (document.getElementById(userForm[i]).value == null||document.getElementById(userForm[i]).value == ""||document.getElementById(userForm[i]).value == undefined){
+            console.log("nothing in this one")
+            document.getElementsById("playertalk").innerHTML = "please choose your "+userFormReply[i]+"!";
+            return
+        };
     }
     //get all values from the site into variables
     let userName = document.getElementById('userName').value;
