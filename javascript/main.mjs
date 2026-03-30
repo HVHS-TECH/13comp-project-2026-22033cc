@@ -44,6 +44,16 @@ console.log(fb_Db);
 let userUid = sessionStorage.getItem("UID");
 console.log(userUid);
 
-window.op_writingValue = op_writingValue;
-window.op_writingValue = op_checkProfile;
+
+
+let currentPage = window.location.href;
+console.log(currentPage);
+
+if (currentPage == "http://127.0.0.1:5500/"){
+    console.log("on index.html")
+}else{
+    console.log("not on index.html");
+     fb_detectLoginChange();
+    
+}
 

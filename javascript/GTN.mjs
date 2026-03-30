@@ -66,3 +66,4 @@ document.getElementById("userProfileStreak2").innerHTML = "Longest win streak: "
 
 
 
+

@@ -122,18 +122,6 @@ async function fb_authenticate() {
 
 }
 
-
-/***************************************************************
-// function fb_detectLoginChange()
-//
-//
- ****************************************************************/
-function fb_detectLoginChange() {
-console.log('%c fb_detectLoginChange ',
-                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-
-}
-
 /***************************************************************
 // function fb_logOut()
 // 
@@ -305,32 +293,47 @@ async function fb_read_sorted(){
     document.getElementById("playertalk").innerHTML = "account successfully created! redirecting to menu..."
     //redirecting to menu....
     sessionStorage.setItem("UID",userUid);
-   // window.location.assign("/menu.html")
+    window.location.assign("/menu.html")
             
 
 }
 
-//  <label for="num">Your Name,Please:</label>
-//         <input type="text" id="userName" name="name" /><br>
-//     <label for="userage"> your Age, Please </label>
-//         <input type="number" id="userAge" name="userage" /><br>
-//      <label for="usercol"> your favourite colour?: </label>
-//         <input type="color" id="usercol" name="usercol" value="#00000" /><br>
-//     <label for="userMovie"> your favourite movie?:</label>
-//         <input type="text" id="userMovie" name="userMovie" /><br>
-//     <button class="Button" onclick="fb_createAccount()">Create Account!</button>
-
-/*<form>
-        <p>What handedness are you? (there is only one correct answer)</p>
-        <input type="radio" id="userLeftHand" name="handedness" value="Left">
-            <label for="userLeftHand">Left handed</label><br>
-        <input type="radio" id="userRightHand" name="handedness" value="Right">
-            <label for="userRightHand">Right</label><br>
-        <input type="radio" id="userambidextrous" name="handedness" value="Ambidextrous">
-        <label for="javascript">ambidextrous</label>
-    </form>*/
 /***************************************************************
 // function fb_readRecord()
+//
+//
+ ****************************************************************/
+
+async function fb_detectLoginChange() {
+console.log('%c Fb_detectLoginChange ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    const AUTH = getAuth();
+
+    onAuthStateChanged(AUTH,(user) => {
+        if (user) {
+            // user is logged in
+            let userUid = user.uid;
+            console.log(userUid);
+            console.log("users is currently logged in")  
+        } else {
+            //user not logged in
+            console.log("users is currently not logged in");
+            alert("you are not signed in. Please log in");
+            alert("redirecting to log in page...");
+            sessionStorage.setItem("UID",user.uid);
+            window.location.assign("/index.html");
+    
+        }
+    }, (error) =>{
+        console.log("ERROR")
+        console.log(error);
+    });
+    
+
+
+};
+/***************************************************************
+// function 
 //
 //
  ****************************************************************/
