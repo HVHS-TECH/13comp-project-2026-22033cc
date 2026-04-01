@@ -314,7 +314,8 @@ console.log('%c Fb_detectLoginChange ',
             // user is logged in
             let userUid = user.uid;
             console.log(userUid);
-            console.log("users is currently logged in")  
+            console.log("users is currently logged in");
+            alert("You are logged in ");
         } else {
             //user not logged in
             console.log("users is currently not logged in");
