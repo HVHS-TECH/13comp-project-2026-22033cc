@@ -42,6 +42,7 @@ import { op_writingValue,op_checkProfile, op_checkStats
 let fb_Db = sessionStorage.getItem("FBDB");
 let userUid = sessionStorage.getItem("UID");
 
+
 let userProfile = await op_checkProfile(userUid);
 let userStats = await op_checkStats(userUid,game[0]);
 console.log(userStats);

@@ -36,6 +36,16 @@ import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signO
 import { ref, set, get, update, query, orderByChild, limitToFirst }
     from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 /**************************************************************/
+// Import functions from op.mjs
+// /**************************************************************/
+import { op_loginCheck
+ }
+    from './ops.mjs';
+
+    window.op_loginCheck = op_loginCheck;
+
+
+/**************************************************************/
 // EXPORT FUNCTIONS
 // List all the functions called by code or html outside of this module
 /**************************************************************/
@@ -65,7 +75,7 @@ function fb_initialise() {
     const FB_GAMEAPP = initializeApp(FB_GAMECONFIG);
     fb_Db= getDatabase(FB_GAMEAPP);
     console.info(fb_Db); 
-    sessionStorage.setItem("fBDB",fb_Db);        	
+    sessionStorage.setItem("FBDB",fb_Db);        	
 
 }
 
@@ -75,9 +85,8 @@ function fb_initialise() {
 //
  ****************************************************************/
 async function fb_authenticate() {
-    console.log('%c authenticate():',
-        'color:' + COL_C +
-        'background-color:' + COL_B + ';');
+    console.log('%c authenticate running ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     const AUTH = getAuth(); 
     const PROVIDER = new GoogleAuthProvider();
     PROVIDER.setCustomParameters({
@@ -116,6 +125,7 @@ async function fb_authenticate() {
                 
            // Save data to sessionStorage
             sessionStorage.setItem("UID",userUid);
+            sessionStorage.setItem("firstLanding",false);
             window.location.assign("/menu.html")
             }
         
@@ -127,9 +137,17 @@ async function fb_authenticate() {
 // 
 //
  ****************************************************************/
-function fb_logOut() {
-console.log('%c fb_authenticate ',
+async function fb_logOut() {
+console.log('%c fb_logOut ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    const AUTH = getAuth();
+    signOut(AUTH).then(() => {
+        console.log("successfully signed out");
+    })
+    .catch((error) => {
+        console.log("NOT LOGGED OUT");
+        console.log(error)
+    });
 }
 
 /***************************************************************
@@ -237,11 +255,11 @@ async function fb_read_sorted(){
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     //console log all values (remove later)
 
-    let userForm = ["userName","userAge",,"userMovie"];
+    let userForm = ["userName","userAge","userMovie"];
     let userFormReply =["Name","Age","Movie"];
-    for (let i=0; i<6; i++){
+    for (let i=0; i<3; i++){
         console.log(i);
-        console.log((document.getElementById(userForm[i]).value));
+        //console.log((document.getElementById(userForm[i]).value));
         console.log(document.getElementById(userForm[i]).value);
         if (document.getElementById(userForm[i]).value == null||document.getElementById(userForm[i]).value == ""||document.getElementById(userForm[i]).value == undefined){
             console.log("nothing in this one")
@@ -249,17 +267,22 @@ async function fb_read_sorted(){
             return
         };
     }
+    console.log("finished checking strings");
     //get all values from the site into variables
     let userName = document.getElementById('userName').value;
+    console.log("username"+userName);
     let userAge = document.getElementById("userAge").value;
+    console.log("userage"+userAge);
     let userCol = document.getElementById("userCol").value;
+    console.log("usercol"+userCol);
     let userMovie = document.getElementById("userMovie").value;
-    let userHand = document.getElementById("userhandedness").value;
+    console.log("usermovie"+userMovie);
+    let userHand = document.getElementById("userHand").value;
+    console.log("userhandedness"+userHand);
     let userShape = document.getElementById("userShape").value;
+    console.log("usershape"+userShape);
     
-    console.log(userName+"is the chosen username")
     if (userName == null){
-        console.log("balls")
         console.log(userName)
     }
 
@@ -309,20 +332,36 @@ console.log('%c Fb_detectLoginChange ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     const AUTH = getAuth();
 
+    console.log("setting up login listener...")
+    let currentPage = window.location.pathname;
+                console.log(currentPage);
     onAuthStateChanged(AUTH,(user) => {
         if (user) {
             // user is logged in
             let userUid = user.uid;
-            console.log(userUid);
+            console.log(userUid+"uid taken!");
             console.log("users is currently logged in");
-            alert("You are logged in ");
+            let firstLanding = sessionStorage.getItem("firstLanding")
+            console.log(firstLanding);
+            if (firstLanding == null){
+                
+                if (currentPage == "/" ){
+                    console.log("on Index.html");
+                    op_loginCheck(userUid);
+                }else{
+                    sessionStorage.setItem("UID",user.uid);
+                    window.location.assign("/");
+                    op_loginCheck(userUid);
+                }
+            }
+            
         } else {
             //user not logged in
             console.log("users is currently not logged in");
-            alert("you are not signed in. Please log in");
-            alert("redirecting to log in page...");
-            sessionStorage.setItem("UID",user.uid);
-            window.location.assign("/index.html");
+
+            if (currentPage != "/"){
+            window.location.assign("/");
+            }
     
         }
     }, (error) =>{

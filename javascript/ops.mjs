@@ -36,7 +36,7 @@ import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeR
 // List all the functions called by code or html outside of this module
 /**************************************************************/
 export {
-    op_writingValue, op_checkProfile, op_checkStats
+    op_writingValue, op_checkProfile, op_checkStats,op_loginCheck
 };
 
     function op_writingValue(){
@@ -55,7 +55,7 @@ async function op_checkProfile(_UID){
     console.log('%c op_checkProfile running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     //check
-    let profile = await fb_readAll("playerStatsUNI/"+_UID+"/","display_name")
+    let profile = await fb_readAll("playerStatsUNI/"+_UID+"/")
     console.log(profile);
     console.log(profile.display_name);;
     return profile;
@@ -71,5 +71,47 @@ async function op_checkStats(_UID,_GAME){
     return profile;
 }
 
+async function op_loginCheck(_UID){
+    console.log('%c op_loginCheck running ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    console.log(_UID);
+    let userName = await fb_readRecord("playerStatsUNI/"+_UID+"/","display_name");
+    console.log("user Name:"+userName);
+    
+// create title 
+let loginContinue = document.createElement('p');
+loginContinue.innerHTML = "you are currently signed in as "+userName+", would you like to continue with this account?";
+document.getElementById("userCom").appendChild(loginContinue);
 
+//create button to continue with accound
+let loginChoiceYes =document.createElement('button');
+loginChoiceYes.class = "Button";
+loginChoiceYes.onclick = function op_signInYes(){
+    console.log('%c op_signInYes running ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
 
+           // Save data to sessionStorage
+            sessionStorage.setItem("UID",_UID);
+            sessionStorage.setItem("firstLanding",false);
+            window.location.assign("/menu.html")
+}
+loginChoiceYes.innerHTML = "yes!"
+document.getElementById("userCom").appendChild(loginChoiceYes);
+
+// create button to sign out
+let loginChoiceNo = document.createElement('button')
+loginChoiceNo.class = "Button";
+loginChoiceNo.onclick = function op_signInNo(){
+    console.log('%c op_signInNo running ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    fb_logOut();
+    console.log("logged outt");
+    let loggedOut = document.createElement('p');
+    loggedOut.innerHTML = "you have been logged out of "+ userName;
+    document.getElementById("userCom").appendChild(loggedOut);
+    
+}
+loginChoiceNo.innerHTML = "No"
+document.getElementById("userCom").appendChild(loginChoiceNo);
+
+}

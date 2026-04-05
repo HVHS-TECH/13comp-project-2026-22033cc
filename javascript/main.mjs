@@ -32,28 +32,33 @@ import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeR
     window.fb_createAccount = fb_createAccount;
     window.returnUserUid = returnUserUid;
 //Import all functions required from ops.mjs
-import { op_writingValue,op_checkProfile
+import { op_writingValue,op_checkProfile,op_loginCheck
  }
     from './ops.mjs';
-    
 
-console.log("hello");
+    window.op_writingValue = op_writingValue;
+    window.op_checkProfile = op_checkProfile;
+    window.op_loginCheck = op_loginCheck;
+
+
+
+
 fb_initialise();
 let fb_Db = sessionStorage.getItem("FBDB");
 console.log(fb_Db);
 let userUid = sessionStorage.getItem("UID");
-console.log(userUid);
-
-
+    console.log(userUid);
 
 let currentPage = window.location.href;
 console.log(currentPage);
+fb_detectLoginChange();
 
-if (currentPage == "http://127.0.0.1:5500/"){
-    console.log("on index.html")
+
+
+/*if (currentPage == "http://127.0.0.1:5500/"||currentPage == "https://hvhs-tech.github.io/13comp-project-2026-22033cc/"){
+    console.log("on index.html");
 }else{
     console.log("not on index.html");
-     fb_detectLoginChange();
-    
-}
-
+    let userUid = sessionStorage.getItem("UID");
+    console.log("UID out yet?"+userUid);     
+}*/
