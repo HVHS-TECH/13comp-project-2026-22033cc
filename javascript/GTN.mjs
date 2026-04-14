@@ -41,7 +41,6 @@ import { op_writingValue,op_checkProfile, op_checkStats
 
 let fb_Db = sessionStorage.getItem("FBDB");
 let userUid = sessionStorage.getItem("UID");
-
 let userProfile = await op_checkProfile(userUid);
 let userStats = await op_checkStats(userUid,game);
 console.log(userStats.wins);
@@ -61,9 +60,9 @@ document.getElementById("userProfileLosses").innerHTML = "Losses: "+userStats.lo
 document.getElementById("userProfileStreak1").innerHTML = "Current win streak: "+userStats.winStreakCurrent
 document.getElementById("userProfileStreak2").innerHTML = "Longest win streak: "+userStats.winStreakLong
 
-
-
-
-
-
-
+function GTN_createLobby(_UID,GAME){
+    console.log('%c GTN_createLobby ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+                console.log("uid"+_UID);
+                console.log("game"+GAME);
+}

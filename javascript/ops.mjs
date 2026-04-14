@@ -36,7 +36,7 @@ import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeR
 // List all the functions called by code or html outside of this module
 /**************************************************************/
 export {
-    op_writingValue, op_checkProfile, op_checkStats,op_loginCheck
+    op_writingValue, op_checkProfile, op_checkStats,op_loginCheck,op_createLobby
 };
 
     function op_writingValue(){
@@ -114,4 +114,11 @@ loginChoiceNo.onclick = function op_signInNo(){
 loginChoiceNo.innerHTML = "No"
 document.getElementById("userCom").appendChild(loginChoiceNo);
 
+}
+
+function op_createLobby(_UID,_GAME){
+    console.log('%c createLobby running ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+                console.log("uid"+_UID);
+                console.log("game"+_GAME);
 }

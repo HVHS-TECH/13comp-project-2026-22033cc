@@ -109,14 +109,13 @@ async function fb_authenticate() {
         //see if they have logged in before:
         
         let resultName = await fb_readRecord("playerStatsUNI/"+userUid+"/","display_name");
-        console.log
         console.log("their first name is "+resultName);
-        userName = resultName;
-        console.log(userName);
-            //if they haven't, make them choose username
-            if (userName == null){              
+        console.log(resultName);
+            //if they haven't, make them choose usernamed
+            if (resultName == null){              
                 document.getElementById("playertalk").innerHTML = "Seems like you haven't made an account yet, "
                 document.getElementById("form").style = "display: inline-block"
+                sessionStorage.setItem("accountAvailable",false);
             } else{    
             //display game links and such no that they are logged in 
             // the website redirects to menu page.
@@ -126,7 +125,8 @@ async function fb_authenticate() {
            // Save data to sessionStorage
             sessionStorage.setItem("UID",userUid);
             sessionStorage.setItem("firstLanding",false);
-            window.location.assign("/menu.html")
+            window.location.assign("/menu.html");
+            sessionStorage.setItem("accountAvailable",true);
             }
         
 
@@ -316,6 +316,7 @@ async function fb_read_sorted(){
     document.getElementById("playertalk").innerHTML = "account successfully created! redirecting to menu..."
     //redirecting to menu....
     sessionStorage.setItem("UID",userUid);
+    sessionStorage.setItem("accountAvailable",true);
     window.location.assign("/menu.html")
             
 
@@ -339,21 +340,24 @@ console.log('%c Fb_detectLoginChange ',
         if (user) {
             // user is logged in
             let userUid = user.uid;
-            console.log(userUid+"uid taken!");
             console.log("users is currently logged in");
-            let firstLanding = sessionStorage.getItem("firstLanding")
-            console.log(firstLanding);
-            if (firstLanding == null){
-                
-                if (currentPage == "/" ){
-                    console.log("on Index.html");
-                    op_loginCheck(userUid);
-                }else{
-                    sessionStorage.setItem("UID",user.uid);
-                    window.location.assign("/");
-                    op_loginCheck(userUid);
+            let firstLanding = sessionStorage.getItem("firstLanding");
+            let accountAvailable = sessionStorage.getItem("accountAvailable");
+            console.log(accountAvailable);
+            if (accountAvailable == true|accountAvailable == null){
+                console.log(firstLanding);
+                if (firstLanding == null){
+                    
+                    if (currentPage == "/" ){
+                        console.log("on Index.html");
+                        op_loginCheck(userUid);
+                    }else{
+                        sessionStorage.setItem("UID",user.uid);
+                        window.location.assign("/");
+                        op_loginCheck(userUid);
+                    }
                 }
-            }
+        }
             
         } else {
             //user not logged in
