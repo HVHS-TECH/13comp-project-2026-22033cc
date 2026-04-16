@@ -161,7 +161,6 @@ console.log('%c fb_logOut ',
         '; background-color: ' + COL_B + ';');
         console.log(_path);
         console.log(_data);
-        
         const REF = ref(fb_Db,_path);
         set(REF,_data).then(() => {
             console.log('%c writing successful',
@@ -323,8 +322,8 @@ async function fb_read_sorted(){
 }
 
 /***************************************************************
-// function fb_readRecord()
-//
+// function fb_detectLoginChange()
+// 
 //
  ****************************************************************/
 

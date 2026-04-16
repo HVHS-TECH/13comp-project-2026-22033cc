@@ -117,8 +117,18 @@ document.getElementById("userCom").appendChild(loginChoiceNo);
 }
 
 function op_createLobby(_UID,_GAME){
-    console.log('%c createLobby running ',
+    console.log('%c op_createLobby running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
                 console.log("uid"+_UID);
                 console.log("game"+_GAME);
-}
+        
+                const LOBBY_SETUP = {
+                    uid:0,
+                    ranNum:0,
+                    round:0,
+
+
+                }
+                const LOBBY_PATH = "/lobbie"+_GAME+"/"+_UID
+                fb_writeRecord(LOBBY_PATH,LOBBY_SETUP);
+           }

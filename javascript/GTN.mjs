@@ -32,7 +32,7 @@ import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeR
     window.fb_createAccount = fb_createAccount;
     window.returnUserUid = returnUserUid;
 //Import all functions required from ops.mjs
-import { op_writingValue,op_checkProfile, op_checkStats
+import { op_writingValue,op_checkProfile, op_checkStats, op_createLobby
  }
     from './ops.mjs';
     window.op_writingValue = op_writingValue;
@@ -59,10 +59,16 @@ document.getElementById("userProfileWins").innerHTML = "Wins: "+userStats.wins
 document.getElementById("userProfileLosses").innerHTML = "Losses: "+userStats.losses
 document.getElementById("userProfileStreak1").innerHTML = "Current win streak: "+userStats.winStreakCurrent
 document.getElementById("userProfileStreak2").innerHTML = "Longest win streak: "+userStats.winStreakLong
-
-function GTN_createLobby(_UID,GAME){
+/***************************************************************
+// function GTN_createLobby()
+// runs op_createLobby while passing through the correct parameters
+// called on GTN.html when create lobby is pressed
+ ****************************************************************/
+function GTN_createLobby(){
     console.log('%c GTN_createLobby ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-                console.log("uid"+_UID);
-                console.log("game"+GAME);
+                console.log("uid"+ userUid);
+                console.log("game"+game);
+                op_createLobby(userUid, game);
 }
+window.GTN_createLobby = GTN_createLobby;
