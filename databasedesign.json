@@ -1,0 +1,22 @@
+{
+  "admins": {
+    "userUid1": true,
+    "userUid2": false,
+    "userUid3": false
+  },
+  "lobbiesGTN": {
+    "userUid1": {
+      "userUid1": {
+        "guess": 0,
+        "score": 0,
+        "guessed":false
+      },
+      "userUid2": {
+        "guess": 0,
+        "score": 0,
+        "guessed":false
+      },
+      "randomNum": 0,
+      "round":0,
+    },
+ 

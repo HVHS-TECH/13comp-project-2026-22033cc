@@ -123,12 +123,14 @@ function op_createLobby(_UID,_GAME){
                 console.log("game"+_GAME);
         
                 const LOBBY_SETUP = {
-                    uid:0,
-                    ranNum:0,
+                    [_UID]:{
+                        guess:0,
+                        score:0
+                    },
+                    randomNum:0,
                     round:0,
-
-
+                    score:0
                 }
-                const LOBBY_PATH = "/lobbie"+_GAME+"/"+_UID
+                const LOBBY_PATH = "/lobbies"+_GAME+"/"+_UID
                 fb_writeRecord(LOBBY_PATH,LOBBY_SETUP);
            }

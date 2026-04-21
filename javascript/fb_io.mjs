@@ -345,8 +345,9 @@ console.log('%c Fb_detectLoginChange ',
             console.log(accountAvailable);
             if (accountAvailable == true|accountAvailable == null){
                 console.log(firstLanding);
+                console.log("ACCOUNT AVAIBLABE IS TRUE OR NULL")                
                 if (firstLanding == null){
-                    
+                    console.log("ACCOUNT AVAIlablie is Null")
                     if (currentPage == "/" ){
                         console.log("on Index.html");
                         op_loginCheck(userUid);
