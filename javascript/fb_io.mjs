@@ -125,8 +125,9 @@ async function fb_authenticate() {
            // Save data to sessionStorage
             sessionStorage.setItem("UID",userUid);
             sessionStorage.setItem("firstLanding",false);
-            window.location.assign("/menu.html");
+            sessionStorage.setItem("userName",userName);
             sessionStorage.setItem("accountAvailable",true);
+            window.location.assign("/menu.html");
             }
         
 

@@ -59,6 +59,9 @@ document.getElementById("userProfileWins").innerHTML = "Wins: "+userStats.wins
 document.getElementById("userProfileLosses").innerHTML = "Losses: "+userStats.losses
 document.getElementById("userProfileStreak1").innerHTML = "Current win streak: "+userStats.winStreakCurrent
 document.getElementById("userProfileStreak2").innerHTML = "Longest win streak: "+userStats.winStreakLong
+
+// create buttons to join lobby
+
 /***************************************************************
 // function GTN_createLobby()
 // runs op_createLobby while passing through the correct parameters

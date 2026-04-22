@@ -93,7 +93,8 @@ loginChoiceYes.onclick = function op_signInYes(){
            // Save data to sessionStorage
             sessionStorage.setItem("UID",_UID);
             sessionStorage.setItem("firstLanding",false);
-            window.location.assign("/menu.html")
+            sessionStorage.setItem("userName",userName);
+            window.location.assign("/menu.html");
 }
 loginChoiceYes.innerHTML = "yes!"
 document.getElementById("userCom").appendChild(loginChoiceYes);
@@ -105,7 +106,7 @@ loginChoiceNo.onclick = function op_signInNo(){
     console.log('%c op_signInNo running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     fb_logOut();
-    console.log("logged outt");
+    console.log("logged out");
     let loggedOut = document.createElement('p');
     loggedOut.innerHTML = "you have been logged out of "+ userName;
     document.getElementById("userCom").appendChild(loggedOut);
@@ -116,20 +117,24 @@ document.getElementById("userCom").appendChild(loginChoiceNo);
 
 }
 
-function op_createLobby(_UID,_GAME){
+async function op_createLobby(_UID,_GAME){
     console.log('%c op_createLobby running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
                 console.log("uid"+_UID);
                 console.log("game"+_GAME);
+                let userName = sessionStorage.getItem("userName");
+                console.log(userName);
         
                 const LOBBY_SETUP = {
                     [_UID]:{
+                        userName:userName,
                         guess:0,
                         score:0
                     },
                     randomNum:0,
                     round:0,
                     score:0
+
                 }
                 const LOBBY_PATH = "/lobbies"+_GAME+"/"+_UID
                 fb_writeRecord(LOBBY_PATH,LOBBY_SETUP);
