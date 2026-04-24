@@ -94,7 +94,7 @@ loginChoiceYes.onclick = function op_signInYes(){
             sessionStorage.setItem("UID",_UID);
             sessionStorage.setItem("firstLanding",false);
             sessionStorage.setItem("userName",userName);
-            window.location.assign("/menu.html");
+            window.location.assign("./menu.html");
 }
 loginChoiceYes.innerHTML = "yes!"
 document.getElementById("userCom").appendChild(loginChoiceYes);
