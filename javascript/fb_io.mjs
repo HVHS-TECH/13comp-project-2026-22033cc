@@ -349,12 +349,12 @@ console.log('%c Fb_detectLoginChange ',
                 console.log("ACCOUNT AVAIBLABE IS TRUE OR NULL")                
                 if (firstLanding == null){
                     console.log("ACCOUNT AVAIlablie is Null")
-                    if (currentPage == "../" ){
+                    if (currentPage == "./" ){
                         console.log("on Index.html");
                         op_loginCheck(userUid);
                     }else{
                         sessionStorage.setItem("UID",user.uid);
-                        window.location.assign("../");
+                        window.location.assign("./");
                         op_loginCheck(userUid);
                     }
                 }
@@ -364,9 +364,9 @@ console.log('%c Fb_detectLoginChange ',
             //user not logged in
             console.log("users is currently not logged in");
 
-            if (currentPage != "../"){
+            if (currentPage != "./"){
                 console.log("time to reload...")
-                window.location.assign("../");
+                window.location.assign("./");
             }
     
         }
