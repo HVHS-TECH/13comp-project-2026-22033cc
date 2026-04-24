@@ -365,7 +365,8 @@ console.log('%c Fb_detectLoginChange ',
             console.log("users is currently not logged in");
 
             if (currentPage != "../"){
-            window.location.assign("../");
+                console.log("time to reload...")
+                window.location.assign("../");
             }
     
         }
