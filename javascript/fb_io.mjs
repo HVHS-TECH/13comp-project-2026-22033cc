@@ -335,6 +335,7 @@ console.log('%c Fb_detectLoginChange ',
 
     console.log("setting up login listener...")
     let currentPage = window.location.pathname;
+
                 console.log(currentPage);
     onAuthStateChanged(AUTH,(user) => {
         if (user) {
@@ -349,14 +350,23 @@ console.log('%c Fb_detectLoginChange ',
                 console.log("ACCOUNT AVAIBLABE IS TRUE OR NULL")                
                 if (firstLanding == null){
                     console.log("ACCOUNT AVAIlablie is Null")
-                    if (currentPage == "./" ){
+
+                    if (document.URL.includes("index.html")){
                         console.log("on Index.html");
                         op_loginCheck(userUid);
                     }else{
-                        sessionStorage.setItem("UID",user.uid);
-                        window.location.assign("./");
-                        op_loginCheck(userUid);
+                     console.log("setting to index.html")
+                         sessionStorage.setItem("UID",user.uid);
+                        window.location.assign("index.html");   
                     }
+                    // if (currentPage == "./" ){
+                    //     console.log("on Index.html");
+                    //     op_loginCheck(userUid);
+                    // }else{
+                    //     console.log("setting to ./")
+                    //     sessionStorage.setItem("UID",user.uid);
+                    //     window.location.assign("../");
+                    // }
                 }
         }
             
@@ -366,7 +376,7 @@ console.log('%c Fb_detectLoginChange ',
 
             if (currentPage != "./"){
                 console.log("time to reload...")
-                window.location.assign("./");
+                window.location.assign("/");
             }
     
         }
