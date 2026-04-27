@@ -38,6 +38,7 @@ import { op_writingValue,op_checkProfile, op_checkStats, op_createLobby
     window.op_writingValue = op_writingValue;
     window.op_checkProfile = op_checkProfile;
     window.op_checkStats = op_checkStats;
+    window.op_createLobby = op_createLobby;
 
 let fb_Db = sessionStorage.getItem("FBDB");
 let userUid = sessionStorage.getItem("UID");
@@ -67,11 +68,19 @@ document.getElementById("userProfileStreak2").innerHTML = "Longest win streak: "
 // runs op_createLobby while passing through the correct parameters
 // called on GTN.html when create lobby is pressed
  ****************************************************************/
-function GTN_createLobby(){
-    console.log('%c GTN_createLobby ',
-                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-                console.log("uid"+ userUid);
-                console.log("game"+game);
-                op_createLobby(userUid, game);
-}
-window.GTN_createLobby = GTN_createLobby;
+let buttonCreateLobby = document.createElement('button');
+    loginContinue.innerHTML = createLobby;
+    loginChoiceYes.onclick = op_createLobby(userUid,game);
+    document.getElementById("buttonLobby").appendChild(buttonCreateLobby);
+
+// function GTN_createLobby(){
+//     console.log('%c GTN_createLobby ',
+//                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+//                 console.log("uid"+ userUid);
+//                 console.log("game"+game);
+//                 op_createLobby(userUid, game);
+// }
+
+// window.GTN_createLobby = GTN_createLobby;
+
+

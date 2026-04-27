@@ -32,10 +32,9 @@ import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeR
     window.fb_createAccount = fb_createAccount;
     window.returnUserUid = returnUserUid;
 //Import all functions required from ops.mjs
-import { op_writingValue,op_checkProfile, op_checkStats
+import { op_checkProfile, op_checkStats
  }
     from './ops.mjs';
-    window.op_writingValue = op_writingValue;
     window.op_checkProfile = op_checkProfile;
     window.op_checkStats = op_checkStats;
 

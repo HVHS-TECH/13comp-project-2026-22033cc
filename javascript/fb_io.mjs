@@ -359,14 +359,7 @@ console.log('%c Fb_detectLoginChange ',
                          sessionStorage.setItem("UID",user.uid);
                         window.location.assign("index.html");   
                     }
-                    // if (currentPage == "./" ){
-                    //     console.log("on Index.html");
-                    //     op_loginCheck(userUid);
-                    // }else{
-                    //     console.log("setting to ./")
-                    //     sessionStorage.setItem("UID",user.uid);
-                    //     window.location.assign("../");
-                    // }
+            
                 }
         }
             

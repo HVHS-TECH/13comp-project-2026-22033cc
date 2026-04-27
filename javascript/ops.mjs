@@ -36,21 +36,14 @@ import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeR
 // List all the functions called by code or html outside of this module
 /**************************************************************/
 export {
-    op_writingValue, op_checkProfile, op_checkStats,op_loginCheck,op_createLobby
+     op_checkProfile, op_checkStats,op_loginCheck,op_createLobby
 };
 
-    function op_writingValue(){
-    console.log("start converting");
-    var write1 = document.getElementById("inputDatabase").value;
-    var userUid = returnUserUid();
-    console.log(userUid);
-    var path = "user_Data/"+userUid+"/messages"
-    console.log(path);
-    console.log(write1);
-    fb_writeRecord(write1,path);
-}
-
-
+/***************************************************************
+// function op_checkProfile(_UID)
+// called when users stats need to be seen to create profile.
+// uses read all on all the users general information, and return it. 
+ ****************************************************************/
 async function op_checkProfile(_UID){
     console.log('%c op_checkProfile running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
@@ -60,7 +53,11 @@ async function op_checkProfile(_UID){
     console.log(profile.display_name);;
     return profile;
 }
-
+/***************************************************************
+// function op_checkStats(_UID,_GAME)
+// called when a certain games stats need to be called
+// reads all of the users stats on a certain game and returns it.
+ ****************************************************************/
 async function op_checkStats(_UID,_GAME){
     console.log('%c op_checkStats running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
@@ -70,7 +67,11 @@ async function op_checkStats(_UID,_GAME){
     console.log(profile.display_name);;
     return profile;
 }
-
+/***************************************************************
+// function op_loginCheck(_UID)
+// called if a user is already logged into the site from a previous visit
+//  asks the user if they whwant to continue with the account they were previously logged intto
+ ****************************************************************/
 async function op_loginCheck(_UID){
     console.log('%c op_loginCheck running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
@@ -116,7 +117,11 @@ loginChoiceNo.innerHTML = "No"
 document.getElementById("userCom").appendChild(loginChoiceNo);
 
 }
-
+/***************************************************************
+// function op_loginCheck(_UID)
+// called when user clicks "create lobby"
+//  creates a new branch under the users UID with the set up for a lobby.
+ ****************************************************************/
 async function op_createLobby(_UID,_GAME){
     console.log('%c op_createLobby running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
@@ -133,9 +138,24 @@ async function op_createLobby(_UID,_GAME){
                     },
                     randomNum:0,
                     round:0,
-                    score:0
+                    score:0,
 
                 }
-                const LOBBY_PATH = "/lobbies"+_GAME+"/"+_UID
+                const LOBBY_PATH = "/lobbies/"+_GAME+"/"+_UID
                 fb_writeRecord(LOBBY_PATH,LOBBY_SETUP);
+                op_createGTNScreen(userName);
            }
+/***************************************************************
+// function op_createGTNScreen(_UID)
+// called when user clicks "create lobby"
+//  creates a new branch under the users UID with the set up for a lobby.
+ ****************************************************************/    
+async function op_createGTNScreen(_NAME){
+    console.log('%c op)_createGTNScreen running ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    let userTitle = document.createElement('h3');
+    loginContinue.innerHTML = _NAME;
+    document.getElementById("userCom").appendChild(loginContinue);
+
+    
+}

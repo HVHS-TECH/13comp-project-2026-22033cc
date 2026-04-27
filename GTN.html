@@ -5,14 +5,14 @@
     <!--style sheets-->
     <link rel="stylesheet" href="./stylesheets/style.css">
     <link rel="stylesheet" href="./stylesheets/menustyle.css">
-
+    <script type="module" src="./javascript/main.mjs"></script>
+    <script type="module" src="./javascript/profile.mjs"></script>
+    <script type="module" src="./javascript/GTN.mjs"></script>
 </head>
 
 <body>
 <h1> wel wel wel welcome to GTN</h1>
-<script type="module" src="./javascript/main.mjs"></script>
-<script type="module" src="./javascript/profile.mjs"></script>
-<script type="module" src="./javascript/GTN.mjs"></script>
+
 <h1>this is your profile</h1>
 <div id="navBar"> 
      <a href="./profile.html">Your profile</a> 
@@ -36,10 +36,18 @@
         by correctly guessing the number, or being the closest to it gives you a point. First to 3 points win!
         to create a lobby, press the button bellow!
     </p>
-    <button class="Button" onclick="GTN_createLobby()" >Create Lobby</button>
+    <div id="buttonLobby"></div>
+    <!--<button class="Button" onclick="GTN_createLobby()" >Create Lobby</button>-->
 </div>
 <!-- lobbies here -->
 <h2> join a lobby</h2>
-<div id="userProfile"></div>
+<div id="gameScreen">
+    <div id="playerScreen">
+
+    </div>
+    <div id="opponentScreen">
+    
+    </div>
+</div>
 </body> 
 </html>
