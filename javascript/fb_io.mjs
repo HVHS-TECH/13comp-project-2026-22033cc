@@ -127,7 +127,7 @@ async function fb_authenticate() {
             sessionStorage.setItem("firstLanding",false);
             sessionStorage.setItem("userName",userName);
             sessionStorage.setItem("accountAvailable",true);
-            window.location.assign("/menu.html");
+            window.location.assign("menu.html");
             }
         
 
@@ -317,7 +317,7 @@ async function fb_read_sorted(){
     //redirecting to menu....
     sessionStorage.setItem("UID",userUid);
     sessionStorage.setItem("accountAvailable",true);
-    window.location.assign("/menu.html")
+    window.location.assign("index.html");
             
 
 }
