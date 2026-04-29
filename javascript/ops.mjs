@@ -153,9 +153,9 @@ async function op_createLobby(_UID,_GAME){
 async function op_createGTNScreen(_NAME){
     console.log('%c op)_createGTNScreen running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-    let userTitle = document.createElement('h3');
-    loginContinue.innerHTML = _NAME;
-    document.getElementById("userCom").appendChild(loginContinue);
-
-    
+        let buttonCreateLobby = document.createElement('button');
+        buttonCreateLobby.innerHTML = "creating lobby";
+        buttonCreateLobby.onclick = () => op_createLobby(userUid,game);
+        document.getElementById("buttonLobby").appendChild(buttonCreateLobby);
+        console.log("button fullly created.");
 }

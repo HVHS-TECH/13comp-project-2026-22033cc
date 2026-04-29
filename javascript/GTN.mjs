@@ -32,10 +32,9 @@ import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeR
     window.fb_createAccount = fb_createAccount;
     window.returnUserUid = returnUserUid;
 //Import all functions required from ops.mjs
-import { op_writingValue,op_checkProfile, op_checkStats, op_createLobby
+import { op_checkProfile, op_checkStats, op_createLobby
  }
     from './ops.mjs';
-    window.op_writingValue = op_writingValue;
     window.op_checkProfile = op_checkProfile;
     window.op_checkStats = op_checkStats;
     window.op_createLobby = op_createLobby;
@@ -63,24 +62,10 @@ document.getElementById("userProfileStreak2").innerHTML = "Longest win streak: "
 
 // create buttons to join lobby
 
-/***************************************************************
-// function GTN_createLobby()
-// runs op_createLobby while passing through the correct parameters
-// called on GTN.html when create lobby is pressed
- ****************************************************************/
-let buttonCreateLobby = document.createElement('button');
-    loginContinue.innerHTML = createLobby;
-    loginChoiceYes.onclick = op_createLobby(userUid,game);
+    let buttonCreateLobby = document.createElement('button');
+    buttonCreateLobby.innerHTML = "creating lobby";
+    buttonCreateLobby.onclick = () => op_createLobby(userUid,game);
     document.getElementById("buttonLobby").appendChild(buttonCreateLobby);
+    console.log("button fullly created.");
 
-// function GTN_createLobby(){
-//     console.log('%c GTN_createLobby ',
-//                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-//                 console.log("uid"+ userUid);
-//                 console.log("game"+game);
-//                 op_createLobby(userUid, game);
-// }
-
-// window.GTN_createLobby = GTN_createLobby;
-
-
+    

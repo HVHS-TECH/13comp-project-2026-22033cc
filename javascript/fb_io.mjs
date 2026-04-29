@@ -302,6 +302,7 @@ async function fb_read_sorted(){
                 fav_movie:userMovie,
                 handedness:userHand,
                 shape:userShape,
+                isadmin:false,
             })
             //create nodes for playerstatsGTN
             fb_writeRecord("/playerStatsGTN/"+userUid,{
