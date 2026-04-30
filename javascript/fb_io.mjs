@@ -51,7 +51,7 @@ import { op_loginCheck
 /**************************************************************/
 export {
     fb_initialise, fb_authenticate, fb_detectLoginChange, fb_logOut, fb_writeRecord, fb_readRecord,
-    fb_readAll, fb_updateRecord, fb_read_sorted,fb_createAccount,returnUserUid
+    fb_readAll, fb_updateRecord, fb_read_sorted,fb_createAccount,returnUserUid, fb_killRecord
 };
 
 
@@ -231,9 +231,25 @@ async function fb_readAll(_path) {
 //
 //
  ****************************************************************/
-async function fb_updateRecord() {
-    
-}
+function fb_updateRecord(_path,_data){
+        console.log('%c fb_updateRecord ',
+        'color: ' + COL_C +
+        '; background-color: ' + COL_B + ';');
+        console.log(_path);
+        console.log(_data);
+        const REF = ref(fb_Db,_path);
+        update(REF,_data).then(() => {
+            console.log('%c writing successful',
+                'color: ' + COL_C +
+                '; background-color: ' + COL_B + ';');
+        })
+            .catch((error) => {
+                console.log(error);
+                console.log('%c something went wrong! ',
+                    'color: ' + COL_C +
+                    '; background-color: ' + COL_B + ';');
+        })
+    }
 /****************************************************************
  // function fb_read_sorted()
  //
@@ -242,6 +258,16 @@ async function fb_updateRecord() {
 
 async function fb_read_sorted(){
     console.log('%c read sorted ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+ }
+/****************************************************************
+ // function fb_read_sorted()
+ //
+ //
+ ****************************************************************/
+
+async function fb_killRecord(){
+    console.log('%c killRecord ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
  }
 

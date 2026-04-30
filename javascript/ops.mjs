@@ -143,8 +143,23 @@ async function op_createLobby(_UID,_GAME){
                 }
                 const LOBBY_PATH = "/lobbies/"+_GAME+"/"+_UID
                 fb_writeRecord(LOBBY_PATH,LOBBY_SETUP);
-                op_createGTNScreen(userName);
-           }
+                if (_GAME == "GTN"){
+                    op_createGTNScreen(userName);
+                }
+           
+    }
+/***************************************************************
+// function op_killLobby(_UID)
+// called when lobby host presses "remove lobby" OR the tab is deleted
+// deletes branch under them.
+ ****************************************************************/    
+async function op_killLobby(){
+    console.log('%c op)_createGTNScreen running ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    fb_updateRecord()
+    
+
+}
 /***************************************************************
 // function op_createGTNScreen(_UID)
 // called when user clicks "create lobby"
@@ -153,9 +168,13 @@ async function op_createLobby(_UID,_GAME){
 async function op_createGTNScreen(_NAME){
     console.log('%c op)_createGTNScreen running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-        let buttonCreateLobby = document.createElement('button');
-        buttonCreateLobby.innerHTML = "creating lobby";
-        buttonCreateLobby.onclick = () => op_createLobby(userUid,game);
-        document.getElementById("buttonLobby").appendChild(buttonCreateLobby);
+
+
+        //create header and 
+
+        let buttonGuess = document.createElement('button');
+        buttonGuess.innerHTML = "";
+        buttonGuess.onclick = () => op_createLobby(userUid,game);
+        document.getElementById("playerScreen").appendChild(buttonGuess);
         console.log("button fullly created.");
 }
