@@ -368,7 +368,6 @@ console.log('%c Fb_detectLoginChange ',
         if (user) {
             // user is logged in
             let userUid = user.uid;
-            console.log("users is currently logged in");
             let firstLanding = sessionStorage.getItem("firstLanding");
             let accountAvailable = sessionStorage.getItem("accountAvailable");
             console.log(accountAvailable);
