@@ -178,3 +178,9 @@ async function op_createGTNScreen(_NAME){
         document.getElementById("playerScreen").appendChild(buttonGuess);
         console.log("button fullly created.");
 }
+
+async function op_readOpenLobbies(_GAME,){
+    const LOBBIES = fb_readRecord("lobbies/",_GAME);
+     Object.entries(LOBBIES)
+
+}
