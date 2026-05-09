@@ -36,7 +36,7 @@ import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeR
 // List all the functions called by code or html outside of this module
 /**************************************************************/
 export {
-     op_checkProfile, op_checkStats,op_loginCheck,op_createLobby
+     op_checkProfile, op_checkStats,op_loginCheck,op_createLobby,op_readOpenLobbies
 };
 
 /***************************************************************
@@ -132,11 +132,13 @@ async function op_createLobby(_UID,_GAME){
         
                 const LOBBY_SETUP = {
                     [_UID]:{
-                        userName:userName,
+                        p1_name:userName,
                         guess:0,
                         score:0
                     },
-                    randomNum:0,
+                    lobby_open:true,
+                    display_name:userName,
+                    random_Num:0,
                     round:0,
                     score:0,
 
@@ -178,9 +180,23 @@ async function op_createGTNScreen(_NAME){
         document.getElementById("playerScreen").appendChild(buttonGuess);
         console.log("button fullly created.");
 }
+/***************************************************************
+// function op_readOpenLobbies(_GAME)
+// called when user lands on a game HTML page 
+// checks what lobbies are open for that game, for buttons to be created for it.
+ ****************************************************************/    
+async function op_readOpenLobbies(_GAME,_CALLBACK){
+    console.log('%c op_readOpenLobbies_running ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';')
+    
+    // read all of the lobbies within the chosen game
+    const LOBBIES = await fb_readRecord("lobbies/",_GAME);
 
-async function op_readOpenLobbies(_GAME,){
-    const LOBBIES = fb_readRecord("lobbies/",_GAME);
-     Object.entries(LOBBIES)
-
+    const OPEN_LOBBIES = Object.entries(LOBBIES).filter((_LOBBYCHECKED) => {
+        return _LOBBYCHECKED[1].lobby_open == true;
+    })
+    console.log(OPEN_LOBBIES);
+    
+    _CALLBACK(OPEN_LOBBIES);
+    //div id is LobbiesOpen
 }

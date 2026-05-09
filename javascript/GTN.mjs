@@ -32,12 +32,13 @@ import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeR
     window.fb_createAccount = fb_createAccount;
     window.returnUserUid = returnUserUid;
 //Import all functions required from ops.mjs
-import { op_checkProfile, op_checkStats, op_createLobby
+import { op_checkProfile, op_checkStats, op_createLobby,op_readOpenLobbies,
  }
     from './ops.mjs';
     window.op_checkProfile = op_checkProfile;
     window.op_checkStats = op_checkStats;
     window.op_createLobby = op_createLobby;
+    window.op_readOpenLobbies = op_readOpenLobbies;
 
 let fb_Db = sessionStorage.getItem("FBDB");
 let userUid = sessionStorage.getItem("UID");
@@ -51,7 +52,7 @@ profileImage.src = userProfile.photo_URL;
 profileImage.alt = "profile picture";
 profileImage.style = "width: 50px; height: 50px"
 document.getElementById("userProfileImage").appendChild(profileImage);
-
+sessionStorage.setItem("userName",userProfile.display_name);
 
 document.getElementById("userProfileName").innerHTML = "user name: "+userProfile.display_name
 document.getElementById("userProfileAge").innerHTML = "age: "+userProfile.age
@@ -60,12 +61,15 @@ document.getElementById("userProfileLosses").innerHTML = "Losses: "+userStats.lo
 document.getElementById("userProfileStreak1").innerHTML = "Current win streak: "+userStats.winStreakCurrent
 document.getElementById("userProfileStreak2").innerHTML = "Longest win streak: "+userStats.winStreakLong
 
+// create buttons to create lobby
+
+let buttonCreateLobby = document.createElement('button');
+buttonCreateLobby.innerHTML = "creating lobby";
+buttonCreateLobby.onclick = () => op_createLobby(userUid,game);
+document.getElementById("buttonLobby").appendChild(buttonCreateLobby);
+console.log("button fullly created.");
+
 // create buttons to join lobby
-
-    let buttonCreateLobby = document.createElement('button');
-    buttonCreateLobby.innerHTML = "creating lobby";
-    buttonCreateLobby.onclick = () => op_createLobby(userUid,game);
-    document.getElementById("buttonLobby").appendChild(buttonCreateLobby);
-    console.log("button fullly created.");
-
-    
+op_readOpenLobbies("GTN",( (_LOBBIES) => {
+    console.log(_LOBBIES);
+    }));
