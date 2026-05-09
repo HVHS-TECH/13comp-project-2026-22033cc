@@ -80,16 +80,22 @@ op_readOpenLobbies("GTN",( (_LOBBIES) => {
 
         let lobbyName = document.createElement('td');
         lobbyName.innerHTML = _LOBBIES[i].display_name;
-        let lobbyButton2 = document.createElement('button');
-        lobbyButton2.innerHTML = "Join!";
-        lobbyButton2.onclick = ()=> op_joinLobby("GTN",_LOBBIES[i]);
-        console.log(lobbyButton2)
-        let lobbyButton1 = document.createElement('td');
         
-        lobbyButton1.innerHTML = lobbyButton2;
-        console.log(lobbyButton1)
-        lobbyRow.innerHTML = lobbyName + lobbyButton1;
-        document.getElementByid("lobbyTable").appendChild(lobbyRow);
+        let lobbyButton2 = document.createElement('button');
+        lobbyButton2.onclick = ()=> op_joinLobby("GTN",LOBBY_INFO);    
+        lobbyButton2.innerHTML = "Join!";
+        const LOBBY_INFO = _LOBBIES[i];
+        console.log(_LOBBIES[i]);
+        console.log(LOBBY_INFO)
+        
+        
+        let lobbyButton1 = document.createElement('td');
+        lobbyButton1.appendChild = lobbyButton2;
+        console.log(lobbyButton1);
+        console.log(lobbyButton2);
+        console.log(lobbyButton1);
+        lobbyRow = document.body.appendChild(lobbyName, lobbyButton1)
+        document.getElementById("lobbyTable").appendChild(lobbyRow);
     }
     
     }));
