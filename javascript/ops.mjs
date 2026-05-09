@@ -36,7 +36,7 @@ import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeR
 // List all the functions called by code or html outside of this module
 /**************************************************************/
 export {
-     op_checkProfile, op_checkStats,op_loginCheck,op_createLobby,op_readOpenLobbies
+     op_checkProfile, op_checkStats,op_loginCheck,op_createLobby,op_readOpenLobbies,op_joinLobby
 };
 
 /***************************************************************
@@ -191,12 +191,16 @@ async function op_readOpenLobbies(_GAME,_CALLBACK){
     
     // read all of the lobbies within the chosen game
     const LOBBIES = await fb_readRecord("lobbies/",_GAME);
-
+    // check the lobby_open node to see if its open, and convert it into an array
     const OPEN_LOBBIES = Object.entries(LOBBIES).filter((_LOBBYCHECKED) => {
         return _LOBBYCHECKED[1].lobby_open == true;
     })
     console.log(OPEN_LOBBIES);
     
     _CALLBACK(OPEN_LOBBIES);
-    //div id is LobbiesOpen
+}
+
+async function op_joinLobby(_GAME,_LOBBY){
+    console.log('%c op_joinLobby_running ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';')
 }

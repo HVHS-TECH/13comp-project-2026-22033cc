@@ -32,13 +32,14 @@ import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeR
     window.fb_createAccount = fb_createAccount;
     window.returnUserUid = returnUserUid;
 //Import all functions required from ops.mjs
-import { op_checkProfile, op_checkStats, op_createLobby,op_readOpenLobbies,
+import { op_checkProfile, op_checkStats, op_createLobby,op_readOpenLobbies,op_joinLobby
  }
     from './ops.mjs';
     window.op_checkProfile = op_checkProfile;
     window.op_checkStats = op_checkStats;
     window.op_createLobby = op_createLobby;
     window.op_readOpenLobbies = op_readOpenLobbies;
+    window.op_joinLobby = op_joinLobby;
 
 let fb_Db = sessionStorage.getItem("FBDB");
 let userUid = sessionStorage.getItem("UID");
@@ -72,4 +73,24 @@ console.log("button fullly created.");
 // create buttons to join lobby
 op_readOpenLobbies("GTN",( (_LOBBIES) => {
     console.log(_LOBBIES);
+    
+    for (let i = 0; i <_LOBBIES.length;i++){
+        console.log(_LOBBIES[i]);
+        let lobbyRow = document.createElement('tr');
+
+        let lobbyName = document.createElement('td');
+        lobbyName.innerHTML = _LOBBIES[i].display_name;
+        let lobbyButton2 = document.createElement('button');
+        lobbyButton2.innerHTML = "Join!";
+        lobbyButton2.onclick = ()=> op_joinLobby("GTN",_LOBBIES[i]);
+        console.log(lobbyButton2)
+        let lobbyButton1 = document.createElement('td');
+        
+        lobbyButton1.innerHTML = lobbyButton2;
+        console.log(lobbyButton1)
+        lobbyRow.innerHTML = lobbyName + lobbyButton1;
+        document.getElementByid("lobbyTable").appendChild(lobbyRow);
+    }
+    
     }));
+  
