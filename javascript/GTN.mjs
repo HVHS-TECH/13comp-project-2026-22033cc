@@ -73,29 +73,30 @@ console.log("button fullly created.");
 // create buttons to join lobby
 op_readOpenLobbies("GTN",( (_LOBBIES) => {
     console.log(_LOBBIES);
-    
-    for (let i = 0; i <_LOBBIES.length;i++){
+    for (let i = 0; i < _LOBBIES.length;i++){
+        console.log(i);
         console.log(_LOBBIES[i]);
-        let lobbyRow = document.createElement('tr');
+            let lobbyRow = document.createElement('tr');
 
-        let lobbyName = document.createElement('td');
-        lobbyName.innerHTML = _LOBBIES[i].display_name;
-        
-        let lobbyButton2 = document.createElement('button');
-        lobbyButton2.onclick = ()=> op_joinLobby("GTN",LOBBY_INFO);    
-        lobbyButton2.innerHTML = "Join!";
-        const LOBBY_INFO = _LOBBIES[i];
-        console.log(_LOBBIES[i]);
-        console.log(LOBBY_INFO)
-        
-        
-        let lobbyButton1 = document.createElement('td');
-        lobbyButton1.appendChild = lobbyButton2;
-        console.log(lobbyButton1);
-        console.log(lobbyButton2);
-        console.log(lobbyButton1);
-        lobbyRow = document.body.appendChild(lobbyName, lobbyButton1)
-        document.getElementById("lobbyTable").appendChild(lobbyRow);
+            let lobbyName = document.createElement('td');
+            console.log(_LOBBIES[i][1].display_name);
+            lobbyName.innerHTML = _LOBBIES[i][1].display_name;
+            let lobbyButton2 = document.createElement('button');
+            const LOBBY_INFO = _LOBBIES[i];
+            lobbyButton2.onclick = ()=> op_joinLobby("GTN",LOBBY_INFO);    
+            lobbyButton2.innerHTML = "Join!";
+            
+            console.log(_LOBBIES[i]);
+            console.log(LOBBY_INFO)
+            let lobbyButton1 = document.createElement('td');
+            lobbyButton1.appendChild(lobbyButton2);
+            console.log(lobbyButton2);
+            console.log(lobbyButton1);
+            console.log(lobbyName);
+            lobbyRow = document.body.append(lobbyName, lobbyButton1);
+            console.log(lobbyRow);
+            document.getElementById("lobbyJoin").appendChild(lobbyRow);
+            
     }
     
     }));

@@ -125,6 +125,9 @@ document.getElementById("userCom").appendChild(loginChoiceNo);
 async function op_createLobby(_UID,_GAME){
     console.log('%c op_createLobby running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+                let uuid = self.crypto.randomUUID();
+                sessionStorage.setItem("UUID",uuid);
+
                 console.log("uid"+_UID);
                 console.log("game"+_GAME);
                 let userName = sessionStorage.getItem("userName");
@@ -143,7 +146,7 @@ async function op_createLobby(_UID,_GAME){
                     score:0,
 
                 }
-                const LOBBY_PATH = "/lobbies/"+_GAME+"/"+_UID
+                const LOBBY_PATH = "/lobbies/"+_GAME+"/"+uuid;
                 fb_writeRecord(LOBBY_PATH,LOBBY_SETUP);
                 if (_GAME == "GTN"){
                     op_createGTNScreen(userName);
