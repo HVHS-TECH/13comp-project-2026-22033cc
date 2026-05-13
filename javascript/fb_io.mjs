@@ -330,8 +330,8 @@ async function fb_killRecord(){
                 shape:userShape,
                 isadmin:false,
             })
-            //create nodes for playerstatsGTN
-            fb_writeRecord("/playerStatsGTN/"+userUid,{
+            //create nodes for playerstatsPSR
+            fb_writeRecord("/playerStatsPSR/"+userUid,{
                 wins:0,
                 losses:0,
                 winRate:0

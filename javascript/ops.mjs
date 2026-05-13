@@ -64,7 +64,6 @@ async function op_checkStats(_UID,_GAME){
     //check
     let profile = await fb_readAll("playerStats"+_GAME+"/"+_UID+"/","display_name")
     console.log(profile);
-    console.log(profile.display_name);;
     return profile;
 }
 /***************************************************************
@@ -148,8 +147,8 @@ async function op_createLobby(_UID,_GAME){
                 }
                 const LOBBY_PATH = "/lobbies/"+_GAME+"/"+uuid;
                 fb_writeRecord(LOBBY_PATH,LOBBY_SETUP);
-                if (_GAME == "GTN"){
-                    op_createGTNScreen(userName);
+                if (_GAME == "PSR"){
+                    op_createPSRScreen(userName);
                 }
            
     }
@@ -159,19 +158,19 @@ async function op_createLobby(_UID,_GAME){
 // deletes branch under them.
  ****************************************************************/    
 async function op_killLobby(){
-    console.log('%c op)_createGTNScreen running ',
+    console.log('%c op)_createPSRScreen running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     fb_updateRecord()
     
 
 }
 /***************************************************************
-// function op_createGTNScreen(_UID)
+// function op_createPSRScreen(_UID)
 // called when user clicks "create lobby"
 //  creates a new branch under the users UID with the set up for a lobby.
  ****************************************************************/    
-async function op_createGTNScreen(_NAME){
-    console.log('%c op)_createGTNScreen running ',
+async function op_createPSRScreen(_NAME){
+    console.log('%c op)_createPSRScreen running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
 
 
@@ -206,4 +205,6 @@ async function op_readOpenLobbies(_GAME,_CALLBACK){
 async function op_joinLobby(_GAME,_LOBBY){
     console.log('%c op_joinLobby_running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';')
+    console.log(_LOBBY)
+    console.log(_GAME)
 }

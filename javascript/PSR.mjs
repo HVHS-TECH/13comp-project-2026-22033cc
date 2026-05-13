@@ -1,16 +1,16 @@
 /***************************************************************/
-// GTN.mjs
+// PSR.mjs
 // Written by Conor, Term 1 2026
 // Guess the number game logic
-// all functions prefixed by GTN_
+// all functions prefixed by PSR_
 /**************************************************************/
 const COL_B = '#353536'; //console log colours
 const COL_C = '#f542c8';
 
-    console.log('%c GTN.mjs running ',
+    console.log('%c PSR.mjs running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
 console.log("hello world");
-const game = "GTN";
+const game = "PSR";
 /***************************************************************/
 // Import all external constants & functions required
 /***************************************************************/
@@ -71,8 +71,9 @@ document.getElementById("buttonLobby").appendChild(buttonCreateLobby);
 console.log("button fullly created.");
 
 // create buttons to join lobby
-op_readOpenLobbies("GTN",( (_LOBBIES) => {
+op_readOpenLobbies("PSR",( (_LOBBIES) => {
     console.log(_LOBBIES);
+    
     for (let i = 0; i < _LOBBIES.length;i++){
         console.log(i);
         console.log(_LOBBIES[i]);
@@ -83,7 +84,7 @@ op_readOpenLobbies("GTN",( (_LOBBIES) => {
             lobbyName.innerHTML = _LOBBIES[i][1].display_name;
             let lobbyButton2 = document.createElement('button');
             const LOBBY_INFO = _LOBBIES[i];
-            lobbyButton2.onclick = ()=> op_joinLobby("GTN",LOBBY_INFO);    
+            lobbyButton2.onclick = ()=> op_joinLobby("PSR",LOBBY_INFO);    
             lobbyButton2.innerHTML = "Join!";
             
             console.log(_LOBBIES[i]);
@@ -93,9 +94,9 @@ op_readOpenLobbies("GTN",( (_LOBBIES) => {
             console.log(lobbyButton2);
             console.log(lobbyButton1);
             console.log(lobbyName);
-            lobbyRow = document.body.append(lobbyName, lobbyButton1);
+            //lobbyRow = document.body.append(lobbyName, lobbyButton1);
             console.log(lobbyRow);
-            document.getElementById("lobbyJoin").appendChild(lobbyRow);
+            document.getElementById("lobbyJoin").append(lobbyRow,lobbyName,lobbyButton1);
             
     }
     
