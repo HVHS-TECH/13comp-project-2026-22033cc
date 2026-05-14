@@ -84,11 +84,11 @@ op_readOpenLobbies("PSR",( (_LOBBIES) => {
             lobbyName.innerHTML = _LOBBIES[i][1].display_name;
             let lobbyButton2 = document.createElement('button');
             const LOBBY_INFO = _LOBBIES[i];
-            lobbyButton2.onclick = ()=> op_joinLobby("PSR",LOBBY_INFO);    
+            lobbyButton2.onclick = ()=> op_joinLobby("PSR",LOBBY_INFO,psr_GameLoop());    
             lobbyButton2.innerHTML = "Join!";
             
             console.log(_LOBBIES[i]);
-            console.log(LOBBY_INFO)
+            console.log(LOBBY_INFO);
             let lobbyButton1 = document.createElement('td');
             lobbyButton1.appendChild(lobbyButton2);
             console.log(lobbyButton2);
@@ -98,7 +98,17 @@ op_readOpenLobbies("PSR",( (_LOBBIES) => {
             console.log(lobbyRow);
             document.getElementById("lobbyJoin").append(lobbyRow,lobbyName,lobbyButton1);
             
+    
     }
     
     }));
   
+
+function psr_GameLoop(_GAME,_LOBBYNAME){
+    console.log('%c op)_createPSRScreen running ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';')
+    console.log(_LOBBYNAME);
+    // 
+    fb_readRecord();
+    
+}
