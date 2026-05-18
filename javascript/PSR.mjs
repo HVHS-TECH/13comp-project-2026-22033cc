@@ -78,7 +78,6 @@ op_readOpenLobbies("PSR",( (_LOBBIES) => {
         console.log(i);
         console.log(_LOBBIES[i]);
             let lobbyRow = document.createElement('tr');
-
             let lobbyName = document.createElement('td');
             console.log(_LOBBIES[i][1].display_name);
             lobbyName.innerHTML = _LOBBIES[i][1].display_name;
@@ -108,7 +107,8 @@ function psr_GameLoop(_GAME,_LOBBYNAME){
     console.log('%c op)_createPSRScreen running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';')
     console.log(_LOBBYNAME);
-    // 
-    fb_readRecord();
+    
+
+    window.location.assign("PSRscreen.html");
     
 }
