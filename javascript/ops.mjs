@@ -160,7 +160,8 @@ async function op_createLobby(_UID,_GAME){
 async function op_killLobby(){
     console.log('%c op)_createPSRScreen running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-    fb_updateRecord()
+    const pathLobby =
+    fb_updateRecord(_PATH);
     
 
 }

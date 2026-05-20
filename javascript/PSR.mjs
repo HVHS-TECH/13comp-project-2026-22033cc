@@ -107,8 +107,7 @@ function psr_GameLoop(_GAME,_LOBBYNAME){
     console.log('%c op)_createPSRScreen running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';')
     console.log(_LOBBYNAME);
-    
-
+    sessionStorage.setItem('lobby',_LOBBYNAME);
     window.location.assign("PSRscreen.html");
     
 }
