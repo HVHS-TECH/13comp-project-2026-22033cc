@@ -148,7 +148,9 @@ async function op_createLobby(_UID,_GAME){
                 const LOBBY_PATH = "/lobbies/"+_GAME+"/"+uuid;
                 fb_writeRecord(LOBBY_PATH,LOBBY_SETUP);
                 if (_GAME == "PSR"){
-                    op_createPSRScreen(userName);
+                    sessionStorage.setItem('lobby',_LOBBYNAME);
+                    sessionStorage.setItem('position',1);
+                    window.location.assign("PSRscreen.html");
                 }
            
     }
