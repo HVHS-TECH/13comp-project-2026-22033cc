@@ -208,7 +208,7 @@ async function fb_readAll(_path) {
     console.log('%c fb_readAll ',
                     'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     console.log(_path);
-    //define path and read record 
+    //define path and read record.
     const dbReference= ref(fb_Db, _path);
     let snapshot = await get(dbReference)
     //get(dbReference).then((snapshot) => {
@@ -362,19 +362,24 @@ console.log('%c Fb_detectLoginChange ',
 
     console.log("setting up login listener...")
     let currentPage = window.location.pathname;
-
-                console.log(currentPage);
+    console.log(currentPage);
     onAuthStateChanged(AUTH,(user) => {
         if (user) {
             // user is logged in
             let userUid = user.uid;
-            let firstLanding = sessionStorage.getItem("firstLanding");
+            if (sessionStorage.getItem("firstLanding"== null)){
+                console.log("first landing is null");
+            }else{
+                console.log("first landing is ???");
+                console.log (sessionStorage.getItem("firstLanding"));
+            }
+            let firstLand = sessionStorage.getItem("firstLanding");
+            console.log(firstLand);
             let accountAvailable = sessionStorage.getItem("accountAvailable");
-            console.log(accountAvailable);
             if (accountAvailable == true|accountAvailable == null){
-                console.log(firstLanding);
+                console.log(firstLand);
                 console.log("ACCOUNT AVAIBLABE IS TRUE OR NULL")                
-                if (firstLanding == null){
+                if (firstLand == null){
                     console.log("ACCOUNT AVAIlablie is Null")
 
                     if (document.URL.includes("index.html")){
@@ -389,7 +394,7 @@ console.log('%c Fb_detectLoginChange ',
                 }
         }
             
-        } else {
+        } else {            
             //user not logged in
             console.log("users is currently not logged in");
 

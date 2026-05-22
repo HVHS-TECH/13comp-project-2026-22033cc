@@ -12,6 +12,7 @@ const COL_C = '#f542c8';
 console.log("hello world");
 const game = "PSR";
 import { createElement } from 'react';
+const PSR = ["Paper","Scissors","Rock"];
 /***************************************************************/
 // Import all external constants & functions required
 /***************************************************************/
@@ -49,7 +50,10 @@ let userProfile = await op_checkProfile(userUid);
 // create user's screen
 //let userPosition = sessionStorage.getItem("position");
 //console.log(userPosition);
-
+function psr_startRound(){
+for(let i =0; i<=3; i++){
+    console.log(PSR[i]);
+}
 let buttonScissor = createElement('button');
 
 let buttonPaper = createElement('button');
@@ -61,3 +65,4 @@ let buttonGuess = document.createElement('button');
         buttonGuess.onclick = () => op_createLobby(userUid,game);
         document.getElementById("playerScreen").appendChild(buttonGuess);
         console.log("button fullly created.");
+}
