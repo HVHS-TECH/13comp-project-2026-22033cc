@@ -259,9 +259,10 @@ function fb_updateRecord(_path,_data){
 async function fb_read_sorted(){
     console.log('%c read sorted ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    firebase.database().ref(_PATH).once(_VALUE,)
  }
 /****************************************************************
- // function fb_read_sorted()
+ // function fb_killRecord()
  //
  //
  ****************************************************************/

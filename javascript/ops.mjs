@@ -36,7 +36,7 @@ import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeR
 // List all the functions called by code or html outside of this module
 /**************************************************************/
 export {
-     op_checkProfile, op_checkStats,op_loginCheck,op_createLobby,op_readOpenLobbies,op_joinLobby
+     op_checkProfile, op_checkStats,op_loginCheck,op_createLobby,op_readOpenLobbies,op_joinLobby,op_createLeaderboard
 };
 
 /***************************************************************
@@ -226,4 +226,21 @@ async function op_joinLobby(_GAME,_LOBBY,_CALLBACK){
         lobby_open:false
     })
     _CALLBACK(_GAME,_LOBBY[0]);   
+}/***************************************************************
+// function op_createLeaderboard(_GAME,)
+// called when user clicks "join" button on at GTN.HTML 
+// 
+ ****************************************************************/    
+
+async function op_createLeaderboard(_GAME,_SCORENODE,_CALLBACK){
+    console.log('%c create leaderboard running ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    console.log(_GAME);
+    console.log(_SCORENODE);
+    const PLAYERS = await fb_readRecord("/playerStats"+_GAME,"");
+    console.log(PLAYERS);
+    // check the lobby_open node to see its score, and convert it into an array
+    const TOP_PLAYERS= Object.entries(PLAYERS);
+    }
+    console.log(TOP_PLAYERS);
 }
