@@ -77,7 +77,7 @@ async function op_loginCheck(_UID){
     console.log(_UID);
     let userName = await fb_readRecord("playerStatsUNI/"+_UID+"/","display_name");
     console.log("user Name:"+userName);
-    
+    sessionStorage.setItem("NAME",userName);
 // create title 
 let loginContinue = document.createElement('p');
 loginContinue.innerHTML = "you are currently signed in as "+userName+", would you like to continue with this account?";
@@ -215,11 +215,12 @@ async function op_joinLobby(_GAME,_LOBBY,_CALLBACK){
     console.log(_LOBBY[0]);
     console.log(_GAME);
     const UID = sessionStorage.getItem("UID");
+    const NAME = serssionStorage.getItem("NAME")
     const path = "/lobbies/"+_GAME+"/"+_LOBBY[0]+"/";
     console.log(UID);
     fb_writeRecord(path+UID,{
         guess:0,
-        p2_name:"I'm in",
+        p2_name:NAME,
         score:0,
     })
     fb_updateRecord(path, {
@@ -232,15 +233,16 @@ async function op_joinLobby(_GAME,_LOBBY,_CALLBACK){
 // 
  ****************************************************************/    
 
-async function op_createLeaderboard(_GAME,_SCORENODE,_CALLBACK){
+async function op_createLeaderboard(_GAME,_SORTKEY,_CALLBACK){
     console.log('%c create leaderboard running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     console.log(_GAME);
-    console.log(_SCORENODE);
-    const PLAYERS = await fb_readRecord("/playerStats"+_GAME,"");
-    console.log(PLAYERS);
-    // check the lobby_open node to see its score, and convert it into an array
-    const TOP_PLAYERS= Object.entries(PLAYERS);
-    }
-    console.log(TOP_PLAYERS);
+    console.log(_SORTKEY);
+    // run Read sorted on the score node to find ordered ammount. 
+
+    let scoreSorted  = await fb_read_sorted("/playerStats"+_GAME+"/",_SORTKEY);
+    console.log(scoreSorted)
+
+    
+    
 }

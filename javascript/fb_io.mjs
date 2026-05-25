@@ -33,7 +33,7 @@ import { getDatabase }
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut }
     from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-import { ref, set, get, update, query, orderByChild, limitToFirst }
+import { ref, set, get, update, query, orderByChild, limitToFirst,limitToLast}
     from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 /**************************************************************/
 // Import functions from op.mjs
@@ -111,6 +111,7 @@ async function fb_authenticate() {
         let resultName = await fb_readRecord("playerStatsUNI/"+userUid+"/","display_name");
         console.log("their first name is "+resultName);
         console.log(resultName);
+        sessionStorage.setItem("NAME",resultName);
             //if they haven't, make them choose usernamed
             if (resultName == null){              
                 document.getElementById("playertalk").innerHTML = "Seems like you haven't made an account yet, "
@@ -256,10 +257,35 @@ function fb_updateRecord(_path,_data){
  //
  ****************************************************************/
 
-async function fb_read_sorted(){
+async function fb_read_sorted(_PATH, _SORTKEY){
     console.log('%c read sorted ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-    firebase.database().ref(_PATH).once(_VALUE,)
+
+    const SORTKEY = _SORTKEY;
+    console.log(SORTKEY)
+    return new Promise((resolve, reject) => {
+        const dbReference = query(ref(fb_Db,_PATH), orderByChild(SORTKEY), limitToFirst(100))
+        get(dbReference).then((snapshot) => {
+            var fb_data = snapshot.val();
+            console.log(fb_data);
+            if (fb_data != null) {
+            let playerSorted = Object.entries(fb_data).sort((a,b)=>{return b[1].wins - a[1].wins});
+            console.log(playerSorted);
+            playerSorted = playerSorted.splice(0,10);
+            console.log(playerSorted);
+
+            } else {
+                console.log("something went wrong")
+                resolve("failed")
+
+            }
+
+        }).catch((error) => {
+            console.log(error)
+            reject(error)
+        })
+    })
+
  }
 /****************************************************************
  // function fb_killRecord()
