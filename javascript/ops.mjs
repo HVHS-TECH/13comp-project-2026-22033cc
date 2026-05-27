@@ -238,11 +238,28 @@ async function op_createLeaderboard(_GAME,_SORTKEY,_CALLBACK){
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     console.log(_GAME);
     console.log(_SORTKEY);
+    const SORT_KEY = _SORTKEY
     // run Read sorted on the score node to find ordered ammount. 
+    let playerSorted = await fb_read_sorted("/playerStats"+_GAME+"/",_SORTKEY);
+    console.log("hello")
+    console.log(playerSorted);
+    for (let i = 0; i<=10; i++){
+        const UID = playerSorted[i][0]
+        console.log(UID);
+        let displayName = await fb_readRecord("/playerStatsUNI/"+UID+"/","display_name");
+        console.log(displayName);
+        let leaderboardRow = document.createElement('tr');
+        let leaderboardName = document.createElement('td');
+        let leaderboardScore = document.createElement('td');
+        // console.log(scoreSorted[i][1].display_name);
+        // lobbyName.innerHTML = scoreSorted[i][1].display_name;
+        // let leaderboardScore = document.createElement('td');
+        leaderboardName.innerHTML = displayName;
+        console.log(_SORTKEY);
+        console.log(playerSorted[i][1]);
+        console.log(playerSorted[i][1]._SORTKEY);
+        leaderboardScore.innerHTML = playerSorted[i][1].wins;
+        document.getElementById("leaderboard"+_GAME).append(leaderboardRow,leaderboardName,leaderboardScore);
+    }
 
-    let scoreSorted  = await fb_read_sorted("/playerStats"+_GAME+"/",_SORTKEY);
-    console.log(scoreSorted)
-
-    
-    
 }

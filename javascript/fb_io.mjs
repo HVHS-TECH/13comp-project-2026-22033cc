@@ -273,7 +273,8 @@ async function fb_read_sorted(_PATH, _SORTKEY){
             console.log(playerSorted);
             playerSorted = playerSorted.splice(0,10);
             console.log(playerSorted);
-
+            console.log("hello?");
+            resolve(playerSorted);
             } else {
                 console.log("something went wrong")
                 resolve("failed")
@@ -285,6 +286,7 @@ async function fb_read_sorted(_PATH, _SORTKEY){
             reject(error)
         })
     })
+    
 
  }
 /****************************************************************
