@@ -104,11 +104,11 @@ op_readOpenLobbies("PSR",( (_LOBBIES) => {
   
 
 function psr_Redirect(_GAME,_LOBBYNAME){
-    console.log('%c op)_createPSRScreen running ',
+    console.log('%c op) psr_Redirect running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';')
     console.log(_LOBBYNAME);
     sessionStorage.setItem('lobby',_LOBBYNAME);
-    sessionStorage.setItem('position',2);
+    sessionStorage.setItem('position',"joiner");
     window.location.assign("PSRscreen.html");
     
 }

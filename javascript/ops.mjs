@@ -149,7 +149,7 @@ async function op_createLobby(_UID,_GAME){
                 fb_writeRecord(LOBBY_PATH,LOBBY_SETUP);
                 if (_GAME == "PSR"){
                     sessionStorage.setItem('lobby',uuid);
-                    sessionStorage.setItem('position',1);
+                    sessionStorage.setItem('position','host');
                     window.location.assign("PSRscreen.html");
                 }
            
@@ -227,12 +227,12 @@ async function op_joinLobby(_GAME,_LOBBY,_CALLBACK){
         lobby_open:false
     })
     _CALLBACK(_GAME,_LOBBY[0]);   
-}/***************************************************************
+}
+/***************************************************************
 // function op_createLeaderboard(_GAME,)
 // called when user clicks "join" button on at GTN.HTML 
 // 
  ****************************************************************/    
-
 async function op_createLeaderboard(_GAME,_SORTKEY,_CALLBACK){
     console.log('%c create leaderboard running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
@@ -260,6 +260,6 @@ async function op_createLeaderboard(_GAME,_SORTKEY,_CALLBACK){
         console.log(playerSorted[i][1]._SORTKEY);
         leaderboardScore.innerHTML = playerSorted[i][1].wins;
         document.getElementById("leaderboard"+_GAME).append(leaderboardRow,leaderboardName,leaderboardScore);
-    }
 
+}
 }

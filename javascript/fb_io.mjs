@@ -33,7 +33,7 @@ import { getDatabase }
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut }
     from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-import { ref, set, get, update, query, orderByChild, limitToFirst,limitToLast}
+import { ref, set, get, update, query, onValue, orderByChild, limitToFirst,limitToLast}
     from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 /**************************************************************/
 // Import functions from op.mjs
@@ -51,7 +51,7 @@ import { op_loginCheck
 /**************************************************************/
 export {
     fb_initialise, fb_authenticate, fb_detectLoginChange, fb_logOut, fb_writeRecord, fb_readRecord,
-    fb_readAll, fb_updateRecord, fb_read_sorted,fb_createAccount,returnUserUid, fb_killRecord
+    fb_readAll, fb_updateRecord, fb_read_sorted,fb_createAccount,returnUserUid, fb_killRecord,fb_valueChanged,
 };
 
 
@@ -79,7 +79,7 @@ function fb_initialise() {
 
 }
 
-/***************************************************************
+/**************************************************************
 // function fb_authenticate()
 //
 //
@@ -109,7 +109,7 @@ async function fb_authenticate() {
         //see if they have logged in before:
         
         let resultName = await fb_readRecord("playerStatsUNI/"+userUid+"/","display_name");
-        console.log("their first name is "+resultName);
+        console.log("t*heir first name is "+resultName);
         console.log(resultName);
         sessionStorage.setItem("NAME",resultName);
             //if they haven't, make them choose usernamed
@@ -448,4 +448,26 @@ console.log('%c Fb_detectLoginChange ',
  ****************************************************************/
 async function returnUserUid(){
     return userUid;
+}
+
+/***************************************************************
+// function 
+//
+//
+ ****************************************************************/
+async function fb_valueChanged(_PATH,_CALLBACK,_ORDERKEY = null){
+    console.log('%c fb_valueChanged ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    var query; 
+    if (_ORDERKEY == null){
+        query = ref (fb_Db, _PATH);
+    }else{
+        query = query(ref(fb_Db,_PATH), orderByChild(_ORDERKEY),limitToLast(100));
+    }
+    onValue(query,(snapshot)=>{
+        const DATA = snapshot.val();
+        if (DATA != null){
+            _CALLBACK(DATA);
+        }
+    })
 }

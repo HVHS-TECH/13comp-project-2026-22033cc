@@ -11,7 +11,6 @@ const COL_C = '#f542c8';
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
 console.log("hello world");
 const game = "PSR";
-import { createElement } from 'react';
 const PSR = ["Paper","Scissors","Rock"];
 /***************************************************************/
 // Import all external constants & functions required
@@ -46,7 +45,24 @@ import { op_checkProfile, op_checkStats, op_createLobby,op_readOpenLobbies,op_jo
 let fb_Db = sessionStorage.getItem("FBDB");
 let userUid = sessionStorage.getItem("UID");
 let userProfile = await op_checkProfile(userUid);
+let position = sessionStorage.getItem("position");
+console.log(position);
 
+
+if (position == "host"){
+    console.log("I am host man");
+
+} else { }
+/***************************************************************
+// function PSR_PSRJoinerWait(_LOBBYUUID,)
+// called creator is waiting for someone to join their lobby
+// 
+ ****************************************************************/    
+async function PSR_joinerWait(){
+    console.log('%c PSR_joinerWait running ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    
+}
 // create user's screen
 //let userPosition = sessionStorage.getItem("position");
 //console.log(userPosition);
