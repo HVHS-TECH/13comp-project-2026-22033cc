@@ -17,7 +17,7 @@ const PSR = ["Paper","Scissors","Rock"];
 /***************************************************************/
 // Import all the constants & functions required from fb_io module
 import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeRecord,
-    fb_readRecord,fb_readAll, fb_updateRecord, fb_read_sorted,fb_createAccount,returnUserUid
+    fb_readRecord,fb_readAll, fb_updateRecord, fb_read_sorted,fb_createAccount,returnUserUid,fb_valueChanged
  }
     from './fb_io.mjs';
 
@@ -32,8 +32,9 @@ import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeR
     window.fb_read_sorted = fb_read_sorted;
     window.fb_createAccount = fb_createAccount;
     window.returnUserUid = returnUserUid;
+    window.fb_valueChanged = fb_valueChanged;
 //Import all functions required from ops.mjs
-import { op_checkProfile, op_checkStats, op_createLobby,op_readOpenLobbies,op_joinLobby
+import { op_checkProfile, op_checkStats, op_createLobby,op_readOpenLobbies,op_joinLobby,
  }
     from './ops.mjs';
     window.op_checkProfile = op_checkProfile;
@@ -46,27 +47,34 @@ let fb_Db = sessionStorage.getItem("FBDB");
 let userUid = sessionStorage.getItem("UID");
 let userProfile = await op_checkProfile(userUid);
 let position = sessionStorage.getItem("position");
+let LOBBYUUID = sessionStorage.getItem("lobby")
 console.log(position);
+console.log(LOBBYUUID);
 
 
 if (position == "host"){
     console.log("I am host man");
-
-} else { }
+    PSR_joinerWait();
+} else { 
+    console.log("joiner");
+}
 /***************************************************************
-// function PSR_PSRJoinerWait(_LOBBYUUID,)
+// function PSR_PSRJoinerWait(,)
 // called creator is waiting for someone to join their lobby
 // 
  ****************************************************************/    
 async function PSR_joinerWait(){
     console.log('%c PSR_joinerWait running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-    
+                fb_valueChanged("/lobbies/PSR/",PSR_startRound,LOBBYUUID);
 }
-// create user's screen
-//let userPosition = sessionStorage.getItem("position");
-//console.log(userPosition);
-function psr_startRound(){
+/***************************************************************
+// function PSR_STARTROUND(_LOBBYUUID,)
+// creates user interface to play a round.
+// 
+ ****************************************************************/  
+function PSR_startRound(){
+    console.log ("PSR START ROUND");
 for(let i =0; i<=3; i++){
     console.log(PSR[i]);
 }

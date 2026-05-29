@@ -215,7 +215,7 @@ async function op_joinLobby(_GAME,_LOBBY,_CALLBACK){
     console.log(_LOBBY[0]);
     console.log(_GAME);
     const UID = sessionStorage.getItem("UID");
-    const NAME = serssionStorage.getItem("NAME")
+    const NAME = sessionStorage.getItem("NAME")
     const path = "/lobbies/"+_GAME+"/"+_LOBBY[0]+"/";
     console.log(UID);
     fb_writeRecord(path+UID,{
