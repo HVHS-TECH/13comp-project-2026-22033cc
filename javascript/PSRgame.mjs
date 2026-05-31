@@ -4,14 +4,17 @@
 // Guess the number game logic
 // all functions prefixed by PSR_
 /**************************************************************/
-const COL_B = '#353536'; //console log colours
-const COL_C = '#f542c8';
+const COL_B = '#0d0d0d '; //console log colours
+const COL_C = '#d92323';
 
     console.log('%c PSR.mjs running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
 console.log("hello world");
 const game = "PSR";
 const PSR = ["Paper","Scissors","Rock"];
+
+let gameState = "start";
+let joined = false;
 /***************************************************************/
 // Import all external constants & functions required
 /***************************************************************/
@@ -66,7 +69,20 @@ if (position == "host"){
 async function PSR_joinerWait(){
     console.log('%c PSR_joinerWait running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-                fb_valueChanged("/lobbies/PSR/",PSR_startRound,LOBBYUUID);
+    gameState = "waiting";
+                
+    fb_valueChanged("/lobbies/PSR/"+LOBBYUUID,PSR_gameFlow);
+}
+async function PSR_gameFlow(_DATA){
+    console.log('%c PSR_GAmeflow running ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    console.log(gameState)
+    if (gameState = "waiting"){
+        console.log('%c  waiting for someone to join',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+        console.log()
+    }else if (gameState)
+
 }
 /***************************************************************
 // function PSR_STARTROUND(_LOBBYUUID,)
@@ -78,11 +94,10 @@ function PSR_startRound(){
 for(let i =0; i<=3; i++){
     console.log(PSR[i]);
 }
-let buttonScissor = createElement('button');
-
-let buttonPaper = createElement('button');
-let buttonRock = createElement('button');
-
+// create buttons
+let buttonScissor = document.createElement('button');
+let buttonPaper = document.createElement('button');
+let buttonRock = document.createElement('button');
 
 let buttonGuess = document.createElement('button');
         buttonGuess.innerHTML = "";

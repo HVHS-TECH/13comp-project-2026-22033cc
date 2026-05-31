@@ -455,24 +455,27 @@ async function returnUserUid(){
 //
 //
  ****************************************************************/
-async function fb_valueChanged(_PATH,_CALLBACK,_ORDERKEY){
-    console.log('%c fb_valueChanged ',
-                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-    console.log(_PATH);
-    console.log(_ORDERKEY);
-    var query; 
-    console.log(query);
-    if (_ORDERKEY == null){
-        query = ref (fb_Db, _PATH);
-        console.log(query);
-    }else{
-        query = query(ref(fb_Db,_PATH), orderByChild(_ORDERKEY),limitToFirst(100));   
-    }
-    onValue(query,(snapshot)=>{
-        const DATA = snapshot.val();
-        console.log(DATA);
-        if (DATA != null){
-            _CALLBACK(DATA);
+    async function fb_valueChanged(_PATH,_CALLBACK,_ORDERKEY){
+        console.log('%c fb_valueChanged ',
+                    'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+        console.log(_PATH);
+        console.log(_ORDERKEY);
+        let dbQuery; 
+        if (_ORDERKEY == null){
+            dbQuery = ref (fb_Db, _PATH);
+            console.log(dbQuery);
+        }else{
+            dbQuery = query(ref(fb_Db,_PATH), orderByChild(_ORDERKEY));
         }
-    })
-}
+        console.log(dbQuery);
+        onValue(dbQuery,(snapshot)=>{
+            const DATA = snapshot.val();
+            console.log(snapshot.catch)
+            console.log(DATA);
+
+            if (DATA != null){
+                _CALLBACK(DATA);
+            }
+        })
+    }
+
