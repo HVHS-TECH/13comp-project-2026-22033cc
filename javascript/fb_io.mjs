@@ -461,7 +461,7 @@ async function returnUserUid(){
         console.log(_PATH);
         console.log(_ORDERKEY);
         let dbQuery; 
-        if (_ORDERKEY == null){
+        if (_ORDERKEY == null||_ORDERKEY == undefined){
             dbQuery = ref (fb_Db, _PATH);
             console.log(dbQuery);
         }else{
@@ -470,8 +470,6 @@ async function returnUserUid(){
         console.log(dbQuery);
         onValue(dbQuery,(snapshot)=>{
             const DATA = snapshot.val();
-            console.log(snapshot.catch)
-            console.log(DATA);
 
             if (DATA != null){
                 _CALLBACK(DATA);

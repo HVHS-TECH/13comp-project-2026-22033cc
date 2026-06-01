@@ -50,38 +50,84 @@ let fb_Db = sessionStorage.getItem("FBDB");
 let userUid = sessionStorage.getItem("UID");
 let userProfile = await op_checkProfile(userUid);
 let position = sessionStorage.getItem("position");
-let LOBBYUUID = sessionStorage.getItem("lobby")
+let LOBBYUUID = sessionStorage.getItem("lobby");
+let lobbyPath = "/lobbies/PSR/"+LOBBYUUID;
 console.log(position);
 console.log(LOBBYUUID);
-
+let opponent;
+let waitingText = {
+    round:"waiting for opponent to answer",
+    waiting:"calculating result..."
+}
+let score = {
+    host_score:0,
+    challenger_score:0  
+}
 
 if (position == "host"){
     console.log("I am host man");
-    PSR_joinerWait();
+    PSR_challengerWait();
 } else { 
-    console.log("joiner");
+    console.log("challenger");
+    fb_valueChanged(lobbyPath,PSR_hostGameFlow);
 }
 /***************************************************************
-// function PSR_PSRJoinerWait(,)
+// function PSR_PSRchallengerWait(,)
 // called creator is waiting for someone to join their lobby
 // 
  ****************************************************************/    
-async function PSR_joinerWait(){
-    console.log('%c PSR_joinerWait running ',
-                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-    gameState = "waiting";
-                
-    fb_valueChanged("/lobbies/PSR/"+LOBBYUUID,PSR_gameFlow);
+async function PSR_challengerWait(){
+    console.log('%c PSR_challengerWait running ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';')
+    gameState = "waitingJoin";
+    
+    fb_valueChanged(lobbyPath,PSR_hostGameFlow);
 }
-async function PSR_gameFlow(_DATA){
-    console.log('%c PSR_GAmeflow running ',
+
+/***************************************************************
+// function PSR_gameFlow (_DATA)
+// Called every time that changes are made in the lobby. 
+// 
+ ****************************************************************/    
+async function PSR_challengerGameFlow(){
+    console.log('%c PSR_hostGameflow running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-    console.log(gameState)
-    if (gameState = "waiting"){
-        console.log('%c  waiting for someone to join',
+}
+/***************************************************************
+// function PSR_gameFlow (_DATA)
+// Called every time that changes are made in the lobby. 
+// 
+ ****************************************************************/    
+async function PSR_hostGameFlow(_DATA){
+    console.log('%c PSR_hostGameflow running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-        console.log()
-    }else if (gameState)
+
+    console.log(gameState);
+    //checking if someone has joined 
+    if (gameState == "state"){
+        console.log("challengerwaiting");
+        gameState ="round";
+    }
+    if (gameState == "waitingJoin" &&_DATA.lobby_open == false){
+        console.log('%c someone joined.',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+        
+                gameState = "round"
+                PSR_startRound();
+    }
+    //if host is first to answer 
+    if (gameState == "round"){
+        // host has guessed
+        console.log('%c host guessed.',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+        gameState = "waiting";
+    
+    }
+    if (gameState == "waiting"){
+        console.log('%c  guessed.',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+        PSR_hostCalculate();
+    }
 
 }
 /***************************************************************
@@ -90,18 +136,63 @@ async function PSR_gameFlow(_DATA){
 // 
  ****************************************************************/  
 function PSR_startRound(){
-    console.log ("PSR START ROUND");
-for(let i =0; i<=3; i++){
-    console.log(PSR[i]);
-}
-// create buttons
-let buttonScissor = document.createElement('button');
-let buttonPaper = document.createElement('button');
-let buttonRock = document.createElement('button');
+    console.log('%c start round running ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    //create buttons
+    for(let i =0; i<=2; i++){
+        console.log(PSR[i]);
+        let button = document.createElement('button');
+        button.id = "button"+PSR[i];
+        button.onclick = () => PSR_selectAnswer(PSR[i]);
+        button.innerHTML = PSR[i];
+        document. getElementById("playerScreen").appendChild(button);
 
-let buttonGuess = document.createElement('button');
-        buttonGuess.innerHTML = "";
-        buttonGuess.onclick = () => op_createLobby(userUid,game);
-        document.getElementById("playerScreen").appendChild(buttonGuess);
-        console.log("button fullly created.");
+    }
+    console.log("All answer buttons created.")
+}
+/***************************************************************
+// function PSR_selectAnswer(answer)
+// puts the answer in the database.
+// 
+ ****************************************************************/  
+function PSR_selectAnswer(_ANSWER){
+    console.log('%c selected '+_ANSWER+' ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    for(let i = 0; i<=2;i++){
+        document.getElementById("button"+PSR[i]).remove();
+    }
+    //creates text for waiting
+    let waitingTextElement = document.createElement('span');
+    waitingTextElement.id = "waitingTextElement";
+    waitingTextElement.innerHTML = "you selected" + _ANSWER + "."+ waitingText.gameState;
+    //defines which node to update;
+    const GUESS_KEY = position +"_guess"
+    fb_updateRecord(lobbyPath,{[GUESS_KEY]:_ANSWER        
+    })
+}
+
+
+function PSR_hostCalculate(){
+    console.log('%c Calculating who won ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    const LOBBY = fb_readRecord(lobbyPath);
+    const HOST_GUESS = LOBBY.host_guess;
+    const CHALLENGER_GUESS = LOBBY.challenger_guess;
+    if (HOST_GUESS == CHALLENGER_GUESS){
+        fb_writeRecord(lobbyPath,{tie:true});
+    }else if ((HOST_GUESS == "Paper"&&CHALLENGER_GUESS =="Rock")||(HOST_GUESS=="Scissors"&&CHALLENGER_GUESS=="Paper")||(HOST_GUESS == "Rock"&&CHALLENGER_GUESS == "Scissors")){
+        console.log("host won!");
+        gameState ="read";
+        console.log(score.host_score);
+        score.host_win++;
+        console.log(score.host_score);
+        fb_writeRecord(lobbyPath,{score});
+    }else{
+        console.log("Challenger Won!");
+        gameState = "read";
+        console.log(score.challenger_score);
+        score.challenger_score++;
+        console.log(score.challenger_score);
+        fb_writeRecord(lobbyPath,{score});
+    }
 }

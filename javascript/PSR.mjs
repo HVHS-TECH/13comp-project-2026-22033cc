@@ -73,13 +73,12 @@ console.log("button fullly created.");
 // create buttons to join lobby
 op_readOpenLobbies("PSR",( (_LOBBIES) => {
     console.log(_LOBBIES);
-    
     for (let i = 0; i < _LOBBIES.length;i++){
         console.log(i);
         console.log(_LOBBIES[i]);
             let lobbyRow = document.createElement('tr');
             let lobbyName = document.createElement('td');
-            console.log(_LOBBIES[i][1].display_name);
+            console.log(_LOBBIES[i][1].host_display_name);
             lobbyName.innerHTML = _LOBBIES[i][1].display_name;
             let lobbyButton2 = document.createElement('button');
             const LOBBYUUID = _LOBBIES[i];
@@ -106,8 +105,8 @@ function psr_Redirect(_LOBBYUUID){
     console.log('%c op) psr_Redirect running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';')
     console.log(_LOBBYUUID);
-    sessionStorage.setItem("UUID",_LOBBYUUID);
-    sessionStorage.setItem('position',"joiner");
+    sessionStorage.setItem("lobby",_LOBBYUUID);
+    sessionStorage.setItem('position',"challenger");
     window.location.assign("PSRscreen.html");
     
 }

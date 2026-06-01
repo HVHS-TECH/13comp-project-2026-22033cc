@@ -7,7 +7,7 @@
 const COL_C = '#353536'; //console log colours
 const COL_B = '#f542c8';
 
-    console.log('%c other.mjs running ',
+    console.log('%c ops.mjs running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
 
 /***************************************************************/
@@ -50,6 +50,12 @@ async function op_checkProfile(_UID){
     //check
     let profile = await fb_readAll("playerStatsUNI/"+_UID+"/")
     console.log(profile);
+    //puts all of the profile in sessionStorage if hasn't been done already
+    console.log(sessionStorage.getItem('entireProfile')==undefined);
+    if (sessionStorage.getItem('entireProfile')== undefined){
+        sessionStorage.setItem("entireProfile",profile);
+    }
+    
     console.log(profile.display_name);;
     return profile;
 }
@@ -129,20 +135,27 @@ async function op_createLobby(_UID,_GAME){
 
                 console.log("uid"+_UID);
                 console.log("game"+_GAME);
-                let userName = sessionStorage.getItem("userName");
-                console.log(userName);
-        
+                //get users name and photo
+                const USER_PROFILE = await op_checkProfile(_UID);
+                const USER_NAME = USER_PROFILE.display_name;
+                const USER_PHOTO_URL = USER_PROFILE.photo_URL;
+    
                 const LOBBY_SETUP = {
-                    [_UID]:{
-                        p1_name:userName,
-                        guess:0,
-                        score:0
-                    },
+                    //lobby stats
                     lobby_open:true,
-                    display_name:userName,
-                    random_Num:0,
                     round:0,
-                    score:0,
+                    //host stats
+                    host_display_name:USER_NAME,
+                    host_photo_URL:USER_PHOTO_URL,
+                    host_guess:"none",
+                    host_score:0,
+                    //challenger stats
+                    challenger_display_name:"none",
+                    challenger_photo_URL:"none",
+                    challenger_guess:"none",
+                    challenger_score:0,
+                    challenger_read:false,
+                    tie:false,
 
                 }
                 const LOBBY_PATH = "/lobbies/"+_GAME+"/"+uuid;
@@ -214,17 +227,16 @@ async function op_joinLobby(_GAME,_LOBBY,_CALLBACK){
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';')
     console.log(_LOBBY[0]);
     console.log(_GAME);
-    const UID = sessionStorage.getItem("UID");
-    const NAME = sessionStorage.getItem("NAME")
+    const UID = sessionStorage.getItem("UID")
+    //get user stats
+    const USER_PROFILE = await op_checkProfile(UID);
+    const USER_NAME = USER_PROFILE.display_name;
+    const USER_PHOTO_URL = USER_PROFILE.photo_URL;
     const path = "/lobbies/"+_GAME+"/"+_LOBBY[0]+"/";
     console.log(UID);
-    fb_writeRecord(
-        path+UID,{
-        guess:0,
-        p2_name:NAME,
-        score:0,
-    })
-    fb_updateRecord(path, {
+    fb_updateRecord(path,{
+        challenger_display_name:USER_NAME,
+        challenger_photo_URL:USER_PHOTO_URL,
         lobby_open:false
     })
     _CALLBACK(_GAME,_LOBBY[0]);   
@@ -252,9 +264,7 @@ async function op_createLeaderboard(_GAME,_SORTKEY,_CALLBACK){
         let leaderboardRow = document.createElement('tr');
         let leaderboardName = document.createElement('td');
         let leaderboardScore = document.createElement('td');
-        // console.log(scoreSorted[i][1].display_name);
-        // lobbyName.innerHTML = scoreSorted[i][1].display_name;
-        // let leaderboardScore = document.createElement('td');
+
         leaderboardName.innerHTML = displayName;
         console.log(_SORTKEY);
         console.log(playerSorted[i][1]);
