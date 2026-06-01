@@ -73,7 +73,7 @@ if (position == "host"){
     opponent = "host";
     console.log(gameState);
     gameState = "round";
-    fb_valueChanged(lobbyPath,PSR_challengerGameFlow);
+    fb_valueChanged(lobbyPath,PSR_hostGameFlow);
 }
 /***************************************************************
 // function PSR_PSRchallengerWait(,)
@@ -93,7 +93,7 @@ async function PSR_challengerWait(){
 // 
  ****************************************************************/    
 async function PSR_challengerGameFlow(){
-    console.log('%c PSR_hostGameflow running ',
+    console.log('%c PSR_challengerGameflow running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
 }
 /***************************************************************
@@ -104,7 +104,10 @@ async function PSR_challengerGameFlow(){
 async function PSR_hostGameFlow(_DATA){
     console.log('%c PSR_hostGameflow running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    console.log(opponent);
     const OPPONENT_GUESS = opponent+"_guess";
+    console.log(OPPONENT_GUESS);
+    
     console.log(gameState);
     //when challenger joins the lobby.
     if (gameState == "waitingJoin" &&_DATA.lobby_open == false){
@@ -116,19 +119,11 @@ async function PSR_hostGameFlow(_DATA){
     if (gameState == "round"){
         PSR_startRound();
     }
-    //if user is first to answer 
-    if (gameState == "guessed"){
-
-        // user has guessed
-        console.log('%c host guessed.',
-                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-        gameState = "waiting";
     
-    }
-    // if user is the second to answer
+    //if user is the second to answer
     if (gameState == "waiting" && _DATA.OPPONENT_GUESS != "none"){
         console.log('%c  guessed.',
-                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+            'color: ' + COL_C + '; background-color: ' + COL_B + ';');
         if (position == "host"){
             // Host calculates who wins.
             gameState = "calculate";
@@ -138,6 +133,14 @@ async function PSR_hostGameFlow(_DATA){
             gameState = "calculate";
         }
     }
+    //if user is first to answer
+    if (gameState == "guessed"){
+        // user has guessed
+        console.log('%c host guessed.',
+            'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+        gameState = "waiting";
+    }
+    
 
 }
 /***************************************************************
