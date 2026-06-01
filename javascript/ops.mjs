@@ -222,24 +222,24 @@ async function op_readOpenLobbies(_GAME,_CALLBACK){
 // called when user clicks "join" button on at GTN.HTML 
 // 
  ****************************************************************/    
-async function op_joinLobby(_GAME,_LOBBY,_CALLBACK){
+async function op_joinLobby(_GAME,_LOBBYUUID,_CALLBACK){
     console.log('%c op_joinLobby_running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';')
-    console.log(_LOBBY[0]);
-    console.log(_GAME);
-    const UID = sessionStorage.getItem("UID")
     //get user stats
+    console.log(_LOBBYUUID);
+    const UID = sessionStorage.getItem("UID")
     const USER_PROFILE = await op_checkProfile(UID);
     const USER_NAME = USER_PROFILE.display_name;
     const USER_PHOTO_URL = USER_PROFILE.photo_URL;
-    const path = "/lobbies/"+_GAME+"/"+_LOBBY[0]+"/";
-    console.log(UID);
-    fb_updateRecord(path,{
+    //update lobby
+    const path = "/lobbies/"+_GAME+"/"+_LOBBYUUID+"/";
+    fb_writeRecord(path,{
         challenger_display_name:USER_NAME,
         challenger_photo_URL:USER_PHOTO_URL,
         lobby_open:false
     })
-    _CALLBACK(_GAME,_LOBBY[0]);   
+    sessionStorage.setItem("position","challenger")
+    _CALLBACK(_GAME,_LOBBYUUID);   
 }
 /***************************************************************
 // function op_createLeaderboard(_GAME,)
