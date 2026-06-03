@@ -63,6 +63,7 @@ let score = {
     host_score:0,
     challenger_score:0  
 }
+document.getElementById("position").innerHTML = "You are the "+position+"!";
 
 if (position == "host"){
     console.log("host host ");
@@ -74,6 +75,7 @@ if (position == "host"){
     console.log(gameState);
     gameState = "round";
     fb_valueChanged(lobbyPath,PSR_hostGameFlow);
+    
 }
 /***************************************************************
 // function PSR_PSRchallengerWait(,)
@@ -92,21 +94,13 @@ async function PSR_challengerWait(){
 // Called every time that changes are made in the lobby. 
 // 
  ****************************************************************/    
-async function PSR_challengerGameFlow(){
-    console.log('%c PSR_challengerGameflow running ',
-                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-}
-/***************************************************************
-// function PSR_gameFlow (_DATA)
-// Called every time that changes are made in the lobby. 
-// 
- ****************************************************************/    
 async function PSR_hostGameFlow(_DATA){
     console.log('%c PSR_hostGameflow running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     console.log(opponent);
     const OPPONENT_GUESS = opponent+"_guess";
     console.log(OPPONENT_GUESS);
+    
     
     console.log(gameState);
     //when challenger joins the lobby.
@@ -115,30 +109,24 @@ async function PSR_hostGameFlow(_DATA){
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
         gameState = "round"
     }
-    // start a round. 
+    if (gameState == "guessed"){
+        gameState = "calculate";
+    }
     if (gameState == "round"){
         PSR_startRound();
-    }
-    
-    //if user is the second to answer
-    if (gameState == "waiting" && _DATA.OPPONENT_GUESS != "none"){
-        console.log('%c  guessed.',
+    }else if (gameState == "guessing"){
+        console.log('%c someone guessed.',
             'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+        //response on other side saying they guessed should be here.
+        gameState = "guessed";
+    }else if (gameState == "calculate"){
         if (position == "host"){
-            // Host calculates who wins.
-            gameState = "calculate";
-            PSR_hostCalculate();
+            PSR_hostCalculate(_DATA);
+        }else if (position == "challenger"){
+            gameState == "waitingCalc"
         }else{
-            //challenger waits for host to calculate who wins
-            gameState = "calculate";
+            console.log("you shouldn't be seeing this!")
         }
-    }
-    //if user is first to answer
-    if (gameState == "guessed"){
-        // user has guessed
-        console.log('%c host guessed.',
-            'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-        gameState = "waiting";
     }
     
 
@@ -162,6 +150,7 @@ async function PSR_startRound(){
 
     }
     console.log("All answer buttons created.")
+    gameState = "guessing";
     console.log(gameState);
 }
 /***************************************************************
@@ -172,6 +161,7 @@ async function PSR_startRound(){
 async function PSR_selectAnswer(_ANSWER){
     console.log('%c selected '+_ANSWER+' ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    console.log(position);
     for(let i = 0; i<=2;i++){
         document.getElementById("button"+PSR[i]).remove();
     }
@@ -181,9 +171,9 @@ async function PSR_selectAnswer(_ANSWER){
     waitingTextElement.innerHTML = "you selected" + _ANSWER + "."+ waitingText.gameState;
     //defines which node to update;
     const GUESS_KEY = position +"_guess"
-    gameState = "guessed";
-    fb_updateRecord(lobbyPath,{[GUESS_KEY]:_ANSWER        
+    await fb_updateRecord(lobbyPath,{[GUESS_KEY]:_ANSWER        
     })
+    console.log("answer guessed, waiting for opponent...");
 
 }
 
@@ -191,24 +181,24 @@ async function PSR_selectAnswer(_ANSWER){
 function PSR_hostCalculate(){
     console.log('%c Calculating who won ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-    const LOBBY = fb_readRecord(lobbyPath);
-    const HOST_GUESS = LOBBY.host_guess;
-    const CHALLENGER_GUESS = LOBBY.challenger_guess;
+    const LOBBY_DATA = fb_readRecord(lobbyPath);
+    console.log(lOBBY_DATA);
     if (HOST_GUESS == CHALLENGER_GUESS){
-        fb_writeRecord(lobbyPath,{tie:true});
+        console.log("it was a tie!");
+        //fb_writeRecord(lobbyPath,{tie:true});
     }else if ((HOST_GUESS == "Paper"&&CHALLENGER_GUESS =="Rock")||(HOST_GUESS=="Scissors"&&CHALLENGER_GUESS=="Paper")||(HOST_GUESS == "Rock"&&CHALLENGER_GUESS == "Scissors")){
         console.log("host won!");
         gameState ="read";
         console.log(score.host_score);
         score.host_win++;
         console.log(score.host_score);
-        fb_writeRecord(lobbyPath,{score});
+        //fb_writeRecord(lobbyPath,{score});
     }else{
         console.log("Challenger Won!");
         gameState = "read";
         console.log(score.challenger_score);
         score.challenger_score++;
         console.log(score.challenger_score);
-        fb_writeRecord(lobbyPath,{score});
+        //fb_writeRecord(lobbyPath,{score});
     }
 }
