@@ -232,7 +232,7 @@ async function fb_readAll(_path) {
 //
 //
  ****************************************************************/
-function fb_updateRecord(_path,_data){
+async function fb_updateRecord(_path,_data){
         console.log('%c fb_updateRecord ',
         'color: ' + COL_C +
         '; background-color: ' + COL_B + ';');

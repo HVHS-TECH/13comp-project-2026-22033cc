@@ -233,7 +233,7 @@ async function op_joinLobby(_GAME,_LOBBYUUID,_CALLBACK){
     const USER_PHOTO_URL = USER_PROFILE.photo_URL;
     //update lobby
     const path = "/lobbies/"+_GAME+"/"+_LOBBYUUID+"/";
-    fb_writeRecord(path,{
+    fb_updateRecord(path,{
         challenger_display_name:USER_NAME,
         challenger_photo_URL:USER_PHOTO_URL,
         lobby_open:false

@@ -123,11 +123,13 @@ async function PSR_hostGameFlow(_DATA){
         if (position == "host"){
             PSR_hostCalculate(_DATA);
         }else if (position == "challenger"){
-            gameState == "waitingCalc"
+            gameState == "waiting"
         }else{
             console.log("you shouldn't be seeing this!")
         }
-    }
+    }else if (position == "waiting"){
+            PSR_challengerRematch(_DATA);
+        }
     
 
 }
@@ -178,27 +180,34 @@ async function PSR_selectAnswer(_ANSWER){
 }
 
 
-function PSR_hostCalculate(){
+async function PSR_hostCalculate(_DATA){
     console.log('%c Calculating who won ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-    const LOBBY_DATA = fb_readRecord(lobbyPath);
-    console.log(lOBBY_DATA);
+    const LOBBY_DATA = _DATA;
+    const HOST_GUESS = LOBBY_DATA.host_guess;
+    const CHALLENGER_GUESS = LOBBY_DATA.challenger_guess;
+    console.log(HOST_GUESS);
+    console.log(CHALLENGER_GUESS);
+    console.log(LOBBY_DATA);
+
     if (HOST_GUESS == CHALLENGER_GUESS){
         console.log("it was a tie!");
         //fb_writeRecord(lobbyPath,{tie:true});
     }else if ((HOST_GUESS == "Paper"&&CHALLENGER_GUESS =="Rock")||(HOST_GUESS=="Scissors"&&CHALLENGER_GUESS=="Paper")||(HOST_GUESS == "Rock"&&CHALLENGER_GUESS == "Scissors")){
         console.log("host won!");
-        gameState ="read";
-        console.log(score.host_score);
-        score.host_win++;
-        console.log(score.host_score);
-        //fb_writeRecord(lobbyPath,{score});
+        gameState ="winner";
+        const HOST_SCORE = LOBBY_DATA.host_score + 1;
+        console.log(HOST_SCORE);
+        fb_updateRecord(lobbyPath,{host_score:HOST_SCORE});
     }else{
         console.log("Challenger Won!");
-        gameState = "read";
-        console.log(score.challenger_score);
-        score.challenger_score++;
-        console.log(score.challenger_score);
+        gameState = "winner";
+        
         //fb_writeRecord(lobbyPath,{score});
     }
+}
+
+function PSR_challengerRematch(_DATA){
+    console.log("challenger is reading....");
+    gameState = "ready";
 }
