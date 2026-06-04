@@ -154,7 +154,7 @@ async function op_createLobby(_UID,_GAME){
                     challenger_photo_URL:"none",
                     challenger_guess:"none",
                     challenger_score:0,
-                    challenger_read:false,
+                    rematch: false,
                     tie:false,
 
                 }

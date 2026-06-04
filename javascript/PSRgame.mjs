@@ -59,12 +59,10 @@ let waitingText = {
     round:"waiting for opponent to answer",
     waiting:"calculating result..."
 }
-let score = {
-    host_score:0,
-    challenger_score:0  
-}
-document.getElementById("position").innerHTML = "You are the "+position+"!";
+let round = 1; 
 
+document.getElementById("position").innerHTML = "You are the "+position+"!";
+document.getElementById("playerTalk").innerHTML = "Waiting for a challenger..."
 if (position == "host"){
     console.log("host host ");
     opponent = "challenger"
@@ -88,7 +86,6 @@ async function PSR_challengerWait(){
     gameState = "waitingJoin";
     fb_valueChanged(lobbyPath,PSR_hostGameFlow);
 }
-
 /***************************************************************
 // function PSR_gameFlow (_DATA)
 // Called every time that changes are made in the lobby. 
@@ -107,11 +104,18 @@ async function PSR_hostGameFlow(_DATA){
     if (gameState == "waitingJoin" &&_DATA.lobby_open == false){
         console.log('%c someone joined.',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+        const CHALLENGER_SCORE_PATH = lobbyPath + "/challenger_score";
+        const HOST_SCORE_PATH = lobbyPath + "/host_score";
+        fb_valueChanged(CHALLENGER_SCORE_PATH,PSR_ScoreChanged);
+        fb_valueChanged(HOST_SCORE_PATH,PSR_ScoreChanged);
+        document.getElementById("playerTalk").innerHTML = "A challenger has appeared!";
         gameState = "round"
     }
     if (gameState == "guessed"){
+        console.log(position+ "is changing to calculate")
         gameState = "calculate";
     }
+    console.log(gameState);
     if (gameState == "round"){
         PSR_startRound();
     }else if (gameState == "guessing"){
@@ -123,15 +127,16 @@ async function PSR_hostGameFlow(_DATA){
         if (position == "host"){
             PSR_hostCalculate(_DATA);
         }else if (position == "challenger"){
-            gameState == "waiting"
+            console.log("challenger changing to wait");
+            gameState = "waiting"
         }else{
             console.log("you shouldn't be seeing this!")
         }
-    }else if (position == "waiting"){
-            PSR_challengerRematch(_DATA);
-        }
-    
-
+    }else if (gameState == "waiting"){
+        console.log("running rematch");
+            PSR_Rematch(_DATA);
+    }else if (gameState == "waiting"&&_DATA.)
+    console.log(gameState);
 }
 /***************************************************************
 // function PSR_STARTROUND(_LOBBYUUID,)
@@ -173,10 +178,8 @@ async function PSR_selectAnswer(_ANSWER){
     waitingTextElement.innerHTML = "you selected" + _ANSWER + "."+ waitingText.gameState;
     //defines which node to update;
     const GUESS_KEY = position +"_guess"
-    await fb_updateRecord(lobbyPath,{[GUESS_KEY]:_ANSWER        
-    })
-    console.log("answer guessed, waiting for opponent...");
-
+    await fb_updateRecord(lobbyPath,{[GUESS_KEY]:_ANSWER})
+    console.log("answer guessed");
 }
 
 
@@ -189,25 +192,47 @@ async function PSR_hostCalculate(_DATA){
     console.log(HOST_GUESS);
     console.log(CHALLENGER_GUESS);
     console.log(LOBBY_DATA);
-
     if (HOST_GUESS == CHALLENGER_GUESS){
         console.log("it was a tie!");
-        //fb_writeRecord(lobbyPath,{tie:true});
+        await fb_updateRecord(lobbyPath,{tie:true});
     }else if ((HOST_GUESS == "Paper"&&CHALLENGER_GUESS =="Rock")||(HOST_GUESS=="Scissors"&&CHALLENGER_GUESS=="Paper")||(HOST_GUESS == "Rock"&&CHALLENGER_GUESS == "Scissors")){
         console.log("host won!");
-        gameState ="winner";
+        gameState ="waiting";
         const HOST_SCORE = LOBBY_DATA.host_score + 1;
         console.log(HOST_SCORE);
-        fb_updateRecord(lobbyPath,{host_score:HOST_SCORE});
+        await fb_updateRecord(lobbyPath,{host_score:HOST_SCORE});
     }else{
         console.log("Challenger Won!");
-        gameState = "winner";
-        
-        //fb_writeRecord(lobbyPath,{score});
+        gameState = "waiting";
+        const CHALLENGER_SCORE = LOBBY_DATA.challenger_score + 1;
+        console.log(CHALLENGER_SCORE);
+        await fb_updateRecord(lobbyPath,{challenger_score:CHALLENGER_SCORE});
     }
+    round = round + 1;
 }
 
-function PSR_challengerRematch(_DATA){
+async function PSR_Rematch(_DATA){
     console.log("challenger is reading....");
     gameState = "ready";
+    let rematchButton = document.createElement('button');
+        button.id = "rematchButton";
+        button.onclick = () => {
+            console.log("clicked rematch");
+            fb_updateRecord(lobbyPath, {
+                challenger_guess:"none",
+                host_guess:"none",
+                round:round,
+                rematch:true
+            })
+        }
+        button.innerHTML = "Request rematch";
+        document. getElementById("playerScreen").appendChild(button);
 }
+
+function PSR_ScoreChanged(_SCORE){
+    console.log('%c challengerScoreChanged ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    console.log(_SCORE);
+
+}
+
