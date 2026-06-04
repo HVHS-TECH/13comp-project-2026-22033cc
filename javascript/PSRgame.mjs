@@ -95,8 +95,11 @@ async function PSR_hostGameFlow(_DATA){
     console.log('%c PSR_hostGameflow running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     console.log(opponent);
-    const OPPONENT_GUESS = opponent+"_guess";
-    console.log(OPPONENT_GUESS);
+    let opponentName = opponent +"_display_name";
+    console.log(opponentName);
+    console.log(_DATA.challenger_display_name);
+    opponentName = _DATA[opponentName];
+    console.log(opponentName);
     
     
     console.log(gameState);
@@ -108,7 +111,7 @@ async function PSR_hostGameFlow(_DATA){
         const HOST_SCORE_PATH = lobbyPath + "/host_score";
         fb_valueChanged(CHALLENGER_SCORE_PATH,PSR_ScoreChanged);
         fb_valueChanged(HOST_SCORE_PATH,PSR_ScoreChanged);
-        document.getElementById("playerTalk").innerHTML = "A challenger has appeared!";
+        document.getElementById("playerTalk").innerHTML = "A challenger has appeared! Their name is " +opponentName;
         gameState = "round"
     }
     if (gameState == "guessed"){
@@ -117,6 +120,9 @@ async function PSR_hostGameFlow(_DATA){
     }
     console.log(gameState);
     if (gameState == "round"){
+        if (position == "challenger"){
+            document.getElementById("playerTalk").innerHTML = "You are playing against "+opponentName+"!";
+        }
         PSR_startRound();
     }else if (gameState == "guessing"){
         console.log('%c someone guessed.',
@@ -133,10 +139,13 @@ async function PSR_hostGameFlow(_DATA){
             console.log("you shouldn't be seeing this!")
         }
     }else if (gameState == "waiting"){
-        console.log("running rematch");
-            PSR_Rematch(_DATA);
-    }else if (gameState == "waiting"&&_DATA.)
+        console.log("waiting for next round...");
+            PSR_nextRound(_DATA);
+    }else if (gameState == "waiting"&&_DATA.rematch == true){
     console.log(gameState);
+    console.log("they want a rematch!");
+    
+}
 }
 /***************************************************************
 // function PSR_STARTROUND(_LOBBYUUID,)
@@ -199,14 +208,16 @@ async function PSR_hostCalculate(_DATA){
         console.log("host won!");
         gameState ="waiting";
         const HOST_SCORE = LOBBY_DATA.host_score + 1;
+        const HOST_NAME = LOBBY_DATA.host_name;
         console.log(HOST_SCORE);
-        await fb_updateRecord(lobbyPath,{host_score:HOST_SCORE});
+
+        await fb_updateRecord(lobbyPath,{host_score:HOST_SCORE,round_winner:HOST_NAME});
     }else{
         console.log("Challenger Won!");
         gameState = "waiting";
         const CHALLENGER_SCORE = LOBBY_DATA.challenger_score + 1;
-        console.log(CHALLENGER_SCORE);
-        await fb_updateRecord(lobbyPath,{challenger_score:CHALLENGER_SCORE});
+        const CHALLENGER_NAME = LOBBY_DATA.challenger_name;
+        await fb_updateRecord(lobbyPath,{challenger_score:CHALLENGER_SCORE,round_winner:CHALLENGER_NAME});
     }
     round = round + 1;
 }
@@ -214,23 +225,65 @@ async function PSR_hostCalculate(_DATA){
 async function PSR_Rematch(_DATA){
     console.log("challenger is reading....");
     gameState = "ready";
+    //create rematch button.
+    console.log(_DATA);
     let rematchButton = document.createElement('button');
-        button.id = "rematchButton";
-        button.onclick = () => {
-            console.log("clicked rematch");
-            fb_updateRecord(lobbyPath, {
-                challenger_guess:"none",
-                host_guess:"none",
-                round:round,
-                rematch:true
-            })
+    rematchButton.id = "rematchButton";
+    rematchButton.onclick = () => {
+        console.log("clicked rematch");
+        fb_updateRecord(lobbyPath, {
+            challenger_guess:"none",
+            host_guess:"none",
+            round:round,
+            rematch:true
+        })
+    }
+    rematchButton.innerHTML = "Request rematch";
+    document.getElementById("playerScreen").appendChild(rematchButton);
+    //create exit lobby button.
+    let exitButton = document.createElement('button');
+    exitButton.id = "exitButton";
+    exitButton.onclick = () => {
+        if (position == "host"){
+            PSR_updateStats(_DATA);
+            fb_killLobby(lobbyPath);         
+        }else if (position == "challenger"){
+            PSR_updateStats(_DATA);
         }
-        button.innerHTML = "Request rematch";
-        document. getElementById("playerScreen").appendChild(button);
+    }
+    document.getElementById("playerScreen").appendChild("exitButton");
+
+    
 }
+async function PSR_nextRound(_DATA){
+    console.log('%c score changed ',
+        'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    let result = document.createElement('p');
+    result.id = "result";
+    if (_DATA.tie == true){
+        result.innerHTML = "It was a Tie!"
+    }else{
+        WINNER_GUESS = _DATA.round_winner +"_guess";
+        result.innerHTML = _DATA.round_winner + "Won this round by picking" +_DATA.WINNER_GUESS + "!"
+    }
+    // button to confirm next round.     
+    let nextRoundButton = document.createElement('button');
+    nextRoundButton.id = "rematchButton";
+    nextRoundButton.innerHTML = "Onto the Next round!"
+    nextRoundButton.onclick = () => {
+        console.log("clicked rematch");
+        fb_updateRecord(lobbyPath, {
+            challenger_guess:"none",
+            host_guess:"none",
+            round:round,
+            rematch:true
+        })
+    }
+    document.getElementById("playerScreen").appendchild("nextRoundButton")
+    }
 
 function PSR_ScoreChanged(_SCORE){
-    console.log('%c challengerScoreChanged ',
+    console.log('%c score changed ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     console.log(_SCORE);
 
