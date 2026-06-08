@@ -141,14 +141,18 @@ async function PSR_hostGameFlow(_DATA){
             console.log("you shouldn't be seeing this!")
         }
     }else if (gameState == "waiting"){
-        if ((_DATA.CHALLENGER_SCORE == 3 ||_DATA.HOST_SCORE == 3)&& position == "host"){
+        //checking if someone won.
+        console.log
+        if ((_DATA.challenger_score == 3 ||_DATA.host_score == 3)&& position == "host"){
             gameState = "end";
+            console.log("someone won!");
             PSR_endgame(_DATA);
-        } ((_DATA.CHALLENGER_SCORE == 3 ||_DATA.HOST_SCORE == 3)&& position == "challenger");{
+        }else if ((_DATA.challenger_score == 3 ||_DATA.host_score == 3)&& position == "challenger");{
             gameState = "end";
-        }
+            console.log("someone Won!")
+        } 
         console.log("waiting for next round...");
-        PSR_nextRound(_DATA);
+        PSR_nextRound(_DATA); 
     }else if (gameState == "waiting"&&_DATA.rematch == true){
     console.log(gameState);
     console.log("they want a rematch!");
@@ -215,6 +219,7 @@ async function PSR_hostCalculate(_DATA){
     console.log(LOBBY_DATA);
     if (HOST_GUESS == CHALLENGER_GUESS){
         console.log("it was a tie!");
+        gameState = "waiting";
         await fb_updateRecord(lobbyPath,{tie:true});
     }else if ((HOST_GUESS == "Paper"&&CHALLENGER_GUESS =="Rock")||(HOST_GUESS=="Scissors"&&CHALLENGER_GUESS=="Paper")||(HOST_GUESS == "Rock"&&CHALLENGER_GUESS == "Scissors")){
         console.log("host won!");
@@ -231,7 +236,6 @@ async function PSR_hostCalculate(_DATA){
         await fb_updateRecord(lobbyPath,{challenger_score:CHALLENGER_SCORE,round_winner:CHALLENGER_NAME});
     }
     round = round + 1;
-
 }
 
 async function PSR_Rematch(_DATA){
@@ -246,8 +250,9 @@ async function PSR_Rematch(_DATA){
         fb_updateRecord(lobbyPath, {
             challenger_guess:"none",
             host_guess:"none",
+            tie:false,
             round:round,
-            rematch:true
+            rematch:true,
         })
     }
     rematchButton.innerHTML = "Request rematch";
@@ -281,20 +286,25 @@ async function PSR_nextRound(_DATA){
         result.innerHTML = _DATA.round_winner + " won this round by picking " +winnerGuess + "!"
     }
     document.getElementById("playerScreen").appendChild(result);
-    // button to confirm next round.     
-    let nextRoundButton = document.createElement('button');
-    nextRoundButton.id = "nextRoundButton";
-    nextRoundButton.innerHTML = "Onto the Next round!"
-    nextRoundButton.onclick = () => {
-        console.log("clicked rematch");
-        document.getElementById("nextRoundButton").style = "display:none"; 
-        fb_updateRecord(lobbyPath, {
-            challenger_guess:"none",
-            host_guess:"none",
-            round:round,
-            rematch:true
-        })
-            
+    
+    // button to confirm next round.    
+    if (gameState == "end"){
+        PSR_gameFinish(_DATA);
+    } else {
+        let nextRoundButton = document.createElement('button');
+        nextRoundButton.id = "nextRoundButton";
+        nextRoundButton.innerHTML = "Onto the Next round!"
+        nextRoundButton.onclick = () => {
+            console.log("clicked rematch");
+            document.getElementById("nextRoundButton").style = "display:none"; 
+            fb_updateRecord(lobbyPath, {
+                challenger_guess:"none",
+                host_guess:"none",
+                tie:false,
+                round:round,
+                rematch:true
+            })
+    }        
     }
     document.getElementById("playerScreen").appendChild(nextRoundButton);
     gameState = "nextRound";
@@ -314,7 +324,7 @@ async function PSR_endgame(_DATA,_CALLBACK){
     const CHALLENGER_SCORE = _DATA.challenger_score;
     if (HOST_SCORE == 3){
         console.log ("host won!");
-        if (host == opponent){
+        if (opponent == "host"){
             console.log("put on opponent side");
         }else{
             console.log("put on player side");
@@ -322,4 +332,11 @@ async function PSR_endgame(_DATA,_CALLBACK){
     }else if (CHALLENGER_SCORE ==3){
         console.log("Challenger won!");
     }
+}
+
+function PSR_gameFinish(_DATA){
+    console.log('%c game finish running ',
+                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+
+
 }
