@@ -103,11 +103,10 @@ async function fb_authenticate() {
         userEmail = result.user.email;
         userPhoto = result.user.photoURL;
         console.log(userPhoto);
-        console.log(userUid)
-        const REF = ref(fb_Db, "uid")
+        console.log(userUid);
+        const REF = ref(fb_Db, "uid");
 
         //see if they have logged in before:
-        
         let resultName = await fb_readRecord("playerStatsUNI/"+userUid+"/","display_name");
         console.log("t*heir first name is "+resultName);
         console.log(resultName);
@@ -115,7 +114,9 @@ async function fb_authenticate() {
             //if they haven't, make them choose usernamed
             if (resultName == null){              
                 document.getElementById("playertalk").innerHTML = "Seems like you haven't made an account yet, "
-                document.getElementById("form").style = "display: inline-block"
+                document.getElementById("userCom").style = "display:none";
+                document.getElementById("login").style = "display:none";
+                document.getElementById("form").style = "display: inline-block";
                 sessionStorage.setItem("accountAvailable",false);
             } else{    
             //display game links and such no that they are logged in 
@@ -426,7 +427,7 @@ console.log('%c Fb_detectLoginChange ',
         } else {            
             //user not logged in
             console.log("users is currently not logged in");
-
+            document.getElementById("login").style = "display:inline"
             if (!document.URL.includes("index.html")){
                 console.log("time to reload...")
                 window.location.assign("index.html");

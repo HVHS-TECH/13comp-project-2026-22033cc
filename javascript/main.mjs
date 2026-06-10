@@ -49,12 +49,9 @@ console.log(fb_Db);
 let userUid = sessionStorage.getItem("UID");
     console.log(userUid);
 
-let currentPage = window.location.href;
-console.log(currentPage);
-fb_detectLoginChange();
-
-
-
+    let currentPage = window.location.href;
+    console.log(currentPage);
+    fb_detectLoginChange(); 
 /*if (currentPage == "http://127.0.0.1:5500/"||currentPage == "https://hvhs-tech.github.io/13comp-project-2026-22033cc/"){
     console.log("on index.html");
 }else{
