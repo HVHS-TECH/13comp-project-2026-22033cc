@@ -105,10 +105,10 @@ async function fb_authenticate() {
         console.log(userPhoto);
         console.log(userUid);
         const REF = ref(fb_Db, "uid");
-
+        sessionStorage.setItem("creatingAccount",true);
         //see if they have logged in before:
         let resultName = await fb_readRecord("playerStatsUNI/"+userUid+"/","display_name");
-        console.log("t*heir first name is "+resultName);
+        console.log("their first name is "+resultName);
         console.log(resultName);
         sessionStorage.setItem("NAME",resultName);
             //if they haven't, make them choose usernamed
@@ -389,8 +389,7 @@ async function fb_detectLoginChange() {
 console.log('%c Fb_detectLoginChange ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     const AUTH = getAuth();
-
-    console.log("setting up login listener...")
+    sessionStorage.setItem("creatingAccount",false);
     let currentPage = window.location.pathname;
     console.log(currentPage);
     onAuthStateChanged(AUTH,(user) => {
@@ -408,19 +407,23 @@ console.log('%c Fb_detectLoginChange ',
             let accountAvailable = sessionStorage.getItem("accountAvailable");
             if (accountAvailable == true|accountAvailable == null){
                 console.log(firstLand);
-                console.log("ACCOUNT AVAIBLABE IS TRUE OR NULL")                
+                console.log("ACCOUNT AVAIBLABE IS TRUE OR NULL");
+                //checking if they have landed here before.                 
                 if (firstLand == null){
                     console.log("ACCOUNT AVAIlablie is Null")
-
-                    if (document.URL.includes("index.html")){
-                        console.log("on Index.html");
-                        op_loginCheck(userUid);
-                    }else{
-                     console.log("setting to index.html")
-                         sessionStorage.setItem("UID",user.uid);
-                        window.location.assign("index.html");   
+                    creatingAccount = sessionStorage.getItem("creatingAccount");
+                    //checking if they are creating an account, so they cannot sign in while in the login.
+                    if (creatingAccount = false){
+                        if (document.URL.includes("index.html")){
+                            console.log("on Index.html");
+                            op_loginCheck(userUid);
+                        }else{
+                            console.log("setting to index.html");
+                            document.getElementById("login").style = "display:inline-block";
+                            sessionStorage.setItem("UID",user.uid);
+                            window.location.assign("index.html");   
+                        }
                     }
-            
                 }
         }
             
