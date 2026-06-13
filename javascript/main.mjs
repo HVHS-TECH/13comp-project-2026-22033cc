@@ -51,6 +51,7 @@ let userUid = sessionStorage.getItem("UID");
 
     let currentPage = window.location.href;
     console.log(currentPage);
+    sessionStorage.setItem("creatingAccount",false);
     fb_detectLoginChange(); 
 /*if (currentPage == "http://127.0.0.1:5500/"||currentPage == "https://hvhs-tech.github.io/13comp-project-2026-22033cc/"){
     console.log("on index.html");

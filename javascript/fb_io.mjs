@@ -389,7 +389,6 @@ async function fb_detectLoginChange() {
 console.log('%c Fb_detectLoginChange ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     const AUTH = getAuth();
-    sessionStorage.setItem("creatingAccount",false);
     let currentPage = window.location.pathname;
     console.log(currentPage);
     onAuthStateChanged(AUTH,(user) => {
@@ -411,19 +410,17 @@ console.log('%c Fb_detectLoginChange ',
                 //checking if they have landed here before.                 
                 if (firstLand == null){
                     console.log("ACCOUNT AVAIlablie is Null")
-                    creatingAccount = sessionStorage.getItem("creatingAccount");
+                    let creatingAccountCheck = sessionStorage.getItem("creatingAccount");
+                    console.log(creatingAccountCheck)
                     //checking if they are creating an account, so they cannot sign in while in the login.
-                    if (creatingAccount = false){
                         if (document.URL.includes("index.html")){
                             console.log("on Index.html");
                             op_loginCheck(userUid);
                         }else{
                             console.log("setting to index.html");
-                            document.getElementById("login").style = "display:inline-block";
                             sessionStorage.setItem("UID",user.uid);
-                            window.location.assign("index.html");   
+                            window.location.assign("index.html");  
                         }
-                    }
                 }
         }
             

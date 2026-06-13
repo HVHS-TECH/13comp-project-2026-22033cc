@@ -291,7 +291,7 @@ async function PSR_nextRound(_DATA){
     if (gameState == "end"){
         PSR_gameFinish(_DATA);
     } else {
-        let nextRoundButton = document.createElement('button');
+        var nextRoundButton = document.createElement('button');
         nextRoundButton.id = "nextRoundButton";
         nextRoundButton.innerHTML = "Onto the Next round!"
         nextRoundButton.onclick = () => {
