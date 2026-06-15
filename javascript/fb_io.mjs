@@ -374,8 +374,8 @@ async function fb_killRecord(){
     //redirecting to menu....
     sessionStorage.setItem("UID",userUid);
     sessionStorage.setItem("accountAvailable",true);
-    window.location.assign("index.html");
-            
+    window.location.assign("menu.html");
+       
 
 }
 

@@ -291,7 +291,7 @@ async function PSR_nextRound(_DATA){
     if (gameState == "end"){
         PSR_gameFinish(_DATA);
     } else {
-        var nextRoundButton = document.createElement('button');
+        let nextRoundButton = document.createElement('button');
         nextRoundButton.id = "nextRoundButton";
         nextRoundButton.innerHTML = "Onto the Next round!"
         nextRoundButton.onclick = () => {
@@ -304,11 +304,11 @@ async function PSR_nextRound(_DATA){
                 round:round,
                 rematch:true
             })
-    }        
+        }
+        document.getElementById("playerScreen").appendChild(nextRoundButton);
+        gameState = "nextRound";    
     }
-    document.getElementById("playerScreen").appendChild(nextRoundButton);
-    gameState = "nextRound";
-    }
+}
 
 function PSR_ScoreChanged(_SCORE){
     console.log('%c score changed ',
