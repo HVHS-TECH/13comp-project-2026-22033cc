@@ -117,12 +117,13 @@ async function fb_authenticate() {
                 document.getElementById("login").style = "display:none";
                 document.getElementById("form").style = "display: inline-block";
                 sessionStorage.setItem("accountAvailable",false);
+                
             } else{    
             //display game links and such no that they are logged in 
             // the website redirects to menu page.
             console.log('%c fully logged in! ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-                
+            
            // Save data to sessionStorage
             sessionStorage.setItem("UID",userUid);
             sessionStorage.setItem("firstLanding",false);
@@ -308,74 +309,73 @@ async function fb_killRecord(){
  async function fb_createAccount(){
     console.log('%c Fb_createAccount ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-    //console log all values (remove later)
+//console log all values (remove later)
 
-    let userForm = ["userName","userAge","userMovie"];
-    let userFormReply =["Name","Age","Movie"];
-    for (let i=0; i<3; i++){
-        console.log(i);
-        //console.log((document.getElementById(userForm[i]).value));
-        console.log(document.getElementById(userForm[i]).value);
-        if (document.getElementById(userForm[i]).value == null||document.getElementById(userForm[i]).value == ""||document.getElementById(userForm[i]).value == undefined){
-            console.log("nothing in this one")
-            document.getElementsById("playertalk").innerHTML = "please choose your "+userFormReply[i]+"!";
-            return
-        };
-    }
-    console.log("finished checking strings");
-    //get all values from the site into variables
-    let userName = document.getElementById('userName').value;
-    console.log("username"+userName);
-    let userAge = document.getElementById("userAge").value;
-    console.log("userage"+userAge);
-    let userCol = document.getElementById("userCol").value;
-    console.log("usercol"+userCol);
-    let userMovie = document.getElementById("userMovie").value;
-    console.log("usermovie"+userMovie);
-    let userHand = document.getElementById("userHand").value;
-    console.log("userhandedness"+userHand);
-    let userShape = document.getElementById("userShape").value;
-    console.log("usershape"+userShape);
-    
-    if (userName == null){
-        console.log(userName)
+let userForm = ["userName","userAge","userMovie"];
+let userFormReply = ["Name","Age","Movie"];
+for (let i=0; i<3; i++){
+    console.log(i);
+    //console.log((document.getElementById(userForm[i]).value));
+    console.log(document.getElementById(userForm[i]).value);
+    if (document.getElementById(userForm[i]).value == null||document.getElementById(userForm[i]).value == ""||document.getElementById(userForm[i]).value == undefined){
+        console.log("nothing in this one")
+        document.getElementById("playertalk").innerHTML = "please choose your "+userFormReply[i]+"!";
+        return
+    };
+}
+console.log("finished checking strings");
+//get all values from the site into variables
+let userName = document.getElementById('userName').value;
+console.log("username"+userName);
+let userAge = document.getElementById("userAge").value;
+console.log("userage"+userAge);
+let userCol = document.getElementById("userCol").value;
+console.log("usercol"+userCol);
+let userMovie = document.getElementById("userMovie").value;
+console.log("usermovie"+userMovie);
+let userHand = document.getElementById("userHand").value;
+console.log("userhandedness"+userHand);
+let userShape = document.getElementById("userShape").value;
+console.log("usershape"+userShape);
+
+if (userName == null){
+    console.log(userName)
+}
+
+if(userName == null || userName == undefined || userName.trim() == ""||userName == ""){
+    document.getElementById("playertalk").innerHTML =userName +" is an invalid user Name"
+}else{   
+    if(userAge == null || userAge == undefined || userAge.trim() == "" || userAge =="e"&&userAge == 120 && userAge <= 5){
+        document.getElementById("playertalk").innerHTML ="please express your age as an interger rounded down & you must be between the ages 5-120"    
+    }else{
+        //creates nodes for display name, email, age, and photo URL (universal stats)        
+        fb_writeRecord("/playerStatsUNI/"+userUid, {
+            display_name: userName,
+            email: userEmail,
+            photo_URL: userPhoto,
+            age: userAge,
+            fav_colour:userCol,
+            fav_movie:userMovie,
+            handedness:userHand,
+            shape:userShape,
+            isadmin:false,
+        })
+        //create nodes for playerstatsPSR
+        fb_writeRecord("/playerStatsPSR/"+userUid,{
+            wins:0,
+            losses:0,
+            winRate:0
+        })
     }
 
-    if(userName == null || userName == undefined || userName.trim() == ""||userName == ""){
-        document.getElementById("playertalk").innerHTML =userName +" is an invalid user Name"
-    }else{   
-        if(userAge == null&& userAge == undefined&&userAge.trim() == ""&&userAge =="e"&&userAge == 120 && userAge <= 5){
-            document.getElementById("playertalk").innerHTML ="please express your age as an interger rounded down & you must be between the ages 5-120"    
-        }else{
-            //creates nodes for display name, email, age, and photo URL (universal stats)        
-            fb_writeRecord("/playerStatsUNI/"+userUid, {
-                display_name: userName,
-                email: userEmail,
-                photo_URL: userPhoto,
-                age: userAge,
-                fav_colour:userCol,
-                fav_movie:userMovie,
-                handedness:userHand,
-                shape:userShape,
-                isadmin:false,
-            })
-            //create nodes for playerstatsPSR
-            fb_writeRecord("/playerStatsPSR/"+userUid,{
-                wins:0,
-                losses:0,
-                winRate:0
-            })
-        }
-
-    }
-    document.getElementById("form").style = "display:none"
-    document.getElementById("playertalk").innerHTML = "account successfully created! redirecting to menu..."
-    //redirecting to menu....
-    sessionStorage.setItem("UID",userUid);
-    sessionStorage.setItem("accountAvailable",true);
-    window.location.assign("menu.html");
+}
+document.getElementById("form").style = "display:none"
+document.getElementById("playertalk").innerHTML = "account successfully created! redirecting to menu..."
+//redirecting to menu....
+sessionStorage.setItem("UID",userUid);
+sessionStorage.setItem("accountAvailable",true);
+window.location.assign("menu.html");
        
-
 }
 
 /***************************************************************
@@ -421,6 +421,7 @@ console.log('%c Fb_detectLoginChange ',
         console.log(error);
     });
 }
+
 /***************************************************************
 // function 
 //
