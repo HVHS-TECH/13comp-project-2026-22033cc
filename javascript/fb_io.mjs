@@ -87,6 +87,7 @@ function fb_initialise() {
 async function fb_authenticate() {
     console.log('%c authenticate running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    sessionStorage.setItem("creatingAccount",true);
     const AUTH = getAuth(); 
     const PROVIDER = new GoogleAuthProvider();
     PROVIDER.setCustomParameters({
@@ -102,17 +103,15 @@ async function fb_authenticate() {
         userUid = result.user.uid;
         userEmail = result.user.email;
         userPhoto = result.user.photoURL;
-        console.log(userPhoto);
-        console.log(userUid);
         const REF = ref(fb_Db, "uid");
-        sessionStorage.setItem("creatingAccount",true);
         //see if they have logged in before:
         let resultName = await fb_readRecord("playerStatsUNI/"+userUid+"/","display_name");
         console.log("their first name is "+resultName);
         console.log(resultName);
         sessionStorage.setItem("NAME",resultName);
             //if they haven't, make them choose usernamed
-            if (resultName == null){              
+            if (resultName == null){     
+                sessionStorage.setItem("creatingAccount",true);         
                 document.getElementById("playertalk").innerHTML = "Seems like you haven't made an account yet, "
                 document.getElementById("userCom").style = "display:none";
                 document.getElementById("login").style = "display:none";
@@ -128,7 +127,7 @@ async function fb_authenticate() {
             sessionStorage.setItem("UID",userUid);
             sessionStorage.setItem("firstLanding",false);
             sessionStorage.setItem("userName",userName);
-            sessionStorage.setItem("accountAvailable",true);
+            sessionStorage.setItem("creatingAccount",false);
             window.location.assign("menu.html");
             }
         
@@ -391,57 +390,37 @@ console.log('%c Fb_detectLoginChange ',
     const AUTH = getAuth();
     let currentPage = window.location.pathname;
     console.log(currentPage);
+    //runs when user's auth changes.
     onAuthStateChanged(AUTH,(user) => {
-        if (user) {
-            // user is logged in
-            let userUid = user.uid;
-            if (sessionStorage.getItem("firstLanding"== null)){
-                console.log("first landing is null");
+    if (user){
+        console.log("user is signed in");
+        let userUid = user.uid;
+        console.log(userUid);
+        op_loginCheck(userUid);
+    }else{
+        //user is not logged in
+        console.log("he ain't logged in!");
+        let firstLand = sessionStorage.getItem("firstLanding");
+        console.log(firstLand);
+        if (firstLand == null){
+            if (document.URL.includes("index.html")){
+                console.log("on index.html");
+                document.getElementById("login").style = "display:inline-block"
             }else{
-                console.log("first landing is ???");
-                console.log (sessionStorage.getItem("firstLanding"));
+                console.log("im on the wrong website! redirecting to index");
+            window.location.assign("index.html");
             }
-            let firstLand = sessionStorage.getItem("firstLanding");
-            console.log(firstLand);
-            let accountAvailable = sessionStorage.getItem("accountAvailable");
-            if (accountAvailable == true|accountAvailable == null){
-                console.log(firstLand);
-                console.log("ACCOUNT AVAIBLABE IS TRUE OR NULL");
-                //checking if they have landed here before.                 
-                if (firstLand == null){
-                    console.log("ACCOUNT AVAIlablie is Null")
-                    let creatingAccountCheck = sessionStorage.getItem("creatingAccount");
-                    console.log(creatingAccountCheck)
-                    //checking if they are creating an account, so they cannot sign in while in the login.
-                        if (document.URL.includes("index.html")){
-                            console.log("on Index.html");
-                            op_loginCheck(userUid);
-                        }else{
-                            console.log("setting to index.html");
-                            sessionStorage.setItem("UID",user.uid);
-                            window.location.assign("index.html");  
-                        }
-                }
+        } else{
+            console.log("not firstLanding");
+            op_loginCheck(userUid)
         }
-            
-        } else {            
-            //user not logged in
-            console.log("users is currently not logged in");
-            document.getElementById("login").style = "display:inline"
-            if (!document.URL.includes("index.html")){
-                console.log("time to reload...")
-                window.location.assign("index.html");
-            }
+    }
     
-        }
     }, (error) =>{
         console.log("ERROR")
         console.log(error);
     });
-    
-
-
-};
+}
 /***************************************************************
 // function 
 //

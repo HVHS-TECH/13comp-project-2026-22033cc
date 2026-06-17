@@ -1,0 +1,49 @@
+onAuthStateChanged(AUTH,(user) => {})
+            // user is logged in
+        if (user){
+            let userUid = user.uid;
+            let firstLand = sessionStorage.getItem("firstLanding");
+            console.log(firstLand);
+            let accountAvailable = sessionStorage.getItem("accountAvailable");
+            console.log(accountAvailable);
+            if (accountAvailable == "true" || accountAvailable == "null"){
+                console.log(firstLand);
+                console.log("ACCOUNT AVAIBLABE IS TRUE OR NULL");
+                console.log("hello?");
+                //checking if they have landed here before.
+                console.log("wow");                 
+                if (firstLand == null){
+                    console.log("ACCOUNT AVAIlablie is Null")
+                    let creatingAccountCheck = sessionStorage.getItem("creatingAccount");
+                    console.log(creatingAccountCheck);
+                    //checking if they are creating an account, so they cannot sign in while in the login.
+                    if (creatingAccountCheck == "true"){
+                        console.log("user creating account");
+                    }else{
+                        console.log("what is going on");
+                        if (document.URL.includes("index.html")){
+                            console.log("on Index.html");
+                            op_loginCheck(userUid);
+                        }else{
+                            console.log("setting to index.html");
+                            sessionStorage.setItem("UID",user.uid);
+                            window.location.assign("index.html");  
+                        }
+                    }
+                    console.log("passed some");
+                }
+                console.log("passed all?");
+            } else {            
+                //user not logged in
+                console.log("users is currently not logged in");
+                document.getElementById("login").style = "display:inline-block"
+                if (!document.URL.includes("index.html")){
+                    console.log("time to reload...")
+                    window.location.assign("index.html");
+                }
+            }
+    }
+    }, (error) =>{
+        console.log("ERROR")
+        console.log(error);
+    })

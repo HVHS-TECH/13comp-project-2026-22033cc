@@ -83,47 +83,53 @@ async function op_loginCheck(_UID){
     console.log(_UID);
     let userName = await fb_readRecord("playerStatsUNI/"+_UID+"/","display_name");
     console.log("user Name:"+userName);
-    sessionStorage.setItem("NAME",userName);
-// create title 
-let loginContinue = document.createElement('p');
-loginContinue.innerHTML = "you are currently signed in as "+userName+", would you like to continue with this account?";
-document.getElementById("userCom").appendChild(loginContinue);
+    let creatingAccountCheck = sessionStorage.getItem("creatingAccount");
+    console.log(creatingAccountCheck);
+    if ((userName == undefined ||userName == null)&&(creatingAccountCheck =="false")){
+        fb_logOut();
+        document.getElementById("login").style = "display:inline-block";
 
-//create button to continue with accound
-let loginChoiceYes =document.createElement('button');
-loginChoiceYes.class = "Button";
-loginChoiceYes.onclick = function op_signInYes(){
-    console.log('%c op_signInYes running ',
-                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    } else{ 
+        // create "do you want to sign in " element 
+        let loginContinue = document.createElement('p');
+        loginContinue.innerHTML = "you are currently signed in as "+userName+", would you like to continue with this account?";
+        document.getElementById("userCom").appendChild(loginContinue);
 
-           // Save data to sessionStorage
-            sessionStorage.setItem("UID",_UID);
-            sessionStorage.setItem("firstLanding",false);
-            sessionStorage.setItem("userName",userName);
-            window.location.assign("./menu.html");
-}
-loginChoiceYes.innerHTML = "yes!"
-document.getElementById("userCom").appendChild(loginChoiceYes);
+        //create button to continue with accound
+        let loginChoiceYes =document.createElement('button');
+        loginChoiceYes.class = "Button";
+        loginChoiceYes.onclick = function op_signInYes(){
+            console.log('%c op_signInYes running ',
+                        'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+                // Save data to sessionStorage
+                sessionStorage.setItem("UID",_UID);
+                sessionStorage.setItem("firstLanding",false);
+                sessionStorage.setItem("userName",userName);
+                window.location.assign("./menu.html");
+        }
+        loginChoiceYes.innerHTML = "yes!"
+        document.getElementById("userCom").appendChild(loginChoiceYes);
 
-// create button to sign out
-let loginChoiceNo = document.createElement('button')
-loginChoiceNo.class = "Button";
-loginChoiceNo.onclick = function op_signInNo(){
-    console.log('%c op_signInNo running ',
-                'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-    fb_logOut();
-    console.log("logged out");
-    let loggedOut = document.createElement('p');
-    loggedOut.innerHTML = "you have been logged out of "+ userName;
-    document.getElementById("userCom").appendChild(loggedOut);
-    
-}
-loginChoiceNo.innerHTML = "No"
-document.getElementById("userCom").appendChild(loginChoiceNo);
+        // create button to sign out
+        let loginChoiceNo = document.createElement('button')
+        loginChoiceNo.class = "Button";
+        loginChoiceNo.onclick = function op_signInNo(){
+            console.log('%c op_signInNo running ',
+                        'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+            fb_logOut();
+            console.log("logged out");
+            let loggedOut = document.createElement('p');
+            loggedOut.innerHTML = "you have been logged out of "+ userName;
+            document.getElementById("userCom").appendChild(loggedOut);
+            
+        }
+        loginChoiceNo.innerHTML = "No"
+        document.getElementById("userCom").appendChild(loginChoiceNo);
+    }
 
 }
 /***************************************************************
-// function op_loginCheck(_UID)
+// function op_create(_UID)
 // called when user clicks "create lobby"
 //  creates a new branch under the users UID with the set up for a lobby.
  ****************************************************************/
