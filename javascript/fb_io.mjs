@@ -309,8 +309,8 @@ async function fb_killRecord(){
  async function fb_createAccount(){
     console.log('%c Fb_createAccount ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-//console log all values (remove later)
 
+//console log all values (remove later)
 let userForm = ["userName","userAge","userMovie"];
 let userFormReply = ["Name","Age","Movie"];
 for (let i=0; i<3; i++){
@@ -373,7 +373,7 @@ document.getElementById("form").style = "display:none"
 document.getElementById("playertalk").innerHTML = "account successfully created! redirecting to menu..."
 //redirecting to menu....
 sessionStorage.setItem("UID",userUid);
-sessionStorage.setItem("accountAvailable",true);
+sessionStorage.setItem("firstLanding",false);
 window.location.assign("menu.html");
        
 }
