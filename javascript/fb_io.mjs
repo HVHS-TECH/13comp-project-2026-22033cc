@@ -303,79 +303,105 @@ async function fb_killRecord(){
 
 /****************************************************************
  // function fb_createAccount()
- //
- //
+ // runs when the user authenticates but isn't signed in
+ // checks if their answer on the HTML Fourms is valid and then
+ // writes it under their uid on the database
  ****************************************************************/
  async function fb_createAccount(){
     console.log('%c Fb_createAccount ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-
-//console log all values (remove later)
-let userForm = ["userName","userAge","userMovie"];
-let userFormReply = ["Name","Age","Movie"];
-for (let i=0; i<3; i++){
-    console.log(i);
-    //console.log((document.getElementById(userForm[i]).value));
-    console.log(document.getElementById(userForm[i]).value);
-    if (document.getElementById(userForm[i]).value == null||document.getElementById(userForm[i]).value == ""||document.getElementById(userForm[i]).value == undefined){
-        console.log("nothing in this one")
-        document.getElementById("playertalk").innerHTML = "please choose your "+userFormReply[i]+"!";
-        return
-    };
-}
-console.log("finished checking strings");
-//get all values from the site into variables
-let userName = document.getElementById('userName').value;
-console.log("username"+userName);
-let userAge = document.getElementById("userAge").value;
-console.log("userage"+userAge);
-let userCol = document.getElementById("userCol").value;
-console.log("usercol"+userCol);
-let userMovie = document.getElementById("userMovie").value;
-console.log("usermovie"+userMovie);
-let userHand = document.getElementById("userHand").value;
-console.log("userhandedness"+userHand);
-let userShape = document.getElementById("userShape").value;
-console.log("usershape"+userShape);
-
-if (userName == null){
-    console.log(userName)
-}
-
-if(userName == null || userName == undefined || userName.trim() == ""||userName == ""){
-    document.getElementById("playertalk").innerHTML =userName +" is an invalid user Name"
-}else{   
-    if(userAge == null || userAge == undefined || userAge.trim() == "" || userAge =="e"&&userAge == 120 && userAge <= 5){
-        document.getElementById("playertalk").innerHTML ="please express your age as an interger rounded down & you must be between the ages 5-120"    
-    }else{
-        //creates nodes for display name, email, age, and photo URL (universal stats)        
-        fb_writeRecord("/playerStatsUNI/"+userUid, {
-            display_name: userName,
-            email: userEmail,
-            photo_URL: userPhoto,
-            age: userAge,
-            fav_colour:userCol,
-            fav_movie:userMovie,
-            handedness:userHand,
-            shape:userShape,
-            isadmin:false,
-        })
-        //create nodes for playerstatsPSR
-        fb_writeRecord("/playerStatsPSR/"+userUid,{
-            wins:0,
-            losses:0,
-            winRate:0
-        })
+    //console log all values (remove later)
+    let userForm = ["userName","userAge","userMovie"];
+    let userFormReply = ["Name","Age","Movie"];
+    
+    //get all values from the site into variables
+    let userName = document.getElementById('userName').value;
+    console.log("username"+userName);
+    let userAge = document.getElementById("userAge").value;
+    console.log("userage"+userAge);
+    let userCol = document.getElementById("userCol").value;
+    console.log("usercol"+userCol);
+    let userMovie = document.getElementById("userMovie").value;
+    console.log("usermovie"+userMovie);
+    let userHand = document.getElementById("userHand").value;
+    console.log("userhandedness"+userHand);
+    let userShape = document.getElementById("userShape").value;
+    console.log("usershape"+userShape);
+    //create booleans for validation to argue against.
+    let validationsList = [
+            isNameEmpty = (userName == null),
+            isNameSpace = (userName.trim() == ""),
+            isNameShort = (userName <= 5),
+            isNameLong = (userName.length()>=20),
+            isAgeEmpty = (userAge == null),
+            isAgeSpace = (userAge == ""),
+            isAgeYoung = (userAge <= 5),
+            isAgeAncient = (userAge >= 120),
+            isMovieEmpty = (userMovie == null),
+            isMovieSpace = (userMovie.trim() == ""),
+            isMovieLong = (userMovie.length()>=180)]
+    
+            //checking if the fillable form has been filled.
+    let validationsListMessage = [
+            isNameEmpty = "Name is empty",
+            isNameSpace = "Name is empty",
+            isNameShort = "Name must be more than 5 characters",
+            isNameLong = "Name must be less than 20 characters",
+            isAgeEmpty = "Age is empty",
+            isAgeSpace = "Age is empty",
+            isAgeYoung = "You must be more than 5 years to join my website game! You're too young! Go outside!",
+            isAgeAncient = "You must be less than 120 years old to join my website game!",
+            isMovieEmpty = "Movie is Empty",
+            isMovieSpace = "Movie is Empty",
+            isMovieLong = ""]
+    ]
+    for (let i=0; i < validationsList.length; i++){
+        if (validationsBoolean[i] == true){
+            console.log("")
+        }
     }
+    
 
-}
-document.getElementById("form").style = "display:none"
-document.getElementById("playertalk").innerHTML = "account successfully created! redirecting to menu..."
-//redirecting to menu....
-sessionStorage.setItem("UID",userUid);
-sessionStorage.setItem("firstLanding",false);
-window.location.assign("menu.html");
-       
+    console.log(document.getElementById(userForm[i]).value);
+        if (document.getElementById(userForm[i]).value == null||document.getElementById(userForm[i]).value == ""||document.getElementById(userForm[i]).value == undefined){
+            console.log("nothing in this one")
+            document.getElementById("playertalk").innerHTML = "please choose your "+userFormReply[i]+"!";
+            return
+        };
+
+    //checks if username is valid
+    if(userName == null || userName == undefined || userName.trim() == ""||userName == ""||userName.length >= 20){
+        document.getElementById("playertalk").innerHTML =userName +" is an invalid user Name"
+    }else{
+        if(userAge == null || userAge == undefined || userAge.trim() == ""|| userAge >= 120 || userAge <= 5){
+            document.getElementById("playertalk").innerHTML ="please express your age as an interger rounded down & you must be between the ages 5-120"    
+        }else{
+            //creates nodes for display name, email, age, and photo URL (universal stats)        
+            fb_writeRecord("/playerStatsUNI/"+userUid, {
+                display_name: userName,
+                email: userEmail,
+                photo_URL: userPhoto,
+                age: userAge,
+                fav_colour:userCol,
+                fav_movie:userMovie,
+                handedness:userHand,
+                shape:userShape,
+                isadmin:false,
+            })
+            //create nodes for playerstatsPSR
+            fb_writeRecord("/playerStatsPSR/"+userUid,{
+                wins:0,
+                losses:0,
+                winRate:0
+            })
+        document.getElementById("form").style = "display:none";
+        document.getElementById("playertalk").innerHTML = "account successfully created! redirecting to menu..."
+        //redirecting to menu....
+        sessionStorage.setItem("UID",userUid);
+        sessionStorage.setItem("firstLanding",false);
+        window.location.assign("menu.html");
+        }
+    }      
 }
 
 /***************************************************************
