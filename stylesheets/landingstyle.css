@@ -1,15 +1,19 @@
 #logo{
     width: 20%;
     height: auto;
-    
+    padding-left:10%
 }
 #form{
-    padding:10%
+    padding-left:10%
     
 }
 #top{
+    padding-top:5%;
     padding-left:10%
 }
 #login{
     padding-left:10%
+}
+#userCol{
+    padding:0.1%!important;
 }

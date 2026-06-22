@@ -89,7 +89,7 @@ async function op_loginCheck(_UID){
         fb_logOut();
         document.getElementById("login").style = "display:inline-block";
 
-    } else{ 
+    } else if (creatingAccountCheck == "false"){ 
         // create "do you want to sign in " element 
         let loginContinue = document.createElement('p');
         loginContinue.innerHTML = "you are currently signed in as "+userName+", would you like to continue with this account?";
@@ -125,6 +125,8 @@ async function op_loginCheck(_UID){
         }
         loginChoiceNo.innerHTML = "No"
         document.getElementById("userCom").appendChild(loginChoiceNo);
+    }else{
+        console.log("user is creating account");
     }
 
 }

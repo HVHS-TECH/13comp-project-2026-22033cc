@@ -2,14 +2,32 @@
     padding: 10px 15px;
     margin: 5px;
     text-align: center;
+    background-color:#50633B;
+    color:#D2D268;
+    border-style:solid;
+    border-color:#3B562F;
 }
 h1{
     font-family: Arial, Helvetica, sans-serif;
+    color:#D2D268;
+
 }
-p{
+p,label{
     font-family: Arial, Helvetica, sans-serif;
     font-size:15px;
+    color:#D2D268;
 }
 body{
-    
+  background-color:#6A8C24;
+
 }
+input,select{
+    color:#D2D268;
+    border-style:solid;
+    margin-top:5px;
+    margin-bottom:5px;
+    background-color:#50633B ;
+    border-color:#3B562F;
+    padding:5px;;
+}
+

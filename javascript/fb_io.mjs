@@ -118,7 +118,7 @@ async function fb_authenticate() {
                 document.getElementById("form").style = "display: inline-block";
                 sessionStorage.setItem("accountAvailable",false);
                 
-            } else{    
+            }else{    
             //display game links and such no that they are logged in 
             // the website redirects to menu page.
             console.log('%c fully logged in! ',
@@ -426,7 +426,7 @@ console.log('%c Fb_detectLoginChange ',
                 console.log("on index.html");
                 document.getElementById("login").style = "display:inline-block"
             }else{
-                console.log("im on the wrong website! redirecting to index");
+            console.log("im on the wrong website! redirecting to index");
             window.location.assign("index.html");
             }
         } else{
