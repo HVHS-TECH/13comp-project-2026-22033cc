@@ -1,8 +1,15 @@
 #logo{
     width: 20%;
     height: auto;
+    
 }
 #form{
     padding:10%
     
+}
+#top{
+    padding-left:10%
+}
+#login{
+    padding-left:10%
 }

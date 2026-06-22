@@ -308,7 +308,7 @@ async function fb_killRecord(){
  // writes it under their uid on the database
  ****************************************************************/
  async function fb_createAccount(){
-    document.getElementById("playertalk").remove();
+    document.getElementById("playertalk").style = "display:none";
     console.log('%c Fb_createAccount ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     //console log all values (remove later)
@@ -356,6 +356,7 @@ async function fb_killRecord(){
         ]
     //create booleans for validation to argue against.
     console.log(validationsList);
+    let validationclear = 0;
     for (let i = 0; i < validationsList.length; i++){
         if (validationsList[i] == true){
             console.log(validationsListMessage[i]);
@@ -363,11 +364,12 @@ async function fb_killRecord(){
             message.innerHTML = validationsListMessage[i];
             console.log(message.innerHTML);
             document.getElementById("validationError").appendChild(message);
+            validationclear = validationclear+1;
         }
     }
-    document.getElementById("validationError").style = "display:inline-block"
-    console.log(document.getElementById("userCom"));
-    /*
+    document.getElementById("validationError").style = "display:inline"
+    //check if they pass all validation (valdiationClear equals 0 if there is no issues)
+    if (validationclear == 0){
             //creates nodes for display name, email, age, and photo URL (universal stats)        
             fb_writeRecord("/playerStatsUNI/"+userUid, {
                 display_name: userName,
@@ -392,8 +394,7 @@ async function fb_killRecord(){
         sessionStorage.setItem("UID",userUid);
         sessionStorage.setItem("firstLanding",false);
         window.location.assign("menu.html");
-        
-*/          
+    }           
 }
 
 /***************************************************************
