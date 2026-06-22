@@ -18,15 +18,14 @@
     <button class="Button" onclick="fb_authenticate()">Sign in!</button>
 </div>
 
-<div id = "userCom">
+<div id = "userCom" >
 </div>
 
 <!-- style="display:none" -->
+ <span id = "validationError"></span>
 <form id="form" style="display:none" >
-    <p>please fill in your name!!</p>
-    
+    <p>please fill in your details!!</p>
     <!--yoinking information-->
-    
     <label for="Username">Your Name,Please:</label>
         <input type="text" id="userName" name="name" minlength="3" maxlength="20" required /><br>
     <label for="userage"> your Age, Please:</label>

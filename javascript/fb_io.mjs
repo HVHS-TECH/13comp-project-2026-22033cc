@@ -308,6 +308,7 @@ async function fb_killRecord(){
  // writes it under their uid on the database
  ****************************************************************/
  async function fb_createAccount(){
+    document.getElementById("playertalk").remove();
     console.log('%c Fb_createAccount ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     //console log all values (remove later)
@@ -327,55 +328,46 @@ async function fb_killRecord(){
     console.log("userhandedness"+userHand);
     let userShape = document.getElementById("userShape").value;
     console.log("usershape"+userShape);
-    //create booleans for validation to argue against.
-    let validationsList = [
-            isNameEmpty = (userName == null),
-            isNameSpace = (userName.trim() == ""),
-            isNameShort = (userName <= 5),
-            isNameLong = (userName.length()>=20),
-            isAgeEmpty = (userAge == null),
-            isAgeSpace = (userAge == ""),
-            isAgeYoung = (userAge <= 5),
-            isAgeAncient = (userAge >= 120),
-            isMovieEmpty = (userMovie == null),
-            isMovieSpace = (userMovie.trim() == ""),
-            isMovieLong = (userMovie.length()>=180)]
-    
-            //checking if the fillable form has been filled.
+    // create booleans based on validations
+     let validationsList  = [
+        (userName == null),// users name is null
+        (userName.trim() == ""), //username is equal to spaces or empty
+        (userName.length <= 5), // username is less than 5 characters
+        (userName.length >= 20), // username is more than 20 characters
+        (userAge == null), //users age is null
+        (userAge == ""), // users age is equal to spaces or empty
+        (userAge <= 5), // user age is less than 5
+        (userAge >= 120), //users age is more than 120
+        (userMovie.trim() == ""), // user's favourite movie is equal to spaces ore empty.
+        (userMovie.length>=180)// user favourite movie is more than 120 characters
+]
+    //create messages for valdiations.
     let validationsListMessage = [
-            isNameEmpty = "Name is empty",
-            isNameSpace = "Name is empty",
-            isNameShort = "Name must be more than 5 characters",
-            isNameLong = "Name must be less than 20 characters",
-            isAgeEmpty = "Age is empty",
-            isAgeSpace = "Age is empty",
-            isAgeYoung = "You must be more than 5 years to join my website game! You're too young! Go outside!",
-            isAgeAncient = "You must be less than 120 years old to join my website game!",
-            isMovieEmpty = "Movie is Empty",
-            isMovieSpace = "Movie is Empty",
-            isMovieLong = ""]
-    ]
-    for (let i=0; i < validationsList.length; i++){
-        if (validationsBoolean[i] == true){
-            console.log("")
+            "Name is null, you shouldn't be seeing this",
+            "Name is empty", //username is equal to spaces or empty
+            "must be more than 5 characters",// username is less than 5 characters
+            "Name must be less than 20 characters",// username is more than 20 characters
+            "Age is null, you hsouldn't be seeing this",
+            "Age is empty",// users age is equal to spaces or empty
+            "You must be more than 5 years to join my website game! You're too young! Go outside!",// user age is less than 5
+            "You must be less than 120 years old to join my website game!", //users age is more than 120
+            "Movie is Empty",// user's favourite movie is equal to spaces ore empty
+            "Movie name must be less than 180 characters long."// user favourite movie is more than 120 characters
+        ]
+    //create booleans for validation to argue against.
+    console.log(validationsList);
+    for (let i = 0; i < validationsList.length; i++){
+        if (validationsList[i] == true){
+            console.log(validationsListMessage[i]);
+            let message = document.createElement('p');
+            message.innerHTML = validationsListMessage[i];
+            console.log(message.innerHTML);
+            document.getElementById("validationError").appendChild(message);
         }
     }
-    
-
-    console.log(document.getElementById(userForm[i]).value);
-        if (document.getElementById(userForm[i]).value == null||document.getElementById(userForm[i]).value == ""||document.getElementById(userForm[i]).value == undefined){
-            console.log("nothing in this one")
-            document.getElementById("playertalk").innerHTML = "please choose your "+userFormReply[i]+"!";
-            return
-        };
-
-    //checks if username is valid
-    if(userName == null || userName == undefined || userName.trim() == ""||userName == ""||userName.length >= 20){
-        document.getElementById("playertalk").innerHTML =userName +" is an invalid user Name"
-    }else{
-        if(userAge == null || userAge == undefined || userAge.trim() == ""|| userAge >= 120 || userAge <= 5){
-            document.getElementById("playertalk").innerHTML ="please express your age as an interger rounded down & you must be between the ages 5-120"    
-        }else{
+    document.getElementById("validationError").style = "display:inline-block"
+    console.log(document.getElementById("userCom"));
+    /*
             //creates nodes for display name, email, age, and photo URL (universal stats)        
             fb_writeRecord("/playerStatsUNI/"+userUid, {
                 display_name: userName,
@@ -400,8 +392,8 @@ async function fb_killRecord(){
         sessionStorage.setItem("UID",userUid);
         sessionStorage.setItem("firstLanding",false);
         window.location.assign("menu.html");
-        }
-    }      
+        
+*/          
 }
 
 /***************************************************************
