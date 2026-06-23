@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Welcome page </title>
+    <title>welcome to the menu.  </title>
     <!--style sheets-->
     <link rel="stylesheet" href="./stylesheets/style.css">
     <link rel="stylesheet" href="./stylesheets/menustyle.css">
@@ -12,29 +12,32 @@
 <h1> Welcome to the menu. The menu...</h1>
 <script type="module" src="./javascript/main.mjs"></script>
 <script type="module" src="./javascript/menu.mjs"></script>
-
-<div id="navBar"> 
-     <a href="./profile.html">Your profile</a> 
-     <a href="./leaderboard.html">Leaderboards</a>
-     <a href="./menu.html">game menu</a>
+<div id = "top">
+    <div id="navBar"> 
+        <h1> Welcome to the menu. The menu...</h1>
+        <a class= "Button" href="./profile.html">Your profile</a> 
+        <a class = "Button" href="./leaderboard.html">Leaderboards</a>
+        <a class = "Button" href="./menu.html">game menu</a>
+    </div>
 </div>
 <!-- Grid for the menu boxes.-->
 <div id="menuGrid">
     <!-- Menu for Paper Scissors rock game-->
     <div id="menu1PSR" class ="menuThumbnail" >
-        <h2 id="nameHeader">Guess The Number Game</h2>
-        <img id="logoPSR" src="./assets/images/thumbnail_PSR.png" alt="placeholder logo">
+        <h2 id="nameHeader">Paper Scissors Rock-like game</h2>
+        <h3 id = "leaderboardHeader">leaderboard</h3>
+        <img id="logoPSR" src="./assets/images/PSR_assets/PSR_thumbnail.png" alt="paper scissors rock game thumbnail">
         <!-- Leaderboard for Pink Egg goes here -->
-        <table id ="leaderboardPSR">
+        <table id ="leaderboardPSR" style = "display:none">
         </table>
-        <a href="./PSR.html" class ="button">play!</a>
+        <a href="./PSR.html" class ="Button" id = "playButtonPSR" style = "display:none">play!</a>
      
     </div>
 
     <!-- Menu for Pink Egg Simulator -->
     <div id="menuPSR" class ="menuThumbnail">
         <h2 id="nameHeader">OXY</h2>
-    <img id="logoPES" src="./assets/images/thumbnail_PSR.png" alt="placeholder logo">
+    <img id="logoPES" src="./assets/images/thumbnail_PSR.png" alt="Choysum">
     <table id = "leaderboardPES">
         <!-- Leaderboard for Pink Egg Simulator goes here-->
     </table>

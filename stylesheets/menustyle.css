@@ -1,22 +1,20 @@
+#top{
+}
 #menuGrid{
-display: grid;
-    
-    grid-template-columns: 20% 20% 20%;
-}
-#logoGTN{
-    width: 350px;
-    height: auto;
-}
-#logoOXY{
-    width: 350px;
-    height:auto;
+    display: grid;
+    grid-template-columns: 30% 30% 30%;
+    padding-left:10%;
+    margin-top:10%;
 }
 .menuThumbnail{
-    
     padding: 10px 15px;
     border-style:solid;
-
+    margin: 3%;
 }
 #navBar{
     display:float;
+}
+#logoPSR{
+    width:90%;
+    height:auto;
 }

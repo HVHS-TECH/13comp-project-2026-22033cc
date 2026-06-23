@@ -108,11 +108,13 @@ async function op_loginCheck(_UID){
                 window.location.assign("./menu.html");
         }
         loginChoiceYes.innerHTML = "yes!"
+        loginChoiceYes.classList.add("Button")
         document.getElementById("userCom").appendChild(loginChoiceYes);
 
         // create button to sign out
         let loginChoiceNo = document.createElement('button')
         loginChoiceNo.class = "Button";
+        loginChoiceNo.classList.add("Button")
         loginChoiceNo.onclick = function op_signInNo(){
             console.log('%c op_signInNo running ',
                         'color: ' + COL_C + '; background-color: ' + COL_B + ';');
@@ -265,21 +267,33 @@ async function op_createLeaderboard(_GAME,_SORTKEY,_CALLBACK){
     let playerSorted = await fb_read_sorted("/playerStats"+_GAME+"/",_SORTKEY);
     console.log("hello")
     console.log(playerSorted);
-    for (let i = 0; i<=10; i++){
-        const UID = playerSorted[i][0]
-        console.log(UID);
-        let displayName = await fb_readRecord("/playerStatsUNI/"+UID+"/","display_name");
-        console.log(displayName);
-        let leaderboardRow = document.createElement('tr');
-        let leaderboardName = document.createElement('td');
-        let leaderboardScore = document.createElement('td');
+    try{
+        for (let i = 0; i<10; i++){
+            const UID = playerSorted[i][0]
+            console.log(UID);
+            let displayName = await fb_readRecord("/playerStatsUNI/"+UID+"/","display_name");
+            console.log(displayName);
+            let leaderboardRow = document.createElement('tr');
+            let leaderboardName = document.createElement('td');
+            let leaderboardScore = document.createElement('td');
 
-        leaderboardName.innerHTML = displayName;
-        console.log(_SORTKEY);
-        console.log(playerSorted[i][1]);
-        console.log(playerSorted[i][1]._SORTKEY);
-        leaderboardScore.innerHTML = playerSorted[i][1].wins;
-        document.getElementById("leaderboard"+_GAME).append(leaderboardRow,leaderboardName,leaderboardScore);
-
-}
+            leaderboardName.innerHTML = displayName;
+            console.log(_SORTKEY);
+            console.log(playerSorted[i][1]);
+            console.log(playerSorted[i][1]._SORTKEY);
+            leaderboardScore.innerHTML = playerSorted[i][1].wins;
+            document.getElementById("leaderboard"+_GAME).append(leaderboardRow,leaderboardName,leaderboardScore);
+        }
+    }catch{
+        for (let i = 0; i<10; i++){            
+            let leaderboardRow = document.createElement('tr');
+            let leaderboardName = document.createElement('td');
+            let leaderboardScore = document.createElement('td');
+            leaderboardName.innerHTML = "server is offline at the moment.";
+            document.getElementById("leaderboard"+_GAME).append(leaderboardRow,leaderboardName,leaderboardScore);
+    }
+    
+    }
+    document.getElementById("leaderboard"+_GAME).style = "display:inline-block";
+    document.getElementById("playButton"+_GAME).style = "display:inline-block";
 }
