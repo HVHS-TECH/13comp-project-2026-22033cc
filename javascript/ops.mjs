@@ -166,8 +166,8 @@ async function op_createLobby(_UID,_GAME){
                     challenger_score:0,
                     rematch: false,
                     tie:false,
-                    round_winner:"none"
-
+                    round_winner:"none",
+                    round_winner_position:"none"
                 }
                 const LOBBY_PATH = "/lobbies/"+_GAME+"/"+uuid;
                 fb_writeRecord(LOBBY_PATH,LOBBY_SETUP);

@@ -142,15 +142,18 @@ async function PSR_hostGameFlow(_DATA){
         }
     }else if (gameState == "waiting"){
         //checking if someone won.
-        console.log
-        if ((_DATA.challenger_score == 3 ||_DATA.host_score == 3)&& position == "host"){
+        const CHALLENGER_SCORE = _DATA.challenger_score;
+        console.log("challenger:"+CHALLENGER_SCORE);
+        const HOST_SCORE = _DATA.host_score;
+        console.log("host"+HOST_SCORE);
+        /*if ((_DATA.challenger_score == 3 ||_DATA.host_score == 3)&& position == "host"){
             gameState = "end";
             console.log("someone won!");
             PSR_endgame(_DATA);
         }else if ((_DATA.challenger_score == 3 ||_DATA.host_score == 3)&& position == "challenger");{
             gameState = "end";
             console.log("someone Won!")
-        } 
+        }*/ 
         console.log("waiting for next round...");
         PSR_nextRound(_DATA); 
     }else if (gameState == "waiting"&&_DATA.rematch == true){
@@ -227,13 +230,23 @@ async function PSR_hostCalculate(_DATA){
         const HOST_SCORE = LOBBY_DATA.host_score + 1;
         const HOST_NAME = LOBBY_DATA.host_display_name;
         console.log(HOST_SCORE);
-        await fb_updateRecord(lobbyPath,{host_score:HOST_SCORE,round_winner:HOST_NAME});
+        //update the lobby that host won, and their name, and increasing their score.
+        await fb_updateRecord(lobbyPath,{
+            host_score:HOST_SCORE,
+            round_winner:HOST_NAME,
+            round_winner_position:"host",
+        });
     }else{
         console.log("Challenger Won!");
         gameState = "waiting";
         const CHALLENGER_SCORE = LOBBY_DATA.challenger_score + 1;
         const CHALLENGER_NAME = LOBBY_DATA.challenger_display_name;
-        await fb_updateRecord(lobbyPath,{challenger_score:CHALLENGER_SCORE,round_winner:CHALLENGER_NAME});
+        //update the lobby that challenger won, their name, and increasing their score
+        await fb_updateRecord(lobbyPath,{
+            challenger_score:CHALLENGER_SCORE,
+            round_winner:CHALLENGER_NAME,
+            round_winner_position:"challenger"
+        });
     }
     round = round + 1;
 }
@@ -278,12 +291,14 @@ async function PSR_nextRound(_DATA){
     let result = document.createElement('p');
     result.id = "result";
     if (_DATA.tie == true){
-        result.innerHTML = "It was a Tie!"
+        result.innerHTML = "It was a Tie!";
     }else{
-        let winnerGuess = _DATA.round_winner + "_guess";
-        console.log(winnerGuess);
-        winnerGuess = _DATA[winnerGuess];
-        result.innerHTML = _DATA.round_winner + " won this round by picking " +winnerGuess + "!"
+        console.log(_DATA);
+        const WINNER_GUESS_FIELD = _DATA.round_winner_position + "_guess";
+        console.log(WINNER_GUESS_FIELD);
+        const WINNER_GUESS = _DATA[WINNER_GUESS_FIELD];
+        console.log(WINNER_GUESS);
+        result.innerHTML = _DATA.round_winner + " won this round by picking " + WINNER_GUESS + "!"
     }
     document.getElementById("playerScreen").appendChild(result);
     
