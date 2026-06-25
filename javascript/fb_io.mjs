@@ -386,7 +386,8 @@ async function fb_killRecord(){
             fb_writeRecord("/playerStatsPSR/"+userUid,{
                 wins:0,
                 losses:0,
-                winRate:0
+                current_win_streak:0,
+                longest_win_streak:0
             })
         document.getElementById("form").style = "display:none";
         document.getElementById("playertalk").innerHTML = "account successfully created! redirecting to menu..."

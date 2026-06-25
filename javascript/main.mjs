@@ -51,9 +51,8 @@ import {op_checkProfile,op_loginCheck,op_createLobby
     sessionStorage.setItem("creatingAccount",false);
     let currentPage = window.location.href;
     console.log(currentPage);
-    if ((document.URL.includes("index.html"))){
     fb_detectLoginChange();    
-    }
+    
     
 /*if (currentPage == "http://127.0.0.1:5500/"||currentPage == "https://hvhs-tech.github.io/13comp-project-2026-22033cc/"){
     console.log("on index.html");

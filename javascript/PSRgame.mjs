@@ -379,7 +379,7 @@ async function PSR_gameFinish(_DATA){
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     const HOST_SCORE = _DATA.host_score;
     const CHALLENGER_SCORE = _DATA.challenger_score;
-    const USER_PATH = "playerStatsPSR/"+userUid+"/wins"
+    const USER_PATH = "playerStatsPSR/"+userUid+"/"
         console.log ("host won!");
         if ((HOST_SCORE == 3 && position == "host")||(CHALLENGER_SCORE == 3 && position == "challenger")){
             //tell user that they won
@@ -389,9 +389,10 @@ async function PSR_gameFinish(_DATA){
             document.getElementById("playerScreen").appendChild(result);   
             
             //update their score in the database. 
-            let CurrentWins = await fb_readRecord(USER_PATH,"wins");
+            let currentStats = await fb_readRecord(USER_PATH);
+            console.log(currentStats);
             fb_updateRecord(USER_PATH,{
-                wins:CurrentWins + 1
+                wins: + 1
             })
         }else{
              //tell user that they lost
@@ -401,8 +402,9 @@ async function PSR_gameFinish(_DATA){
             document.getElementById("playerScreen").appendChild(result);  
             //update their score in the database. 
             let CurrentLoss = await fb_readRecord(USER_PATH,"losses");
-            fb_updateRecord(USER_WINS_PATH,{
-                losses:CurrentWins + 1
-            })
+            fb_updateRecord(USER_PATH,{
+                losses:CurrentWins + 1,
+                current_win_streak:0
+            });
         }
 }
