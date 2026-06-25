@@ -105,7 +105,7 @@ async function fb_authenticate() {
         userPhoto = result.user.photoURL;
         const REF = ref(fb_Db, "uid");
         //see if they have logged in before:
-        let resultName = await fb_readRecord("playerStatsUNI/"+userUid+"/","display_name");
+        let resultName = await fb_readRecord("playerStats/UNI/"+userUid+"/","display_name");
         console.log("their first name is "+resultName);
         console.log(resultName);
         sessionStorage.setItem("NAME",resultName);
@@ -263,9 +263,10 @@ async function fb_read_sorted(_PATH, _SORTKEY){
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
 
     const SORTKEY = _SORTKEY;
-    console.log(SORTKEY)
+    console.log(_SORTKEY)
+    console.log(_PATH);
     return new Promise((resolve, reject) => {
-        const dbReference = query(ref(fb_Db,_PATH), orderByChild(SORTKEY), limitToFirst(100))
+        const dbReference = query(ref(fb_Db,_PATH), orderByChild(_SORTKEY), limitToFirst(100))
         get(dbReference).then((snapshot) => {
             var fb_data = snapshot.val();
             console.log(fb_data);
@@ -371,7 +372,7 @@ async function fb_killRecord(){
     //check if they pass all validation (valdiationClear equals 0 if there is no issues)
     if (validationclear == 0){
             //creates nodes for display name, email, age, and photo URL (universal stats)        
-            fb_writeRecord("/playerStatsUNI/"+userUid, {
+            fb_writeRecord("/playerStats/UNI/"+userUid, {
                 display_name: userName,
                 email: userEmail,
                 photo_URL: userPhoto,
@@ -383,7 +384,7 @@ async function fb_killRecord(){
                 isadmin:false,
             })
             //create nodes for playerstatsPSR
-            fb_writeRecord("/playerStatsPSR/"+userUid,{
+            fb_writeRecord("/playerStats/PSR/"+userUid,{
                 wins:0,
                 losses:0,
                 current_win_streak:0,

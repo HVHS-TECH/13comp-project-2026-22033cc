@@ -48,7 +48,7 @@ async function op_checkProfile(_UID){
     console.log('%c op_checkProfile running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     //check
-    let profile = await fb_readAll("playerStatsUNI/"+_UID+"/")
+    let profile = await fb_readAll("playerStats/UNI/"+_UID+"/")
     console.log(profile);
     //puts all of the profile in sessionStorage if hasn't been done already
     console.log(sessionStorage.getItem('entireProfile')==undefined);
@@ -68,7 +68,7 @@ async function op_checkStats(_UID,_GAME){
     console.log('%c op_checkStats running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     //check
-    let profile = await fb_readAll("playerStats"+_GAME+"/"+_UID+"/","display_name")
+    let profile = await fb_readAll("playerStats/"+_GAME+"/"+_UID+"/","display_name")
     console.log(profile);
     return profile;
 }
@@ -81,7 +81,7 @@ async function op_loginCheck(_UID){
     console.log('%c op_loginCheck running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     console.log(_UID);
-    let userName = await fb_readRecord("playerStatsUNI/"+_UID+"/","display_name");
+    let userName = await fb_readRecord("playerStats/UNI/"+_UID+"/","display_name");
     console.log("user Name:"+userName);
     let creatingAccountCheck = sessionStorage.getItem("creatingAccount");
     console.log(creatingAccountCheck);
@@ -263,15 +263,27 @@ async function op_createLeaderboard(_GAME,_SORTKEY,_CALLBACK){
     console.log(_GAME);
     console.log(_SORTKEY);
     const SORT_KEY = _SORTKEY
-    // run Read sorted on the score node to find ordered ammount. 
-    let playerSorted = await fb_read_sorted("/playerStats"+_GAME+"/",_SORTKEY);
+    // run Read sorted on the score node to find ordered amount. 
+    //let playerSorted = await fb_read_sorted("/playerStats/"+_GAME+"/",_SORTKEY);
+    //let playerSorted = await fb_readRecord("/playerStats/","PSR/");
+    
+    // read all of the lobbies within the chosen game
+    const PLAYERS = await fb_readRecord("/playerStats/",_GAME);
+    console.log(PLAYERS)
+    // Iterate all of the users stats to find the top player
+    let playerSorted = Object.entries(PLAYERS).sort((a,b)=>{
+        return b[1].wins - a[1].wins
+    });
+    console.log(playerSorted);
+    playerSorted = playerSorted.splice(0,10); 
+    
     console.log("hello")
     console.log(playerSorted);
     try{
         for (let i = 0; i<10; i++){
             const UID = playerSorted[i][0]
             console.log(UID);
-            let displayName = await fb_readRecord("/playerStatsUNI/"+UID+"/","display_name");
+            let displayName = await fb_readRecord("/playerStats/UNI/"+UID+"/","display_name");
             console.log(displayName);
             let leaderboardRow = document.createElement('tr');
             let leaderboardName = document.createElement('td');
