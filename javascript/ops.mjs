@@ -97,7 +97,6 @@ async function op_loginCheck(_UID){
 
         //create button to continue with accound
         let loginChoiceYes =document.createElement('button');
-        loginChoiceYes.class = "Button";
         loginChoiceYes.onclick = function op_signInYes(){
             console.log('%c op_signInYes running ',
                         'color: ' + COL_C + '; background-color: ' + COL_B + ';');
@@ -171,6 +170,7 @@ async function op_createLobby(_UID,_GAME){
                 }
                 const LOBBY_PATH = "/lobbies/"+_GAME+"/"+uuid;
                 fb_writeRecord(LOBBY_PATH,LOBBY_SETUP);
+                //
                 if (_GAME == "PSR"){
                     sessionStorage.setItem('lobby',uuid);
                     sessionStorage.setItem('position','host');

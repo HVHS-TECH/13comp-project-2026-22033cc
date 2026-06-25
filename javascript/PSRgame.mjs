@@ -146,6 +146,9 @@ async function PSR_hostGameFlow(_DATA){
         console.log("challenger:"+CHALLENGER_SCORE);
         const HOST_SCORE = _DATA.host_score;
         console.log("host"+HOST_SCORE);
+        if (CHALLENGER_SCORE == 3||HOST_SCORE == 3){
+            gameState = "end";
+        }
         /*if ((_DATA.challenger_score == 3 ||_DATA.host_score == 3)&& position == "host"){
             gameState = "end";
             console.log("someone won!");
@@ -181,6 +184,7 @@ async function PSR_startRound(){
         button.id = "button"+PSR[i];
         button.onclick = () => PSR_selectAnswer(PSR[i]);
         button.innerHTML = PSR[i];
+        button.classList.add("Button")
         document. getElementById("playerScreen").appendChild(button);
 
     }
@@ -201,9 +205,10 @@ async function PSR_selectAnswer(_ANSWER){
         document.getElementById("button"+PSR[i]).remove();
     }
     //creates text for waiting
-    let waitingTextElement = document.createElement('span');
+    let waitingTextElement = document.createElement('p');
     waitingTextElement.id = "waitingTextElement";
-    waitingTextElement.innerHTML = "you selected" + _ANSWER + "."+ waitingText.gameState;
+    waitingTextElement.innerHTML = "you selected " + _ANSWER + ".";
+    document.getElementById("playerScreen").append(waitingTextElement);
     //defines which node to update;
     const GUESS_KEY = position +"_guess"
     await fb_updateRecord(lobbyPath,{[GUESS_KEY]:_ANSWER})
@@ -258,6 +263,7 @@ async function PSR_Rematch(_DATA){
     console.log(_DATA);
     let rematchButton = document.createElement('button');
     rematchButton.id = "rematchButton";
+    rematchButton.classList.add("Button");
     rematchButton.onclick = () => {
         console.log("clicked rematch");
         fb_updateRecord(lobbyPath, {
@@ -309,6 +315,7 @@ async function PSR_nextRound(_DATA){
         let nextRoundButton = document.createElement('button');
         nextRoundButton.id = "nextRoundButton";
         nextRoundButton.innerHTML = "Onto the Next round!"
+        nextRoundButton.classList.add("Button");
         nextRoundButton.onclick = () => {
             console.log("clicked rematch");
             document.getElementById("nextRoundButton").style = "display:none"; 
@@ -331,27 +338,71 @@ function PSR_ScoreChanged(_SCORE){
     console.log(_SCORE);
 
 }
-
+/*
 async function PSR_endgame(_DATA,_CALLBACK){
     console.log('%c end of game ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     const HOST_SCORE = _DATA.host_score;
     const CHALLENGER_SCORE = _DATA.challenger_score;
+    const USER_PATH = "playerStatsPSR/"+userUid+"/wins"
     if (HOST_SCORE == 3){
         console.log ("host won!");
-        if (opponent == "host"){
-            console.log("put on opponent side");
+        if ((HOST_SCORE = 3 && position == "host")||(CHALLENGER_SCORE == 3 && position == "challenger")){
+            //tell user that they won
+            let result = document.createElement('p');
+            result.id = "result"
+            result.innerHTML = "You won! Adding win to your profile";
+            document.getElementById("playerScreen").appendChild(result);   
+            
+            //update their score in the database. 
+            let CurrentWins = await fb_readRecord(USER_PATH,"wins");
+            fb_updateRecord(USER_PATH,{
+                wins:CurrentWins + 1
+            })
         }else{
-            console.log("put on player side");
+             //tell user that they lost
+            let winnerresult = document.createElement('p');
+            result.id = "result"
+            result.innerHTML = "You lost... Adding loss to your profile";
+            document.getElementById("playerScreen").appendChild(result);  
+            //update their score in the database. 
+            let CurrentLoss = await fb_readRecord(USER_PATH,"losses");
+            fb_updateRecord(USER_WINS_PATH,{
+                losses:CurrentWins + 1
+            })
         }
-    }else if (CHALLENGER_SCORE ==3){
-        console.log("Challenger won!");
-    }
 }
+*/
 
-function PSR_gameFinish(_DATA){
+async function PSR_gameFinish(_DATA){
     console.log('%c game finish running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
-
-
+    const HOST_SCORE = _DATA.host_score;
+    const CHALLENGER_SCORE = _DATA.challenger_score;
+    const USER_PATH = "playerStatsPSR/"+userUid+"/wins"
+        console.log ("host won!");
+        if ((HOST_SCORE == 3 && position == "host")||(CHALLENGER_SCORE == 3 && position == "challenger")){
+            //tell user that they won
+            let result = document.createElement('p');
+            result.id = "result"
+            result.innerHTML = "You won! Adding win to your profile";
+            document.getElementById("playerScreen").appendChild(result);   
+            
+            //update their score in the database. 
+            let CurrentWins = await fb_readRecord(USER_PATH,"wins");
+            fb_updateRecord(USER_PATH,{
+                wins:CurrentWins + 1
+            })
+        }else{
+             //tell user that they lost
+            let result = document.createElement('p');
+            result.id = "result"
+            result.innerHTML = "You lost... Adding loss to your profile";
+            document.getElementById("playerScreen").appendChild(result);  
+            //update their score in the database. 
+            let CurrentLoss = await fb_readRecord(USER_PATH,"losses");
+            fb_updateRecord(USER_WINS_PATH,{
+                losses:CurrentWins + 1
+            })
+        }
 }
