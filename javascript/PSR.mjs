@@ -73,6 +73,9 @@ console.log("button fullly created.");
 // create buttons to join lobby
 op_readOpenLobbies("PSR",( (_LOBBIES) => {
     console.log(_LOBBIES);
+    let tBody = document.getElementById("lobbyJoin")
+    console.log(tBody)
+    tBody.replaceChildren()
     for (let i = 0; i < _LOBBIES.length;i++){
         console.log(i);
         console.log(_LOBBIES[i]);
@@ -97,7 +100,6 @@ op_readOpenLobbies("PSR",( (_LOBBIES) => {
             console.log(lobbyRow);
             document.getElementById("lobbyJoin").append(lobbyRow,lobbyName,lobbyButton1);
     }
-    
     }));
 
   

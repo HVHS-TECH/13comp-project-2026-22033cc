@@ -342,33 +342,43 @@ function PSR_ScoreChanged(_SCORE){
 async function PSR_gameFinish(_DATA){
     console.log('%c game finish running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    //grab all things that we need to tell users and their stats.
     const HOST_SCORE = _DATA.host_score;
     const CHALLENGER_SCORE = _DATA.challenger_score;
-    const USER_PATH = "playerStats/PSR/"+userUid+"/"
+    let playerStats = await op_checkStats(userUid,"PSR");
+    const USER_PATH = "/playerStats/PSR/"+userUid+"/"
         console.log ("host won!");
         if ((HOST_SCORE == 3 && position == "host")||(CHALLENGER_SCORE == 3 && position == "challenger")){
             //tell user that they won
             let result = document.createElement('p');
             result.id = "result"
             result.innerHTML = "You won! Adding win to your profile";
-            document.getElementById("playerScreen").appendChild(result);   
-            
-            //update their score in the database. 
-            let currentStats = await fb_readRecord(USER_PATH);
-            console.log(currentStats);
-            fb_updateRecord(USER_PATH,{
-                wins: + 1
-            })
+            document.getElementById("playerScreen").appendChild(result);
+            //check if they are still their longest win streak
+            if (playerStats.current_win_streak == playerStats.longest_win_streak){
+                // update their record and their longest win streak
+                fb_updateRecord(USER_PATH,{
+                    wins:playerStats.wins+1,
+                    current_win_streak:playerStats.current_win_streak+1,
+                    longest_win_streak:playerStats.current_win_streak +1
+                })
+            }else{
+                // update their record
+                fb_updateRecord(USER_PATH,{
+                    wins:playerStats.wins+1,
+                    current_win_streak:playerStats.current_win_streak+1,
+                })
+            }
         }else{
              //tell user that they lost
             let result = document.createElement('p');
             result.id = "result"
             result.innerHTML = "You lost... Adding loss to your profile";
             document.getElementById("playerScreen").appendChild(result);  
-            //update their score in the database. 
-            let CurrentLoss = await fb_readRecord(USER_PATH,"losses");
+            
+            //update their record in the database
             fb_updateRecord(USER_PATH,{
-                losses:CurrentWins + 1,
+                losses:playerStats.losses+1,
                 current_win_streak:0
             });
         }
