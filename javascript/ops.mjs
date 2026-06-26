@@ -91,6 +91,7 @@ async function op_loginCheck(_UID){
         document.getElementById("login").style = "display:inline-block";
 
     } else if (creatingAccountCheck == "false"){ 
+        document.getElementById("login").style = "display:none";
         // create "do you want to sign in " element 
         let loginContinue = document.createElement('p');
         loginContinue.innerHTML = "you are currently signed in as "+userName+", would you like to continue with this account?";

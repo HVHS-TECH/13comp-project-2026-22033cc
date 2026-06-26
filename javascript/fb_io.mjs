@@ -320,7 +320,7 @@ async function fb_killRecord(){
     let userName = document.getElementById('userName').value;
     console.log("username"+userName);
     let userAge = document.getElementById("userAge").value;
-    console.log("userage"+userAge);
+    console.log("userAge"+userAge);
     let userCol = document.getElementById("userCol").value;
     console.log("usercol"+userCol);
     let userMovie = document.getElementById("userMovie").value;
@@ -432,8 +432,10 @@ console.log('%c Fb_detectLoginChange ',
             window.location.assign("index.html");
             }
         } else{
+            if (document.URL.includes("index.html")){
             console.log("not firstLanding");
             op_loginCheck(userUid)
+            }
         }
     }
     

@@ -74,7 +74,6 @@ console.log("button fullly created.");
 op_readOpenLobbies("PSR",( (_LOBBIES) => {
     console.log(_LOBBIES);
     let tBody = document.getElementById("lobbyJoin")
-    console.log(tBody)
     tBody.replaceChildren()
     for (let i = 0; i < _LOBBIES.length;i++){
         console.log(i);

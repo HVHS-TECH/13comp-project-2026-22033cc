@@ -51,13 +51,15 @@ import {op_checkProfile,op_loginCheck,op_createLobby
     sessionStorage.setItem("creatingAccount",false);
     let currentPage = window.location.href;
     console.log(currentPage);
-    fb_detectLoginChange();    
     
-    
-/*if (currentPage == "http://127.0.0.1:5500/"||currentPage == "https://hvhs-tech.github.io/13comp-project-2026-22033cc/"){
-    console.log("on index.html");
-}else{
-    console.log("not on index.html");
-    let userUid = sessionStorage.getItem("UID");
-    console.log("UID out yet?"+userUid);     
-}*/
+    let firstLand = sessionStorage.getItem("firstLanding");
+    if (firstLand == null){
+        if (document.URL.includes("index.html")){
+            console.log("on index.html");
+            document.getElementById("login").style = "display:inline-block"
+        }else{
+            console.log("im on the wrong website! redirecting to index");
+            window.location.assign("index.html");
+        }
+    }
+    fb_detectLoginChange();

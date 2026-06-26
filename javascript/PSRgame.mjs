@@ -311,6 +311,7 @@ async function PSR_nextRound(_DATA){
     // button to confirm next round.    
     if (gameState == "end"){
         PSR_gameFinish(_DATA);
+        round = round
     } else {
         let nextRoundButton = document.createElement('button');
         nextRoundButton.id = "nextRoundButton";
@@ -382,4 +383,5 @@ async function PSR_gameFinish(_DATA){
                 current_win_streak:0
             });
         }
+        gameState =
 }
