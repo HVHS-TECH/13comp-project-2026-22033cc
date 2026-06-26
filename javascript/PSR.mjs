@@ -32,7 +32,7 @@ import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeR
     window.fb_createAccount = fb_createAccount;
     window.returnUserUid = returnUserUid;
 //Import all functions required from ops.mjs
-import { op_checkProfile, op_checkStats, op_createLobby,op_readOpenLobbies,op_joinLobby
+import { op_checkProfile, op_checkStats, op_createLobby,op_readOpenLobbies,op_joinLobby, op_createLeaderboard
  }
     from './ops.mjs';
     window.op_checkProfile = op_checkProfile;
@@ -59,8 +59,8 @@ document.getElementById("userProfileName").innerHTML = "user name: "+userProfile
 document.getElementById("userProfileAge").innerHTML = "age: "+userProfile.age
 document.getElementById("userProfileWins").innerHTML = "Wins: "+userStats.wins
 document.getElementById("userProfileLosses").innerHTML = "Losses: "+userStats.losses
-document.getElementById("userProfileStreak1").innerHTML = "Current win streak: "+userStats.winStreakCurrent
-document.getElementById("userProfileStreak2").innerHTML = "Longest win streak: "+userStats.winStreakLong
+document.getElementById("userProfileStreak1").innerHTML = "Current win streak: "+userStats.current_win_streak
+document.getElementById("userProfileStreak2").innerHTML = "Longest win streak: "+userStats.longest_win_streak
 
 // create buttons to create lobby
 
@@ -81,6 +81,7 @@ op_readOpenLobbies("PSR",( (_LOBBIES) => {
             console.log(_LOBBIES[i][1].host_display_name);
             lobbyName.innerHTML = _LOBBIES[i][1].host_display_name;
             let lobbyButton2 = document.createElement('button');
+            lobbyButton2.classList.add("Button")
             const LOBBYUUID = _LOBBIES[i][0];
             console.log(LOBBYUUID);
             lobbyButton2.onclick = ()=> op_joinLobby("PSR",LOBBYUUID,psr_Redirect);    
@@ -95,11 +96,10 @@ op_readOpenLobbies("PSR",( (_LOBBIES) => {
             //lobbyRow = document.body.append(lobbyName, lobbyButton1);
             console.log(lobbyRow);
             document.getElementById("lobbyJoin").append(lobbyRow,lobbyName,lobbyButton1);
-            
-    
     }
     
     }));
+
   
 
 function psr_Redirect(_GAME,_LOBBYUUID){

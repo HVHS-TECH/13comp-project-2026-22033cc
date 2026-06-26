@@ -16,7 +16,8 @@ const COL_B = '#f542c8';
 // Import all the constants & functions required from fb_io module
 
 import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeRecord,
-    fb_readRecord,fb_readAll, fb_updateRecord, fb_read_sorted,fb_createAccount,returnUserUid
+    fb_readRecord,fb_readAll, fb_updateRecord, fb_read_sorted,fb_createAccount,returnUserUid,
+    fb_valueChanged
  }
     from './fb_io.mjs';
     window.fb_initialise = fb_initialise;
@@ -217,17 +218,19 @@ async function op_createPSRScreen(_NAME){
 async function op_readOpenLobbies(_GAME,_CALLBACK){
     console.log('%c op_readOpenLobbies_running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';')
-    
-    // read all of the lobbies within the chosen game
-    const LOBBIES = await fb_readRecord("lobbies/",_GAME);
-    // check the lobby_open node to see if its open, and convert it into an array
-    const OPEN_LOBBIES = Object.entries(LOBBIES).filter((_LOBBYCHECKED) => {
-        return _LOBBYCHECKED[1].lobby_open == true;
+    let openLobbies = "pizzas";
+    //put listener on the entire lobbies node. Whenever it runs, check if its open, then converts into an array
+    fb_valueChanged("lobbies/"+_GAME+"/",null,(LOBBIES)=> {
+        console.log("lobby status has changed!")
+        openLobbies = Object.entries(LOBBIES).filter((_LOBBYCHECKED) => {
+            return _LOBBYCHECKED[1].lobby_open == true;
+        })
+        console.log(openLobbies);
+        _CALLBACK(openLobbies);
     })
-    console.log(OPEN_LOBBIES);
     
-    _CALLBACK(OPEN_LOBBIES);
 }
+    
 /***************************************************************
 // function op_joinLobby(_GAME,LOBBY)
 // called when user clicks "join" button on at GTN.HTML 
@@ -263,22 +266,11 @@ async function op_createLeaderboard(_GAME,_SORTKEY,_CALLBACK){
     console.log(_GAME);
     console.log(_SORTKEY);
     const SORT_KEY = _SORTKEY
+    
     // run Read sorted on the score node to find ordered amount. 
-    //let playerSorted = await fb_read_sorted("/playerStats/"+_GAME+"/",_SORTKEY);
-    //let playerSorted = await fb_readRecord("/playerStats/","PSR/");
-    
+    let playerSorted = await fb_read_sorted("/playerStats/"+_GAME+"/",_SORTKEY);
+    console.log(playerSorted);
     // read all of the lobbies within the chosen game
-    const PLAYERS = await fb_readRecord("/playerStats/",_GAME);
-    console.log(PLAYERS)
-    // Iterate all of the users stats to find the top player
-    let playerSorted = Object.entries(PLAYERS).sort((a,b)=>{
-        return b[1].wins - a[1].wins
-    });
-    console.log(playerSorted);
-    playerSorted = playerSorted.splice(0,10); 
-    
-    console.log("hello")
-    console.log(playerSorted);
     try{
         for (let i = 0; i<10; i++){
             const UID = playerSorted[i][0]

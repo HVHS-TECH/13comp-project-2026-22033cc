@@ -72,7 +72,7 @@ if (position == "host"){
     opponent = "host";
     console.log(gameState);
     gameState = "round";
-    fb_valueChanged(lobbyPath,PSR_hostGameFlow);
+    fb_valueChanged(lobbyPath,null,PSR_hostGameFlow);
     
 }
 /***************************************************************
@@ -84,7 +84,7 @@ async function PSR_challengerWait(){
     console.log('%c PSR_challengerWait running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';')
     gameState = "waitingJoin";
-    fb_valueChanged(lobbyPath,PSR_hostGameFlow);
+    fb_valueChanged(lobbyPath,null,PSR_hostGameFlow);
 }
 /***************************************************************
 // function PSR_gameFlow (_DATA)
@@ -107,8 +107,8 @@ async function PSR_hostGameFlow(_DATA){
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
         const CHALLENGER_SCORE_PATH = lobbyPath + "/challenger_score";
         const HOST_SCORE_PATH = lobbyPath + "/host_score";
-        fb_valueChanged(CHALLENGER_SCORE_PATH,PSR_ScoreChanged);
-        fb_valueChanged(HOST_SCORE_PATH,PSR_ScoreChanged);
+        fb_valueChanged(CHALLENGER_SCORE_PATH,null,PSR_ScoreChanged);
+        fb_valueChanged(HOST_SCORE_PATH,null,PSR_ScoreChanged);
         document.getElementById("playerTalk").innerHTML = "A challenger has appeared! Their name is " +opponentName;
         gameState = "round"
     }

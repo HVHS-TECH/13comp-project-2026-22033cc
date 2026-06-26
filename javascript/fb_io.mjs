@@ -457,13 +457,13 @@ async function returnUserUid(){
 //
 //
  ****************************************************************/
-    async function fb_valueChanged(_PATH,_CALLBACK,_ORDERKEY){
+    async function fb_valueChanged(_PATH,_ORDERKEY,_CALLBACK,){
         console.log('%c fb_valueChanged ',
                     'color: ' + COL_C + '; background-color: ' + COL_B + ';');
         console.log(_PATH);
         console.log(_ORDERKEY);
         let dbQuery; 
-        if (_ORDERKEY == null||_ORDERKEY == undefined){
+        if (_ORDERKEY == null){
             dbQuery = ref (fb_Db, _PATH);
             console.log(dbQuery);
         }else{
@@ -472,7 +472,7 @@ async function returnUserUid(){
         console.log(dbQuery);
         onValue(dbQuery,(snapshot)=>{
             const DATA = snapshot.val();
-
+            console.log(DATA);
             if (DATA != null){
                 _CALLBACK(DATA);
             }
