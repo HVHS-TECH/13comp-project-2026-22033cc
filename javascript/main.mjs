@@ -62,4 +62,15 @@ import {op_checkProfile,op_loginCheck,op_createLobby
             window.location.assign("index.html");
         }
     }
+    let isAdmin = await fb_readRecord("/playerStats/UNI/"+userUid+"/","isadmin");
     fb_detectLoginChange();
+    if (isAdmin == true){
+        let adminPageButton = document.createElement("button");
+        adminPageButton.onclick = () =>{
+            window.location.assign("admin.html");
+        };
+        adminPageButton.innerHTML = "admin Page";
+        adminPageButton.classList.add("Button");
+        document.getElementById("navBar").appendChild(adminPageButton);
+
+    }

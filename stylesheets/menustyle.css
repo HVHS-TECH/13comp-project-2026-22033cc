@@ -1,13 +1,13 @@
 #menuGrid{
     display: grid;
     grid-template-columns: 30% 30% 30%;
-    padding-left:10%;
-    margin-top:10%;
+    margin-top:3%
 }
 .menuThumbnail{
     padding: 10px 15px;
     border-style:solid;
-    margin: 3%;
+    border-color:#3B562F;
+    margin-right: 3%;
 }
 #navBar{
     display:float;

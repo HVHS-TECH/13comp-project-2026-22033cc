@@ -44,19 +44,19 @@ import { op_checkProfile, op_checkStats, op_createLobby,op_readOpenLobbies,op_jo
 let fb_Db = sessionStorage.getItem("FBDB");
 let userUid = sessionStorage.getItem("UID");
 let userProfile = await op_checkProfile(userUid);
-let userStats = await op_checkStats(userUid,game);
-console.log(userStats.wins);
+let userStats = await op_checkStats(userUid,game);;
 
 //create profile page 
 let profileImage = document.createElement('img');
 profileImage.src = userProfile.photo_URL;
 profileImage.alt = "profile picture";
-profileImage.style = "width: 50px; height: 50px"
+profileImage.id = "userProfileIMG";
+profileImage.classList.add("profileImage");
+profileImage.style.borderColor = userProfile.fav_colour;
 document.getElementById("userProfileImage").appendChild(profileImage);
 sessionStorage.setItem("userName",userProfile.display_name);
 
-document.getElementById("userProfileName").innerHTML = "user name: "+userProfile.display_name
-document.getElementById("userProfileAge").innerHTML = "age: "+userProfile.age
+document.getElementById("userProfileName").innerHTML = "User name: "+userProfile.display_name
 document.getElementById("userProfileWins").innerHTML = "Wins: "+userStats.wins
 document.getElementById("userProfileLosses").innerHTML = "Losses: "+userStats.losses
 document.getElementById("userProfileStreak1").innerHTML = "Current win streak: "+userStats.current_win_streak
@@ -76,29 +76,22 @@ op_readOpenLobbies("PSR",( (_LOBBIES) => {
     console.log(_LOBBIES);
     let tBody = document.getElementById("lobbyJoin")
     tBody.replaceChildren()
+    //create buttons to join lobby
     for (let i = 0; i < _LOBBIES.length;i++){
-        console.log(i);
-        console.log(_LOBBIES[i]);
-            let lobbyRow = document.createElement('tr');
-            let lobbyName = document.createElement('td');
-            console.log(_LOBBIES[i][1].host_display_name);
-            lobbyName.innerHTML = _LOBBIES[i][1].host_display_name;
-            let lobbyButton2 = document.createElement('button');
-            lobbyButton2.classList.add("Button")
-            const LOBBYUUID = _LOBBIES[i][0];
-            console.log(LOBBYUUID);
-            lobbyButton2.onclick = ()=> op_joinLobby("PSR",LOBBYUUID,psr_Redirect);    
-            lobbyButton2.innerHTML = "Join!";
+        //create Elements 
+        let lobbyRow = document.createElement('tr');
+        let lobbyName = document.createElement('td');
+        let lobbyButton1 = document.createElement('td');
+        let lobbyButton2 = document.createElement('button');
+        //change the insides of these elements to match hosts name and redirect them.
+        lobbyName.innerHTML = _LOBBIES[i][1].host_display_name;
+        lobbyButton2.classList.add("Button")
+        const LOBBYUUID = _LOBBIES[i][0];
+        lobbyButton2.onclick = ()=> op_joinLobby("PSR",LOBBYUUID,psr_Redirect);    
+        lobbyButton2.innerHTML = "Join!";
             
-            console.log(_LOBBIES[i]);
-            let lobbyButton1 = document.createElement('td');
-            lobbyButton1.appendChild(lobbyButton2);
-            console.log(lobbyButton2);
-            console.log(lobbyButton1);
-            console.log(lobbyName);
-            //lobbyRow = document.body.append(lobbyName, lobbyButton1);
-            console.log(lobbyRow);
-            document.getElementById("lobbyJoin").append(lobbyRow,lobbyName,lobbyButton1);
+        lobbyButton1.appendChild(lobbyButton2);
+        document.getElementById("lobbyJoin").append(lobbyRow,lobbyName,lobbyButton1);
     }
     }));
 
