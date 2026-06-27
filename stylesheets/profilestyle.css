@@ -1,0 +1,24 @@
+.triangle{
+    width: 0;
+	height: 0;
+	border-left: 25px solid transparent;
+	border-right: 25px solid transparent;
+	border-bottom: 50px solid #555;
+
+}
+.square{
+    height: 50px;
+    width: 50px;
+}   
+#userProfile{
+    display:grid;
+    grid-template-columns: 15% 50%;
+}
+#userProfileIMG{
+    width: 100%!important;
+    height: 100%!important;
+    object-fit: cover!important;
+}
+#userProfileWords{
+    margin-left:2%
+}

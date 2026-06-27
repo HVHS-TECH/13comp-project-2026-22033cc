@@ -66,6 +66,7 @@ document.getElementById("userProfileStreak2").innerHTML = "Longest win streak: "
 
 let buttonCreateLobby = document.createElement('button');
 buttonCreateLobby.innerHTML = "creating lobby";
+buttonCreateLobby.classList.add("Button");
 buttonCreateLobby.onclick = () => op_createLobby(userUid,game);
 document.getElementById("buttonLobby").appendChild(buttonCreateLobby);
 console.log("button fullly created.");

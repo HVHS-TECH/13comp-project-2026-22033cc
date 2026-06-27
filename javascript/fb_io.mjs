@@ -111,7 +111,8 @@ async function fb_authenticate() {
         sessionStorage.setItem("NAME",resultName);
             //if they haven't, make them choose usernamed
             if (resultName == null){     
-                sessionStorage.setItem("creatingAccount",true);         
+                sessionStorage.setItem("creatingAccount",true);
+                document.getElementById("login").style = "display:none";  
                 document.getElementById("playertalk").innerHTML = "Seems like you haven't made an account yet, "
                 document.getElementById("userCom").style = "display:none";
                 document.getElementById("login").style = "display:none";
@@ -338,7 +339,7 @@ async function fb_killRecord(){
         (userAge == null), //users age is null
         (userAge == ""), // users age is equal to spaces or empty
         (userAge <= 5), // user age is less than 5
-        (userAge >= 120), //users age is more than 120
+        (userAge > 120), //users age is more than 120
         (userMovie.trim() == ""), // user's favourite movie is equal to spaces ore empty.
         (userMovie.length>=180)// user favourite movie is more than 120 characters
 ]

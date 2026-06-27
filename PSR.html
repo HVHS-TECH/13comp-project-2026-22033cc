@@ -5,71 +5,71 @@
     <!--style sheets-->
     <link rel="stylesheet" href="./stylesheets/style.css">
     <link rel="stylesheet" href="./stylesheets/menustyle.css">
+    <link rel="stylesheet" href="./stylesheets/profilecard.css">
+    <!--scripts-->
     <script type="module" src="./javascript/main.mjs"></script>
     <script type="module" src="./javascript/PSR.mjs"></script>
 </head>
 
 <body>
+    <div id="top">
         <div id="navBar"> 
-        <h1>welcome to Paper Scissors Rock-like Game!</h1>
-        <a class= "Button" href="./profile.html">Your profile</a> 
-        <a class = "Button" href="./leaderboard.html">Leaderboards</a>
-        <a class = "Button" href="./menu.html">game menu</a>
+            <h1>welcome to Paper Scissors Rock-like Game!</h1>
+            <a class= "Button" href="./profile.html"  class = "link">Your profile</a> 
+            <a class = "Button" href="./leaderboard.html"  class = "link">Leaderboards</a>
+            <a class = "Button" href="./menu.html"  class = "link">game menu</a>
+        </div>
     </div>
-
-<h1>this is your profile</h1>
-<div id="navBar"> 
-     <a href="./profile.html">Your profile</a> 
-     <a href="./leaderboard.html">Leaderboards</a>
-     <a href="./menu.html">game menu</a>
-</div>
-
-<div id="userProfile">
+<div id = "instructionsAndLobby">
     <h2>Profile</h2>
-    <div id="userProfileImage"></div>
-    <p id = "userProfileName"></p>
-    <p id = "userProfileAge"></p>
-    <p id = "userProfileWins"></p>
-    <p id = "userProfileLosses"></p>
-    <p id = "userProfileStreak1"></p>
-    <p id = "userProfileStreak2"></p>
+    <div id="userProfile">
+        <div id="userProfileImage"></div>
+        <div id="userProfileWords">
+        <span id = "userProfileName"></span><br>
+        <span id = "userProfileAge"></span><br>
+        <span id = "userProfileWins"></span><br>
+        <span id = "userProfileLosses"></span><br>
+        <span id = "userProfileStreak1"></span><br>
+        <span id = "userProfileStreak2"></span><br>
+    </div>
+    </div>
+    <div id ="instructions">
+        <h2>Paper Scissors Rock Game</h2>
+        <span>
+            Paper Scissors Rock-like game is a 2 player multi player game. Two players on two seperate devices go head to head in a thrilling paper scisors rock game.
+            by correctly guessing the one that beats your opponents one. Win a round and get a point!
+        </span><br>
+        <span> First to three wins!</span>
+        <h2>How to play Paper Scissors Rock-like Game </h2>
+        <span> 
+            If by some miracle you don't know how to play Paper Scissors Rock, here is how to play: When a round starts, you choose one out of the three options:
+        </span>
+        <li>
+            <ul>Paper</ul>
+            <ul>Scissors</ul>
+            <ul>Rock</ul>
+        </li>
+        <span> Your opponent will also choose one out of these three. each one beats another, and loses against another.</span>
+        <li>
+            <ul>Paper beats rock</ul>
+            <ul>Scissors cuts Paper</ul>
+            <ul>Rock crushes scissors</ul>
+        </li>
+        <span> if you choose the same, its a tie. Otherwise, whoever wins based on these wins!</span>
+        <div id="buttonLobby"></div>
+    </div>
+    <!-- lobbies here -->
+    <h2> join a lobby</h2>
+    <div>
+        <table id ="lobbyJoin">
+    <tr>
+        <th>Name</th>
+        <th>button </th>
+    </tr>
+    
+    </table>
+    </div>
+    <table id ="leaderboardPSR"></table>
 </div>
-<div id ="instructions">
-    <h2>Paper Scissors Rock Game</h2>
-    <span>
-        Paper Scissors Rock-like game is a 2 player multi player game. Two players on two seperate devices go head to head in a thrilling paper scisors rock game.
-        by correctly guessing the one that beats your opponents one, you win a point. 
-    </span><br>
-    <span> First to three wins!</span>
-    <h2>How to play Paper Scissors Rock-like Game </h2>
-    <span> 
-        If by some miracle you don't know how to play Paper Scissors Rock, here is how to play: When a round starts, you choose one out of the three options:
-    </span>
-    <li>
-        <ul>Paper</ul>
-        <ul>Scissors</ul>
-        <ul>Rock</ul>
-    </li>
-    <span> Your opponent will also choose one out of these three. each one beats another, and loses against another.</span>
-    <li>
-        <ul>Paper beats rock</ul>
-        <ul>Scissors cuts Paper</ul>
-        <ul>Rock crushes scissors</ul>
-    </li>
-    <span> if you choose the same, its a tie. Otherwise, whoever wins based on these wins!</span>
-    <div id="buttonLobby"></div>
-</div>
-<!-- lobbies here -->
-<h2> join a lobby</h2>
-<div>
-    <table id ="lobbyJoin">
-  <tr>
-    <th>Name</th>
-    <th>button </th>
-  </tr>
-  
-</table>
-</div>
-<table id ="leaderboardPSR"></table>
 </body> 
 </html>

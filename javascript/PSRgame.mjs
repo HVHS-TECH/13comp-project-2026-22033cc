@@ -64,7 +64,7 @@ let round = 1;
 document.getElementById("position").innerHTML = "You are the "+position+"!";
 document.getElementById("playerTalk").innerHTML = "Waiting for a challenger..."
 if (position == "host"){
-    console.log("host host ");
+    
     opponent = "challenger"
     PSR_challengerWait();
 } else { 
@@ -383,5 +383,5 @@ async function PSR_gameFinish(_DATA){
                 current_win_streak:0
             });
         }
-        gameState =
+        gameState = "rematch";
 }

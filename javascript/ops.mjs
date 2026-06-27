@@ -130,6 +130,7 @@ async function op_loginCheck(_UID){
         document.getElementById("userCom").appendChild(loginChoiceNo);
     }else{
         console.log("user is creating account");
+        document.getElementById("login").style = "display:none";
     }
 
 }
@@ -150,6 +151,7 @@ async function op_createLobby(_UID,_GAME){
                 const USER_PROFILE = await op_checkProfile(_UID);
                 const USER_NAME = USER_PROFILE.display_name;
                 const USER_PHOTO_URL = USER_PROFILE.photo_URL;
+                const USER_FAV_COL = USER_PROFILE.fav_colour;
     
                 const LOBBY_SETUP = {
                     //lobby stats
@@ -158,11 +160,13 @@ async function op_createLobby(_UID,_GAME){
                     //host stats
                     host_display_name:USER_NAME,
                     host_photo_URL:USER_PHOTO_URL,
+                    host_fav_col:USER_FAV_COL,
                     host_guess:"none",
                     host_score:0,
                     //challenger stats
                     challenger_display_name:"none",
                     challenger_photo_URL:"none",
+                    challenger_fav_col:"none",
                     challenger_guess:"none",
                     challenger_score:0,
                     rematch: false,
@@ -246,12 +250,14 @@ async function op_joinLobby(_GAME,_LOBBYUUID,_CALLBACK){
     const USER_PROFILE = await op_checkProfile(UID);
     const USER_NAME = USER_PROFILE.display_name;
     const USER_PHOTO_URL = USER_PROFILE.photo_URL;
+    const USER_FAV_COL = USER_PROFILE.fav_colour;
     //update lobby
     const path = "/lobbies/"+_GAME+"/"+_LOBBYUUID+"/";
     fb_updateRecord(path,{
         challenger_display_name:USER_NAME,
         challenger_photo_URL:USER_PHOTO_URL,
-        lobby_open:false
+        challenger_fav_col:USER_FAV_COL,
+        lobby_open:false,
     })
     sessionStorage.setItem("position","challenger")
     _CALLBACK(_GAME,_LOBBYUUID);   

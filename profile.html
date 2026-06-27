@@ -5,60 +5,69 @@
     <!--style sheets-->
     <link rel="stylesheet" href="./stylesheets/style.css">
     <link rel="stylesheet" href="./stylesheets/profilestyle.css">
+    <link rel="stylesheet" href="./stylesheets/profilecard.css">
 
 </head>
 
 <body>
-    <h1> this is a profile... this is a profile</h1>
-    <script type="module" src="./javascript/main.mjs"></script>
-    <script type="module" src="./javascript/profile.mjs"></script>
-    <div id="navBar"> 
-        <a href="./profile.html">Your profile</a> 
-        <a href="./leaderboard.html">Leaderboards</a>
-        <a href="./menu.html">game menu</a>
+    <div id="top">
+        <h1> this is a profile... this is a profile</h1>
+        <script type="module" src="./javascript/main.mjs"></script>
+        <script type="module" src="./javascript/profile.mjs"></script>
+        <div id="navBar"> 
+            <a href="./profile.html" class = "Button" class = "link">Your profile</a> 
+            <a href="./leaderboard.html">Leaderboards</a>
+            <a href="./menu.html">game menu</a>
+        </div>
+    </div>
+    <div id = "userProfileFull">
+        <div id = "userStats">
+            <!-- users univeral information-->
+            <h3>User profile</h3>
+            <div id="userProfile">
+            <div id="userProfileImage"></div>
+            <div id = "userProfileWords">
+                <span id = "userProfileName"></span><br>
+                <span id = "userProfileAge"></span><br>
+                <span id = "userProfileMovie"></span><br>
+                <span id = "userProfileHandAndShape"></span><br>
+                <button type="button" class = "Button" onclick="changeInfo()">Change Details </button>
+            </div>
+            </div>
+        </div>
+        <!-- form for changes. -->
+        <div id = "validationError"></div>
+        <form id="form" style="display:none" >
+        <p>please fill in your details!!</p>
+        <!--yoinking information-->
+        <label for="userName">Your Name,Please:</label>
+            <input type="text" id="userName" name="name" /><br>
+        <label for="userAge"> your Age, Please:</label>
+            <input type="number" id="userAge" name="userAge" /><br>
+        <label for="userCol"> your favourite colour?: </label>
+            <input type="color" id="userCol" name="userCol" value="#00000"  /><br>
+        <label for="userMovie"> The title of your favourite movie?:</label>
+            <input type="text" id="userMovie" name="userMovie" /><br>
+        <label for="userHand"> handedness???:</label>
+            <select name="userHand" id="userHand">
+                <option value="right">Right handed</option>
+                <option value="left">Left handed</option>
+                <option value="ambidextrous">Ambidextrous</option>
+            </select><br>
+        <label for="userShape">Trianges or squares?:</label>
+            <select name="userShape" id="userShape">
+                <option value="triangles">Triangles</option>
+                <option value="squares">Squares</option>
+            </select><br>
+        <button type="button" class = "Button" onclick="changeInfoWrite()">Change Details </button> 
+    </form>
+    <div id = "userStatsPSR">
+        <h3>Paper Scissors Rock-like Game </h3>
+        <p id = "userProfileWins"></p>
+        <p id = "userProfileLosses"></p>
+        <p id = "userProfileStreak1"></p>
+        <p id = "userProfileStreak2"></p>
         
     </div>
-    <div id = "userStats">
-        <h4>User profile</h4>
-        <div id="userProfile"><br>
-        <div id="userProfileImage"></div><br>
-        <span id = "userProfileName"></span><br>
-        <span id = "userProfileAge"></span><br>
-        <span id = "userProfileMovie"></span><br>
-        <span id = "userProfileHandAndShape"></span><br>
     </div>
-    <!-- form for changes. -->
-     <div id = "validationError"></div>
-    <form id="form" style="display:none" >
-    <p>please fill in your details!!</p>
-    <!--yoinking information-->
-    <label for="userName">Your Name,Please:</label>
-        <input type="text" id="userName" name="name" /><br>
-    <label for="userAge"> your Age, Please:</label>
-        <input type="number" id="userAge" name="userAge" /><br>
-     <label for="usercol"> your favourite colour?: </label>
-        <input type="color" id="userCol" name="userCol" value="#00000"  /><br>
-    <label for="userMovie"> The title of your favourite movie?:</label>
-        <input type="text" id="userMovie" name="userMovie" /><br>
-    <label for="userHand"> handedness???:</label>
-        <select name="userHand" id="userHand">
-            <option value="right">Right handed</option>
-            <option value="left">Left handed</option>
-            <option value="ambidextrous">Ambidextrous</option>
-        </select><br>
-    <label for="userShape">Trianges or squares?:</label>
-        <select name="userShape" id="userShape">
-            <option value="triangles">Triangles</option>
-            <option value="squares">Squares</option>
-        </select><br>
-    <button type="button" class = "Button" onclick="changeInfoWrite()">Change Details </button> 
-</form>
-
-    <h4>Paper Scissors Rock-like Game </h4>
-    <p id = "userProfileWins"></p>
-    <p id = "userProfileLosses"></p>
-    <p id = "userProfileStreak1"></p>
-    <p id = "userProfileStreak2"></p>
-    
-</div>
 </body>

@@ -7,6 +7,9 @@
     border-style:solid;
     border-color:#3B562F;
 }
+.link{
+    text-decoration: none
+}
 h1,h2,h3{
     font-family: Arial, Helvetica, sans-serif;
     color:#FBFBD4;
@@ -16,13 +19,14 @@ table{
     font-family:Arial, Helvetica, sans-serif;
     color:#FBFBD4;
 }
-p,label,span{
+p,label,span,li{
     font-family: Arial, Helvetica, sans-serif;
-    font-size:15px;
+    font-size:17px;
     color:#FBFBD4;
 }
 body{
   background-color:#6A8C24;
+  padding-left:10%;
 
 }
 input,select{
@@ -34,4 +38,12 @@ input,select{
     border-color:#3B562F;
     padding:5px;;
 }
+.profileImage{
+    width:10%;
+    height:10%;
+    border-style:solid;
 
+}
+#top{
+    padding-top:3%;
+}
