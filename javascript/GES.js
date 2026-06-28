@@ -1,6 +1,9 @@
-import { fb_readRecord } from "./fb_io.mjs";
-import { op_checkStats } from "./ops.mjs";
-
+let hello = "hello World"
+import("./GES_fb.js").then((module) => {
+    console.log(module);
+    module.GES_changeHighScore();
+    console.log(hello);
+});
 console.log("hello! Welcome to my game")
 //all universal constants
     const CANVAS_WIDTH = 500;
@@ -106,7 +109,6 @@ function preload(){
     backgroundPlay = loadImage("./assets/images/GES_assets/green_carton.png");
     backgroundStart = loadImage("./assets/images/GES_assets/normal_carton.png")
     logo = loadImage("./assets/images/GES_assets/titlecard.png");
-    
 }
 /*************************************
  * draw loop
