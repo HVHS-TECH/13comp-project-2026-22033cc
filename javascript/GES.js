@@ -281,7 +281,7 @@ function buttonClicked(){
             text("press WASD to move ", 50, 350);
             text("Press K to fire bullets",50,370);
             text("Press L to fire a bomb",50,390);
-            text( "You are a pink Egg. The other eggs are jealous of your colour!",50,410)
+            text( "You are a GREEN Egg. The other eggs are jealous of your colour!",50,410)
             text("You need to fire back and rack up points!",50,430)
             text("watch out for your power level!",50,450)
         

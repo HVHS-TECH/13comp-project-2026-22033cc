@@ -162,11 +162,8 @@ async function changeInfoWrite(){
                 document.getElementById("userProfileName").innerHTML = "User Name: "+ userName;
                 document.getElementById("userProfileAge").innerHTML = "Age: "+ userAge;
                 document.getElementById("userProfileMovie").innerHTML = "Favourite movie:" +userMovie;
-                if (userHand == "ambidextrous"){
-                    document.getElementById("userProfileHandAndShape").innerHTML = "You are Ambidextrous and part of Team "+ userShape;
-                }else{
-                    document.getElementById("userProfileHandAndShape").innerHTML = "You are " + userHand + "-handed and part of Team "+ userShape;
-                }
+
+                document.getElementById("userProfileHandAndShape").innerHTML = "You are "+ userHand +" and part of Team "+ userShape;
                 profileImage.style.borderColor = userCol ;
                 userProfile = await op_checkProfile(userUid);
                 // Hide form and put back profiles.

@@ -43,6 +43,5 @@ let fb_Db = sessionStorage.getItem("FBDB");
 let userUid = sessionStorage.getItem("UID");
 
 //create leaderboards
-    op_createLeaderboard("PSR","wins",()=>{
-        console.log("callback run");
-    })
+    op_createLeaderboard("PSR","wins",op_createLeaderboard);
+    console.log("created leaderboard PSR")

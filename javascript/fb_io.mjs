@@ -272,7 +272,7 @@ async function fb_read_sorted(_PATH, _SORTKEY){
             var fb_data = snapshot.val();
             console.log(fb_data);
             if (fb_data != null) {
-            let playerSorted = Object.entries(fb_data).sort((a,b)=>{return b[1].wins - a[1].wins});
+            let playerSorted = Object.entries(fb_data).sort((a,b)=>{return b[1][_SORTKEY] - a[1][_SORTKEY]});
             console.log(playerSorted);
             playerSorted = playerSorted.splice(0,10);
             console.log(playerSorted);
@@ -302,6 +302,7 @@ async function fb_killRecord(){
     console.log('%c killRecord ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
  }
+
 
 /****************************************************************
  // function fb_createAccount()
@@ -390,6 +391,9 @@ async function fb_killRecord(){
                 losses:0,
                 current_win_streak:0,
                 longest_win_streak:0
+            })
+            fb_writeRecord("playerStats/PSR/"+userUid,{
+                high_score:0
             })
         document.getElementById("form").style = "display:none";
         document.getElementById("playertalk").innerHTML = "account successfully created! redirecting to menu..."

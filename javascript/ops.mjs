@@ -227,7 +227,7 @@ async function op_readOpenLobbies(_GAME,_CALLBACK){
     //put listener on the entire lobbies node. Whenever it runs, check if its open, then converts into an array
     fb_valueChanged("lobbies/"+_GAME+"/",null,(LOBBIES)=> {
         console.log("lobby status has changed!")
-        openLobbies = Object.entries(LOBBIES).filter((_LOBBYCHECKED) => {
+        a.filter((_LOBBYCHECKED) => {
             return _LOBBYCHECKED[1].lobby_open == true;
         })
         console.log(openLobbies);
@@ -279,7 +279,7 @@ async function op_createLeaderboard(_GAME,_SORTKEY,_CALLBACK){
     console.log(playerSorted);
     // read all of the lobbies within the chosen game
     try{
-        for (let i = 0; i<10; i++){
+        for (let i = 0; i<9; i++){
             const UID = playerSorted[i][0]
             console.log(UID);
             let displayName = await fb_readRecord("/playerStats/UNI/"+UID+"/","display_name");
@@ -291,8 +291,8 @@ async function op_createLeaderboard(_GAME,_SORTKEY,_CALLBACK){
             leaderboardName.innerHTML = displayName;
             console.log(_SORTKEY);
             console.log(playerSorted[i][1]);
-            console.log(playerSorted[i][1]._SORTKEY);
-            leaderboardScore.innerHTML = playerSorted[i][1].wins;
+            console.log(playerSorted[i][1][SORT_KEY]);
+            leaderboardScore.innerHTML = playerSorted[i][1][SORT_KEY];
             document.getElementById("leaderboard"+_GAME).append(leaderboardRow,leaderboardName,leaderboardScore);
         }
     }catch{
@@ -307,4 +307,8 @@ async function op_createLeaderboard(_GAME,_SORTKEY,_CALLBACK){
     }
     document.getElementById("leaderboard"+_GAME).style = "display:inline-block";
     document.getElementById("playButton"+_GAME).style = "display:inline-block";
+    console.log("function finished");
+    _CALLBACK("GES","high_score",()=>{
+        console.log("leaderboards finsihed")
+    });
 }
