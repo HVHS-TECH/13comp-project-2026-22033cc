@@ -1,9 +1,3 @@
-let hello = "hello World"
-import("./GES_fb.js").then((module) => {
-    console.log(module);
-    module.GES_changeHighScore();
-    console.log(hello);
-});
 console.log("hello! Welcome to my game")
 //all universal constants
     const CANVAS_WIDTH = 500;
@@ -59,6 +53,8 @@ console.log("hello! Welcome to my game")
     //backgrounds
     var backgroundPlay;
     var backgroundStart;
+
+    let highScore = 0;
 /***********************************
  * set up
  ***********************************/
@@ -126,9 +122,19 @@ function draw(){
             
     fill("white")
     text("welcome to ",50,50)
-    text("press enter to press a button!, press W and D to select. W is up, s is down.",50, 230)
+    text("press enter to press a button!, press W and D to select. W is up, s is down.",50, 230);
+    text("your HighScore is:"+highScore+" Points!",150,350);
     //create sprites on the first draw loop
     if (firstDraw == 0){
+        //check users high score
+        import("./GES_fb.mjs").then((module) => {
+            highScorePromise = module.GES_checkHighScore().then((_RESULT)=>{
+                console.log(_RESULT);
+                highScore = _RESULT;
+            })
+            highScorePromise;
+        });
+        console.log(highScore);
         logoStart = new Sprite (250,150, 50,20,'n')
         logoStart.image= (logo);
         logoStart.scale = (0.6);
@@ -195,6 +201,16 @@ function draw(){
         background('red');
         //load button sprites
         if (firstDraw == 0){
+            if (score > highScore){
+                import("./GES_fb.mjs").then((module) => {
+                    highScoreChangePromise = module.GES_changeHighScore(score).then((_RESULT)=>{
+                        console.log(_RESULT);
+                        highScore = _RESULT;
+                    })
+                highScoreChangePromise;
+                });
+            }
+            
             pinkEgg.x = PINK_EGG_START_POSITION[0];
             pinkEgg.y = PINK_EGG_START_POSITION[1];
             buttonRestart = new Sprite(BUTTON_POSITION[0],BUTTON_POSITION[1],BUTTON_SIZE[0],BUTTON_SIZE[1],'s');
@@ -214,6 +230,7 @@ function draw(){
         //define text
         text("Uh oh, you've been cracked!",50,100); 
         text("your score was "+score,50,200);
+        text("your High score is "+highScore,50,235);
         text ('good job!',50,250)
         enemyState = 0;
     //call function to check if buttons are pressed
