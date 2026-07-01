@@ -75,7 +75,8 @@ function fb_initialise() {
     const FB_GAMEAPP = initializeApp(FB_GAMECONFIG);
     fb_Db= getDatabase(FB_GAMEAPP);
     console.info(fb_Db); 
-    sessionStorage.setItem("FBDB",fb_Db);        	
+    sessionStorage.setItem("FBDB",fb_Db);  
+    getAuth();     	
 
 }
 
@@ -426,8 +427,9 @@ console.log('%c Fb_detectLoginChange ',
     }else{
         //user is not logged in
         console.log("he ain't logged in!");
+        document.getElementById("login").style = "display:inline-block";
         let firstLand = sessionStorage.getItem("firstLanding");
-        console.log(firstLand);
+        document.getElementById("login").style = "display:inline-block";
         if (firstLand == null){
             if (document.URL.includes("index.html")){
                 console.log("on index.html");
