@@ -181,10 +181,14 @@ async function PSR_startRound(){
     for(let i =0; i<=2; i++){
         console.log(PSR[i]);
         let button = document.createElement('button');
+        let image = document.createElement('img');
         button.id = "button"+PSR[i];
         button.onclick = () => PSR_selectAnswer(PSR[i]);
         button.innerHTML = PSR[i];
         button.classList.add("Button")
+        image.src = "./assets/images/PSR_assets/PSR_"+PSR[i]+".png";
+        image.alt = PSR[i];
+        button.appendChild(image);
         document. getElementById("playerScreen").appendChild(button);
 
     }

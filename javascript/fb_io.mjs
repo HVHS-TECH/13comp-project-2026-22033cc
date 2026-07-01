@@ -427,7 +427,11 @@ console.log('%c Fb_detectLoginChange ',
     }else{
         //user is not logged in
         console.log("he ain't logged in!");
+<<<<<<< Updated upstream
         document.getElementById("login").style = "display:inline-block";
+=======
+        document.getElementById("login").style = "display:inline-block"
+>>>>>>> Stashed changes
         let firstLand = sessionStorage.getItem("firstLanding");
         document.getElementById("login").style = "display:inline-block";
         if (firstLand == null){
