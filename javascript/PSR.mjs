@@ -16,7 +16,8 @@ const game = "PSR";
 /***************************************************************/
 // Import all the constants & functions required from fb_io module
 import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeRecord,
-    fb_readRecord,fb_readAll, fb_updateRecord, fb_read_sorted,fb_createAccount,returnUserUid
+    fb_readRecord,fb_readAll, fb_updateRecord, fb_read_sorted,fb_createAccount,returnUserUid,fb_killRecord 
+    ,fb_changeOnDisconnect
  }
     from './fb_io.mjs';
 
@@ -31,6 +32,7 @@ import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeR
     window.fb_read_sorted = fb_read_sorted;
     window.fb_createAccount = fb_createAccount;
     window.returnUserUid = returnUserUid;
+    window.fb_changeOnDisconnect = fb_changeOnDisconnect;
 //Import all functions required from ops.mjs
 import { op_checkProfile, op_checkStats, op_createLobby,op_readOpenLobbies,op_joinLobby, op_createLeaderboard
  }
@@ -105,4 +107,14 @@ function psr_Redirect(_GAME,_LOBBYUUID){
     sessionStorage.setItem('position',"challenger");
     window.location.assign("PSRscreen.html");
     
+}
+if(sessionStorage.getItem("InGame") !== null){
+    let UUID = sessionStorage.getItem("lobbyUUID");
+    let position = sessionStorage.getItem("position");
+    const active = position+"_active";
+    fb_updateRecord("/lobbies/"+UUID+"/",{
+        [active]:false,
+    })
+    sessionStorage.removeItem("InGame");
+    sessionStorage.removeItem("lobbyUUID");
 }

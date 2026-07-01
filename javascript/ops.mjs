@@ -134,6 +134,7 @@ async function op_loginCheck(_UID){
     }
 
 }
+
 /***************************************************************
 // function op_create(_UID)
 // called when user clicks "create lobby"
@@ -164,6 +165,7 @@ async function op_createLobby(_UID,_GAME){
                     host_guess:"none",
                     host_score:0,
                     host_UID:_UID,
+                    host_active:true,
                     //challenger stats
                     challenger_display_name:"none",
                     challenger_photo_URL:"none",
@@ -171,6 +173,7 @@ async function op_createLobby(_UID,_GAME){
                     challenger_guess:"none",
                     challenger_score:0,
                     challenger_UID:_UID,
+                    challenger_active:false,
                     rematch: false,
                     tie:false,
                     round_winner:"none",
@@ -229,7 +232,7 @@ async function op_readOpenLobbies(_GAME,_CALLBACK){
     //put listener on the entire lobbies node. Whenever it runs, check if its open, then converts into an array
     fb_valueChanged("lobbies/"+_GAME+"/",null,(LOBBIES)=> {
         console.log("lobby status has changed!")
-        a.filter((_LOBBYCHECKED) => {
+        openLobbies = Object.entries(LOBBIES).filter((_LOBBYCHECKED) => {
             return _LOBBYCHECKED[1].lobby_open == true;
         })
         console.log(openLobbies);
@@ -259,6 +262,7 @@ async function op_joinLobby(_GAME,_LOBBYUUID,_CALLBACK){
         challenger_display_name:USER_NAME,
         challenger_photo_URL:USER_PHOTO_URL,
         challenger_fav_col:USER_FAV_COL,
+        challenger_active:true,
         lobby_open:false,
     })
     sessionStorage.setItem("position","challenger")

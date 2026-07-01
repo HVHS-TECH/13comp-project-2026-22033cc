@@ -27,7 +27,7 @@ var userName;
 import { initializeApp }
     from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 
-import { getDatabase }
+import { getDatabase, remove,onDisconnect }
     from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut }
@@ -51,7 +51,7 @@ import { op_loginCheck
 /**************************************************************/
 export {
     fb_initialise, fb_authenticate, fb_detectLoginChange, fb_logOut, fb_writeRecord, fb_readRecord,
-    fb_readAll, fb_updateRecord, fb_read_sorted,fb_createAccount,returnUserUid, fb_killRecord,fb_valueChanged,
+    fb_readAll, fb_updateRecord, fb_read_sorted,fb_createAccount,returnUserUid, fb_killRecord,fb_valueChanged,fb_changeOnDisconnect
 };
 
 
@@ -229,7 +229,18 @@ async function fb_readAll(_path) {
     
 
 }
+/***************************************************************
+// function fb_readAll()
+//
+//
+ ****************************************************************/
 
+async function fb_changeOnDisconnect(_PATH,_DATA){
+    console.log(_PATH);
+    const REF = ref(fb_Db,_PATH);
+    onDisconnect(REF).set(_DATA);
+
+}
 /***************************************************************
 // function fb_updateRecord()
 //
@@ -299,9 +310,11 @@ async function fb_read_sorted(_PATH, _SORTKEY){
  //
  ****************************************************************/
 
-async function fb_killRecord(){
+async function fb_killRecord(_PATH){
     console.log('%c killRecord ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+    const victim = ref(fb_Db,_PATH);
+    await remove(victim);
  }
 
 
@@ -427,11 +440,7 @@ console.log('%c Fb_detectLoginChange ',
     }else{
         //user is not logged in
         console.log("he ain't logged in!");
-<<<<<<< Updated upstream
-        document.getElementById("login").style = "display:inline-block";
-=======
         document.getElementById("login").style = "display:inline-block"
->>>>>>> Stashed changes
         let firstLand = sessionStorage.getItem("firstLanding");
         document.getElementById("login").style = "display:inline-block";
         if (firstLand == null){

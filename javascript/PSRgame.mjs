@@ -21,6 +21,8 @@ let joined = false;
 // Import all the constants & functions required from fb_io module
 import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeRecord,
     fb_readRecord,fb_readAll, fb_updateRecord, fb_read_sorted,fb_createAccount,returnUserUid,fb_valueChanged
+    ,fb_changeOnDisconnect,
+    fb_killRecord
  }
     from './fb_io.mjs';
 
@@ -36,6 +38,7 @@ import { fb_initialise, fb_authenticate,fb_detectLoginChange,fb_logOut,fb_writeR
     window.fb_createAccount = fb_createAccount;
     window.returnUserUid = returnUserUid;
     window.fb_valueChanged = fb_valueChanged;
+    window.fb_changeOnDisconnect = fb_changeOnDisconnect;
 //Import all functions required from ops.mjs
 import { op_checkProfile, op_checkStats, op_createLobby,op_readOpenLobbies,op_joinLobby,
  }
@@ -45,12 +48,13 @@ import { op_checkProfile, op_checkStats, op_createLobby,op_readOpenLobbies,op_jo
     window.op_createLobby = op_createLobby;
     window.op_readOpenLobbies = op_readOpenLobbies;
     window.op_joinLobby = op_joinLobby;
-
 let fb_Db = sessionStorage.getItem("FBDB");
 let userUid = sessionStorage.getItem("UID");
 let userProfile = await op_checkProfile(userUid);
 let position = sessionStorage.getItem("position");
 let LOBBYUUID = sessionStorage.getItem("lobby");
+sessionStorage.setItem("InGame","true");
+sessionStorage.setItem("lobbyUUID",LOBBYUUID);
 let lobbyPath = "/lobbies/PSR/"+LOBBYUUID;
 console.log(position);
 console.log(LOBBYUUID);
@@ -59,20 +63,46 @@ let waitingText = {
     round:"waiting for opponent to answer",
     waiting:"calculating result..."
 }
-let round = 1; 
+let round = 1;
 
 document.getElementById("position").innerHTML = "You are the "+position+"!";
 document.getElementById("playerTalk").innerHTML = "Waiting for a challenger..."
+
+//ondisconnect function for when they disconnect...
+console.log("run change on disconnect")
+fb_changeOnDisconnect(lobbyPath+"/"+position+"_active",false);
+
+//check if what user is.
 if (position == "host"){
-    
-    opponent = "challenger"
+    opponent = "challenger";
     PSR_challengerWait();
+
+    
 } else { 
-    console.log("challenger");
     opponent = "host";
     console.log(gameState);
     gameState = "round";
-    fb_valueChanged(lobbyPath,null,PSR_hostGameFlow);
+    // create users image and name
+    document.getElementById("challengerName").innerHTML = userProfile.display_name;
+    let challengerImage = document.createElement('img');
+    challengerImage.src = userProfile.photo_URL;
+    challengerImage.alt = "challenger picture";
+    challengerImage.style.borderColor = userProfile.fav_colour;
+    challengerImage.classList.add("profileImage");
+    challengerImage.id = "userProfileIMG";
+    document.getElementById("challengerImage").appendChild(challengerImage);
+    //create hosts image and name 
+    let lobby = await fb_readRecord(lobbyPath,"/");
+    console.log(lobby);
+    document.getElementById("hostName").innerHTML = lobby.host_display_name;
+    let hostImage = document.createElement('img');
+    hostImage.src = lobby.host_photo_URL;
+    hostImage.alt = "host picture";
+    hostImage.style.borderColor = lobby.fav_col;
+    hostImage.classList.add("profileImage");
+    hostImage.id = "userProfileIMG";
+    document.getElementById("hostImage").appendChild(hostImage);
+    fb_valueChanged(lobbyPath,null,PSR_gameFlow);
     
 }
 /***************************************************************
@@ -84,14 +114,23 @@ async function PSR_challengerWait(){
     console.log('%c PSR_challengerWait running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';')
     gameState = "waitingJoin";
-    fb_valueChanged(lobbyPath,null,PSR_hostGameFlow);
+    fb_valueChanged(lobbyPath,null,PSR_gameFlow);
+    //create users image and name.
+    document.getElementById("hostName").innerHTML = userProfile.display_name;
+    let hostImage = document.createElement('img');
+    hostImage.src = userProfile.photo_URL;
+    hostImage.alt = "host picture";
+    hostImage.style.borderColor = userProfile.fav_colour;
+    hostImage.classList.add("profileImage");
+    hostImage.id = "userProfileIMG";
+    document.getElementById("hostImage").appendChild(hostImage);
 }
 /***************************************************************
 // function PSR_gameFlow (_DATA)
 // Called every time that changes are made in the lobby. 
 // 
  ****************************************************************/    
-async function PSR_hostGameFlow(_DATA){
+async function PSR_gameFlow(_DATA){
     console.log('%c PSR_hostGameflow running ',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     console.log(opponent);
@@ -105,6 +144,19 @@ async function PSR_hostGameFlow(_DATA){
     if (gameState == "waitingJoin" &&_DATA.lobby_open == false){
         console.log('%c someone joined.',
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
+        let lobby = await fb_readRecord(lobbyPath,"/");
+
+        // create challengers profile.
+        document.getElementById("challengerName").innerHTML = lobby.challenger_display_name;
+        let challengerImage = document.createElement('img');
+        challengerImage.src = lobby.challenger_photo_URL;
+        challengerImage.alt = "challenger picture";
+        challengerImage.style.borderColor = lobby.fav_col;
+        challengerImage.classList.add("profileImage");
+        challengerImage.id = "userProfileIMG";
+        document.getElementById("challengerImage").appendChild(challengerImage);
+        PSR_onOpponentDisconnect(opponent);
+        // create listeners for score table.
         const CHALLENGER_SCORE_PATH = lobbyPath + "/challenger_score";
         const HOST_SCORE_PATH = lobbyPath + "/host_score";
         fb_valueChanged(CHALLENGER_SCORE_PATH,null,PSR_ScoreChanged);
@@ -188,6 +240,7 @@ async function PSR_startRound(){
         button.classList.add("Button")
         image.src = "./assets/images/PSR_assets/PSR_"+PSR[i]+".png";
         image.alt = PSR[i];
+        image.style.width = "100px"; 
         button.appendChild(image);
         document. getElementById("playerScreen").appendChild(button);
 
@@ -283,13 +336,11 @@ async function PSR_Rematch(_DATA){
     //create exit lobby button.
     let exitButton = document.createElement('button');
     exitButton.id = "exitButton";
+    const position_active = position+"_active";
     exitButton.onclick = () => {
-        if (position == "host"){
-            PSR_updateStats(_DATA);
-            fb_killLobby(lobbyPath);         
-        }else if (position == "challenger"){
-            PSR_updateStats(_DATA);
-        }
+        fb_updateRecord(lobbyPath,{
+            [position_active]:false,
+        })
     }
     document.getElementById("playerScreen").appendChild(exitButton);
 
@@ -389,3 +440,15 @@ async function PSR_gameFinish(_DATA){
         }
         gameState = "rematch";
 }
+
+    async function PSR_onOpponentDisconnect(_OPPONENT){
+        const OPPONENT = _OPPONENT
+        fb_valueChanged(lobbyPath+"/"+OPPONENT+"_active",null,(_DATA)=>{
+            if (_DATA == false||_DATA == null){
+                console.log(OPPONENT+" is offline");
+                alert(OPPONENT+" disconnected....");
+                fb_killRecord(lobbyPath);
+                window.location.assign("PSR.html");
+            }
+    })
+    }
