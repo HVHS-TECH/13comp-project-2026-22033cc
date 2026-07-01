@@ -201,14 +201,6 @@ async function PSR_gameFlow(_DATA){
         if (CHALLENGER_SCORE == 3||HOST_SCORE == 3){
             gameState = "end";
         }
-        /*if ((_DATA.challenger_score == 3 ||_DATA.host_score == 3)&& position == "host"){
-            gameState = "end";
-            console.log("someone won!");
-            PSR_endgame(_DATA);
-        }else if ((_DATA.challenger_score == 3 ||_DATA.host_score == 3)&& position == "challenger");{
-            gameState = "end";
-            console.log("someone Won!")
-        }*/ 
         console.log("waiting for next round...");
         PSR_nextRound(_DATA); 
     }else if (gameState == "waiting"&&_DATA.rematch == true){
@@ -219,6 +211,24 @@ async function PSR_gameFlow(_DATA){
         PSR_Rematch(_DATA);
     }else if (gameState == "nextRound"){
         gameState = "nextRoundWaiting";
+    }else if (gameState == "rematch"){
+        gameState = "rematchSent";
+        const OPPONENT_NAME = opponent+"_display_name"
+        let rematchSent = document.createElement('span');
+        rematchSent.innerHTML = _DATA[OPPONENT_NAME] +" sent a rematch request";
+        document.getElementById("playerTalk").appendChild(rematchSent);
+        
+    }else if (gameState == "rematchSent"){
+        gameState = "round";
+        document.getElementById("playerScreen").innerHTML = "";
+        if (position == "host"){
+            fb_updateRecord(lobbyPath,{
+                challenger_guess:"none",
+                challenger_score:0,
+                host_guess:"none",
+                host_score:0
+            })
+        }
     }
 }
 /***************************************************************
@@ -314,7 +324,6 @@ async function PSR_hostCalculate(_DATA){
 }
 
 async function PSR_Rematch(_DATA){
-    console.log("challenger is reading....");
     gameState = "ready";
     //create rematch button.
     console.log(_DATA);
@@ -322,13 +331,10 @@ async function PSR_Rematch(_DATA){
     rematchButton.id = "rematchButton";
     rematchButton.classList.add("Button");
     rematchButton.onclick = () => {
-        console.log("clicked rematch");
-        fb_updateRecord(lobbyPath, {
-            challenger_guess:"none",
-            host_guess:"none",
-            tie:false,
-            round:round,
-            rematch:true,
+    console.log("clicked rematch");
+    let guess = position+"_guess";
+    fb_updateRecord(lobbyPath, {
+            [guess]:"rematch",
         })
     }
     rematchButton.innerHTML = "Request rematch";
@@ -336,11 +342,14 @@ async function PSR_Rematch(_DATA){
     //create exit lobby button.
     let exitButton = document.createElement('button');
     exitButton.id = "exitButton";
+    exitButton.classList.add("Button");
+    exitButton.innerHTML = "exit Lobby";
     const position_active = position+"_active";
     exitButton.onclick = () => {
         fb_updateRecord(lobbyPath,{
             [position_active]:false,
         })
+        window.location.assign("PSR.html");
     }
     document.getElementById("playerScreen").appendChild(exitButton);
 
@@ -361,6 +370,7 @@ async function PSR_nextRound(_DATA){
         console.log(WINNER_GUESS);
         result.innerHTML = _DATA.round_winner + " won this round by picking " + WINNER_GUESS + "!"
     }
+    document.getElementById("playerScreen").innerHTML = "";
     document.getElementById("playerScreen").appendChild(result);
     
     // button to confirm next round.    
@@ -401,7 +411,7 @@ async function PSR_gameFinish(_DATA){
     //grab all things that we need to tell users and their stats.
     const HOST_SCORE = _DATA.host_score;
     const CHALLENGER_SCORE = _DATA.challenger_score;
-    let playerStats = await op_checkStats(userUid,"PSR");
+    let playerStats = await fb_readRecord("/playerStats/PSR/",userUid);
     const USER_PATH = "/playerStats/PSR/"+userUid+"/"
         console.log ("host won!");
         if ((HOST_SCORE == 3 && position == "host")||(CHALLENGER_SCORE == 3 && position == "challenger")){
@@ -438,6 +448,7 @@ async function PSR_gameFinish(_DATA){
                 current_win_streak:0
             });
         }
+        PSR_Rematch(_DATA);
         gameState = "rematch";
 }
 
