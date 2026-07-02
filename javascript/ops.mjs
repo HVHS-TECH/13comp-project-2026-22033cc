@@ -121,9 +121,11 @@ async function op_loginCheck(_UID){
                         'color: ' + COL_C + '; background-color: ' + COL_B + ';');
             fb_logOut();
             console.log("logged out");
+            document.getElementById("userCom").innerHTML = "";
             let loggedOut = document.createElement('p');
             loggedOut.innerHTML = "you have been logged out of "+ userName;
             document.getElementById("userCom").appendChild(loggedOut);
+            sessionStorage.setItem("logOut",true);
             
         }
         loginChoiceNo.innerHTML = "No"

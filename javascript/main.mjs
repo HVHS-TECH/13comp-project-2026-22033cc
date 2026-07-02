@@ -64,6 +64,7 @@ import {op_checkProfile,op_loginCheck,op_createLobby
     }
     let isAdmin = await fb_readRecord("/playerStats/UNI/"+userUid+"/","isadmin");
     fb_detectLoginChange();
+    console.log(isAdmin);
     if (isAdmin == true){
         let adminPageButton = document.createElement("button");
         adminPageButton.onclick = () =>{

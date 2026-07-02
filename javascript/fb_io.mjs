@@ -353,7 +353,7 @@ async function fb_killRecord(_PATH){
         (userName.length >= 20), // username is more than 20 characters
         (userAge == null), //users age is null
         (userAge == ""), // users age is equal to spaces or empty
-        (userAge <= 5), // user age is less than 5
+        (userAge < 5), // user age is less than 5
         (userAge > 120), //users age is more than 120
         (userMovie.trim() == ""), // user's favourite movie is equal to spaces ore empty.
         (userMovie.length>=180)// user favourite movie is more than 120 characters
@@ -434,6 +434,8 @@ console.log('%c Fb_detectLoginChange ',
     onAuthStateChanged(AUTH,(user) => {
     if (user){
         console.log("user is signed in");
+        sessionStorage.setItem("logOut",false);
+        console.log(sessionStorage.getItem("logOut"));
         let userUid = user.uid;
         console.log(userUid);
         op_loginCheck(userUid);
@@ -442,7 +444,6 @@ console.log('%c Fb_detectLoginChange ',
         console.log("he ain't logged in!");
         document.getElementById("login").style = "display:inline-block"
         let firstLand = sessionStorage.getItem("firstLanding");
-        document.getElementById("login").style = "display:inline-block";
         if (firstLand == null){
             if (document.URL.includes("index.html")){
                 console.log("on index.html");
@@ -451,10 +452,11 @@ console.log('%c Fb_detectLoginChange ',
             console.log("im on the wrong website! redirecting to index");
             window.location.assign("index.html");
             }
-        } else{
+        }else if (sessionStorage.getItem("logOut") == "true"){''
+        } else{document.getElementById("login").style = "display:inline-block"
             if (document.URL.includes("index.html")){
             console.log("not firstLanding");
-            op_loginCheck(userUid)
+            op_loginCheck(userUid);
             }
         }
     }
