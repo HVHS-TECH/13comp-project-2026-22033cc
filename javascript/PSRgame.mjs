@@ -14,7 +14,6 @@ const game = "PSR";
 const PSR = ["Paper","Scissors","Rock"];
 
 let gameState = "start";
-let joined = false;
 /***************************************************************/
 // Import all external constants & functions required
 /***************************************************************/
@@ -48,6 +47,8 @@ import { op_checkProfile, op_checkStats, op_createLobby,op_readOpenLobbies,op_jo
     window.op_createLobby = op_createLobby;
     window.op_readOpenLobbies = op_readOpenLobbies;
     window.op_joinLobby = op_joinLobby;
+
+// all variables and session storage values are defined 
 let fb_Db = sessionStorage.getItem("FBDB");
 let userUid = sessionStorage.getItem("UID");
 let userProfile = await op_checkProfile(userUid);
@@ -56,8 +57,6 @@ let LOBBYUUID = sessionStorage.getItem("lobby");
 sessionStorage.setItem("InGame","true");
 sessionStorage.setItem("lobbyUUID",LOBBYUUID);
 let lobbyPath = "/lobbies/PSR/"+LOBBYUUID;
-console.log(position);
-console.log(LOBBYUUID);
 let opponent;
 let waitingText = {
     round:"waiting for opponent to answer",
@@ -65,6 +64,7 @@ let waitingText = {
 }
 let round = 1;
 
+//creating interface
 document.getElementById("position").innerHTML = "You are the "+position+"!";
 document.getElementById("playerTalk").innerHTML = "Waiting for a challenger..."
 
@@ -72,6 +72,12 @@ document.getElementById("playerTalk").innerHTML = "Waiting for a challenger..."
 console.log("run change on disconnect")
 fb_changeOnDisconnect(lobbyPath+"/"+position+"_active",false);
 
+// will kick user out if host isn't active.
+const HOST_ACTIVE = await fb_readRecord(lobbyPath+"/","host_active");
+if (HOST_ACTIVE == false){
+    alert("sorry! looks like host disconnected, or you reloaded the page...");
+    window.location.assign("PSR.html");
+}
 //check if what user is.
 if (position == "host"){
     opponent = "challenger";
@@ -90,6 +96,10 @@ if (position == "host"){
         fb_valueChanged(HOST_SCORE_PATH,null,(_SCORE)=>{
             document.getElementById("hostScore").innerHTML = _SCORE;
         });
+
+    //will kill lobby on disconnect listener
+    PSR_onOpponentDisconnect(opponent);
+        
     // create users image and name
     document.getElementById("challengerName").innerHTML = userProfile.display_name;
     let challengerImage = document.createElement('img');

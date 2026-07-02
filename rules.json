@@ -1,0 +1,55 @@
+{
+  "rules": {
+   "lobbies":{
+    ".read":"auth !== null",
+    ".write":"auth !== null",
+   },
+    
+  // allowing fb_readSorted for player stats
+  "playerStats":{
+    "UNI":{
+      "$user_id":{
+        // no one can become an admin through program
+      	"isadmin":{
+        	".read":"true",
+        	".write":false,
+					},
+        // make sure that only user can write their new name. 
+				"display_name":{
+          ".read":"auth !== null",
+          ".write":"auth !== null && $user_id === auth.uid || root.child('playerStats').child('UNI').child(auth.uid).child('isadmin').val() === true",
+        },
+          ".read":"auth !== null && $user_id === auth.uid ||root.child('playerStats').child('UNI').child(auth.uid).child('isadmin').val() === true",
+          ".write":"auth !== null && $user_id === auth.uid ||root.child('playerStats').child('UNI').child(auth.uid).child('isadmin').val() === true",
+      },
+    },
+    "PSR":{
+    	".indexOn":[ 
+    		"wins",
+    		"losses",
+    		"current_win_streak",
+    		"longest_win_streak"
+    	],
+      "$user_id":{
+      	".read":"auth !== null",
+      	".write":"auth !== null && $user_id === auth.uid ||root.child('playerStats').child('UNI').child(auth.uid).child('isadmin').val() === true",
+      	".validate": "newData.isNumber()",
+      },
+      ".read":"auth !== null",
+      
+    },
+    "GES":{
+      ".indexOn":"high_score",
+      "$user_id":{
+      ".read":"auth !== null",
+      ".write":"auth !== null && $user_id === auth.uid ||root.child('playerStats').child('UNI').child(auth.uid).child('isadmin').val() === true",
+        ".validate": "newData.isNumber()",
+      },
+      ".read":"auth !== null",
+    },
+
+  },
+		".read": false,
+    ".write": false,
+  }
+}

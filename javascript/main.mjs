@@ -75,4 +75,15 @@ import {op_checkProfile,op_loginCheck,op_createLobby
         document.getElementById("navBar").appendChild(adminPageButton);
 
     }
-    
+    let allUsers = await fb_readRecord("/playerStats/","UNI");
+    allUsers = Object.entries(allUsers);
+
+    for (let i = 0; i<allUsers.length; i++){
+        let UID = allUsers[i][0];
+        fb_writeRecord("/playerStats/PSR/"+UID+"/",{
+            wins:0,
+            losses:0,
+            current_win_streak:0,
+            longest_win_streak:0
+        })
+    }

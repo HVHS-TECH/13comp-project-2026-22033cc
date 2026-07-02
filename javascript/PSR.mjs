@@ -81,19 +81,23 @@ op_readOpenLobbies("PSR",( (_LOBBIES) => {
     //create buttons to join lobby
     for (let i = 0; i < _LOBBIES.length;i++){
         //create Elements 
-        let lobbyRow = document.createElement('tr');
-        let lobbyName = document.createElement('td');
-        let lobbyButton1 = document.createElement('td');
-        let lobbyButton2 = document.createElement('button');
-        //change the insides of these elements to match hosts name and redirect them.
-        lobbyName.innerHTML = _LOBBIES[i][1].host_display_name;
-        lobbyButton2.classList.add("Button")
-        const LOBBYUUID = _LOBBIES[i][0];
-        lobbyButton2.onclick = ()=> op_joinLobby("PSR",LOBBYUUID,psr_Redirect);    
-        lobbyButton2.innerHTML = "Join!";
-            
-        lobbyButton1.appendChild(lobbyButton2);
-        document.getElementById("lobbyJoin").append(lobbyRow,lobbyName,lobbyButton1);
+        if (_LOBBIES[i][1].host_active == false){
+            fb_killRecord("/lobbies/PSR/"+_LOBBIES[i][0]);
+        }else{
+            let lobbyRow = document.createElement('tr');
+            let lobbyName = document.createElement('td');
+            let lobbyButton1 = document.createElement('td');
+            let lobbyButton2 = document.createElement('button');
+            //change the insides of these elements to match hosts name and redirect them.
+            lobbyName.innerHTML = _LOBBIES[i][1].host_display_name;
+            lobbyButton2.classList.add("Button")
+            const LOBBYUUID = _LOBBIES[i][0];
+            lobbyButton2.onclick = ()=> op_joinLobby("PSR",LOBBYUUID,psr_Redirect);    
+            lobbyButton2.innerHTML = "Join!";
+                
+            lobbyButton1.appendChild(lobbyButton2);
+            document.getElementById("lobbyJoin").append(lobbyRow,lobbyName,lobbyButton1);
+            }
     }
     }));
 
@@ -117,4 +121,5 @@ if(sessionStorage.getItem("InGame") !== null){
     })
     sessionStorage.removeItem("InGame");
     sessionStorage.removeItem("lobbyUUID");
+    sessionStorage.removeItem("position")
 }
