@@ -82,6 +82,14 @@ if (position == "host"){
     opponent = "host";
     console.log(gameState);
     gameState = "round";
+    const CHALLENGER_SCORE_PATH = lobbyPath + "/challenger_score";
+    const HOST_SCORE_PATH = lobbyPath + "/host_score";
+     fb_valueChanged(CHALLENGER_SCORE_PATH,null,(_SCORE)=>{
+            document.getElementById("challengerScore").innerHTML = _SCORE;
+        });
+        fb_valueChanged(HOST_SCORE_PATH,null,(_SCORE)=>{
+            document.getElementById("hostScore").innerHTML = _SCORE;
+        });
     // create users image and name
     document.getElementById("challengerName").innerHTML = userProfile.display_name;
     let challengerImage = document.createElement('img');
@@ -425,19 +433,23 @@ async function PSR_gameFinish(_DATA){
             result.id = "result"
             result.innerHTML = "You won! Adding win to your profile";
             document.getElementById("playerScreen").appendChild(result);
+            
+            const WINS_UPDATE = playerStats.wins + 1;
+            const STREAK_UPDATE = playerStats.current_win_streak + 1;
             //check if they are still their longest win streak
             if (playerStats.current_win_streak == playerStats.longest_win_streak){
                 // update their record and their longest win streak
+                
                 fb_updateRecord(USER_PATH,{
-                    wins:playerStats.wins+1,
-                    current_win_streak:playerStats.current_win_streak+1,
-                    longest_win_streak:playerStats.current_win_streak +1
+                    wins:WINS_UPDATE,
+                    current_win_streak:STREAK_UPDATE,
+                    longest_win_streak:STREAK_UPDATE
                 })
             }else{
                 // update their record
                 fb_updateRecord(USER_PATH,{
-                    wins:playerStats.wins+1,
-                    current_win_streak:playerStats.current_win_streak+1,
+                    wins:playerStats.WINS_UPDATE,
+                    current_win_streak:STREAK_UPDATE,
                 })
             }
         }else{

@@ -75,3 +75,4 @@ import {op_checkProfile,op_loginCheck,op_createLobby
         document.getElementById("navBar").appendChild(adminPageButton);
 
     }
+    

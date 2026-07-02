@@ -112,7 +112,7 @@ if(sessionStorage.getItem("InGame") !== null){
     let UUID = sessionStorage.getItem("lobbyUUID");
     let position = sessionStorage.getItem("position");
     const active = position+"_active";
-    fb_updateRecord("/lobbies/"+UUID+"/",{
+    fb_updateRecord("/lobbies/PSR/"+UUID+"/",{
         [active]:false,
     })
     sessionStorage.removeItem("InGame");

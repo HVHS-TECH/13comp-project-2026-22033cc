@@ -107,12 +107,12 @@ async function changeInfoWrite(){
          let validationsList  = [
             (userName == null),// users name is null
             (userName.trim() == ""), //username is equal to spaces or empty
-            (userName.length <= 5), // username is less than 5 characters
-            (userName.length >= 20), // username is more than 20 characters
+            (userName.length < 5), // username is less than 5 characters
+            (userName.length > 20), // username is more than 20 characters
             (userAge == null), //users age is null
             (userAge == ""), // users age is equal to spaces or empty
-            (userAge <= 5), // user age is less than 5
-            (userAge >= 120), //users age is more than 120
+            (userAge < 5), // user age is less than 5
+            (userAge > 120), //users age is more than 120
             (userMovie.trim() == ""), // user's favourite movie is equal to spaces ore empty.
             (userMovie.length>=180)// user favourite movie is more than 120 characters
     ]
