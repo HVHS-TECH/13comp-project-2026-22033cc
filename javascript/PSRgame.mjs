@@ -159,8 +159,12 @@ async function PSR_gameFlow(_DATA){
         // create listeners for score table.
         const CHALLENGER_SCORE_PATH = lobbyPath + "/challenger_score";
         const HOST_SCORE_PATH = lobbyPath + "/host_score";
-        fb_valueChanged(CHALLENGER_SCORE_PATH,null,PSR_ScoreChanged);
-        fb_valueChanged(HOST_SCORE_PATH,null,PSR_ScoreChanged);
+        fb_valueChanged(CHALLENGER_SCORE_PATH,null,(_SCORE)=>{
+            document.getElementById("challengerScore").innerHTML = _SCORE;
+        });
+        fb_valueChanged(HOST_SCORE_PATH,null,(_SCORE)=>{
+            document.getElementById("hostScore").innerHTML = _SCORE;
+        });
         document.getElementById("playerTalk").innerHTML = "A challenger has appeared! Their name is " +opponentName;
         gameState = "round"
     }
@@ -403,6 +407,7 @@ function PSR_ScoreChanged(_SCORE){
                 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
     console.log(_SCORE);
 
+
 }
 
 async function PSR_gameFinish(_DATA){
@@ -461,5 +466,14 @@ async function PSR_gameFinish(_DATA){
                 fb_killRecord(lobbyPath);
                 window.location.assign("PSR.html");
             }
+        })
+        fb_valueChanged(lobbyPath+"/"+position+"_active",null,(_DATA)=>{
+            if (_DATA == false||_DATA == null){
+                console.log("YOU went  offline");
+                alert("you disconnected....");
+                fb_killRecord(lobbyPath);
+                window.location.assign("PSR.html");
+            }
     })
+
     }

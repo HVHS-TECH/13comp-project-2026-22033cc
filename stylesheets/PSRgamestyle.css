@@ -1,0 +1,5 @@
+#profileScreen{
+    display:grid;
+    grid-template-columns: auto auto auto;
+    min-height:300px;
+}
